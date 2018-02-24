@@ -1,0 +1,115 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+
+namespace dataprocessor
+{
+<#
+int min_size = 2;
+int max_size = 6;
+#>
+    internal sealed partial class State
+    {
+        public static Type GetTypeFor(Type[] parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            switch (parameters.Length)
+            {
+<# for (var size = 2; size <= max_size; size++) { #>
+                case <#= size #>:
+                    return typeof(State<<#= new string(',', size-1) #>>).MakeGenericType(parameters);
+<# } #>
+                default:
+                    throw new ArgumentException(nameof(parameters));
+            }
+        }
+
+        public static object GetStateFor(Type[] parameters)
+        {
+            var type = GetTypeFor(parameters);
+            var obj = type.GetConstructor(new Type[0]).Invoke(new object[0]);
+            return obj;
+        }
+    }
+<#
+for (var size = 2; size <= max_size; size++)
+{
+    var typeNames = string.Join(", ", Enumerable
+        .Range(1, size)
+        .Select(i => "T" + i));
+    var parmNames = string.Join(", ", Enumerable
+        .Range(1, size)
+        .Select(i => "T" + i + " p" + i));
+    var fieldNames = string.Join(", ", Enumerable
+        .Range(1, size)
+        .Select(i => "P" + i));
+#>
+
+    internal sealed partial class State<<#= typeNames #>>
+    {
+        public delegate void Action(<#= parmNames #>);
+
+        private const ulong _completionMask = <#= (1ul << size) - 1 #>ul;
+        private ulong _filled;
+
+<# for (var ix = 1; ix <= size; ix++) { #>
+        public T<#= ix #> P<#= ix #> { get; private set; }
+
+        public bool Set<#= ix #>(T<#= ix #> p<#= ix #>)
+        {
+            P<#= ix #> = p<#= ix #>;
+            _filled |= <#= (1ul << (ix - 1)) #>ul;
+            return IsFilled;
+        }
+
+<# } #>
+/*
+        public bool SetN<T>(ushort index, T value)
+        {
+            bool result;
+
+            switch(index)
+            {
+<# for (var ix = 1; ix <= size; ix++) { #>
+                case <#= ix #>:
+                    if (typeof(T) != typeof(T<#= ix #>))
+                        throw new ArgumentException("Incorrect type for index", nameof(index));
+                    result = Set<#= ix #>((T<#= ix #>)value);
+                    break;
+<# } #>
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            return result;
+        }
+*/
+
+        public bool IsFilled 
+        {
+            get { return _filled == _completionMask; }
+        }
+
+        public void Reset() 
+        {
+            _filled = 0;
+        }
+
+        public void ApplyTo(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            action(<#= fieldNames #>);
+        }
+    }
+<#
+}
+#>
+}
