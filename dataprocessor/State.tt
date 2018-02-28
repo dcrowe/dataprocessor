@@ -10,7 +10,7 @@ namespace dataprocessor
 {
 <#
 int min_size = 2;
-int max_size = 6;
+int max_size = 10;
 #>
     internal sealed partial class State
     {

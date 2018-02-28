@@ -7,86 +7,104 @@ namespace dataprocessor
 {
     public class Draft2DataProcessor : IDataProcessorBuilder, IDataProcessor
     {
-        private class Listener
+        private class NameInfo
         {
-            public Listener(NameType desc) { Description = desc; }
+            public NameInfo(NameType desc) { Description = desc; }
 
-            public NameType Description { get; }
+            public readonly NameType Description;
+            public WriterInfo Writer;
+            public NodeInfo Input;
+            public readonly List<NodeInfo> Outputs = new List<NodeInfo>();
+        }
 
-            public readonly List<LambdaExpression> Recipients = new List<LambdaExpression>();
-            private bool hasWriter;
-
-            public void AddRecipient(LambdaExpression action)
+        private class NodeInfo
+        {
+            public NodeInfo(LambdaExpression expr, NameInfo[] inputs, NameInfo output)
             {
-                Recipients.Add(action);
+                Expr = expr;
+                Inputs = inputs;
+                Output = output;
             }
 
-            public void AssertFirstWriter()
+            public readonly NameInfo[] Inputs;
+            public readonly NameInfo Output;
+            public readonly LambdaExpression Expr;
+
+            public HashSet<WriterInfo> TransitiveWriters;
+
+            public override string ToString()
             {
-                if (hasWriter)
-                    throw new InvalidOperationException();
-                hasWriter = true;
+                return string.Format(
+                    "({0}) => {1}",
+                    string.Join(", ", Inputs.Select(i => i.Description.Name)),
+                    Output?.Description.Name ?? "-");
+            }
+        }
+
+        private class WriterInfo
+        {
+            public WriterInfo(NameType description, WriterBase writer)
+            {
+                Description = description;
+                Writer = writer;
+                Parameter = Expression.Parameter(description.Type, description.Name);
+            }
+
+            public readonly NameType Description;
+            public readonly WriterBase Writer;
+
+            public readonly ParameterExpression Parameter;
+            public readonly List<ParameterExpression> Variables = new List<ParameterExpression>();
+            public readonly List<Expression> Expressions = new List<Expression>();
+
+            public ParameterExpression GetPFor(NameInfo name)
+            {
+                if (name.Description.Name == Parameter.Name)
+                    return Parameter;
+                return Variables.First(p => p.Name == name.Description.Name);
             }
         }
 
         private abstract class WriterBase
         {
-            public abstract void Compile();   
+            public abstract Type ActionType { get; }
+            public abstract void SetAction(Delegate action);
+            public abstract void Close();
         }
 
         private class Writer<T> : WriterBase, IWriter<T>
         {
-            private readonly Draft2DataProcessor _dp;
-            private readonly Listener _listener;
             private Action<T> _action;
+            private bool _isClosed;
 
-            public Writer(Draft2DataProcessor dp, Listener listener)
+            public override Type ActionType => typeof(Action<T>);
+            public override void Close() => _isClosed = true;
+
+            public override void SetAction(Delegate action)
             {
-                _dp = dp;
-                _listener = listener;
-            }
-
-            public override void Compile()
-            {
-                var p = Expression.Parameter(typeof(T), _listener.Description.Name + "_listener");
-
-                var expr = Expression.Lambda<Action<T>>(
-                    Expression.Block(
-                        _listener.Recipients.Select(
-                            r => Expression.Invoke(r, p))),
-                    p);
+                if (action == null)
+                    throw new ArgumentNullException(nameof(action));
+                if (_action != null)
+                    throw new InvalidOperationException();
                 
-                //expr = InlineLambdaInvocations.Visit(expr);
-                //expr = RemoveRedundantCasts.Visit(expr);
-
-#if DEBUG
-                try
-                {
-                    Console.Out.WriteLine(
-                        "{0} => {1}",
-                        string.Join(", ", _listener.Description.Name),
-                        expr.GetDebugString());
-                }
-                catch {}
-#endif
-
-                _action = expr.Compile();
+                _action = (Action<T>)action;
             }
 
             public void Send(T value)
             {
-                if (_dp._state == 0)
+                if (_action == null)
                     throw new InvalidOperationException();
-                if (_dp._state == 2)
+                if (_isClosed)
                     return;
 
                 _action(value);
             }
         }
 
-        private int _state = 0;
-        private readonly Dictionary<string, Listener> _listeners = new Dictionary<string, Listener>();
-        private readonly List<WriterBase> _writers = new List<WriterBase>();
+        private int _state;
+        private readonly Dictionary<string, NameInfo> _names = new Dictionary<string, NameInfo>();
+        private readonly List<WriterInfo> _writers = new List<WriterInfo>();
+        private readonly List<NodeInfo> _nodes = new List<NodeInfo>();
 
         public IWriter<T> AddInput<T>(string name)
         {
@@ -95,11 +113,15 @@ namespace dataprocessor
             if (name == null)
                 throw new ArgumentException();
 
-            var l = GetListener(NameType.From<T>(name));
-            l.AssertFirstWriter();
+            var n = GetName(NameType.From<T>(name));
 
-            var w = new Writer<T>(this, l);
-            _writers.Add(w);
+            if (n.Writer != null)
+                throw new InvalidOperationException();
+
+            var w = new Writer<T>();
+            var wi = new WriterInfo(n.Description, w);
+            _writers.Add(wi);
+            n.Writer = wi;
 
             return w;
         }
@@ -120,55 +142,57 @@ namespace dataprocessor
             if (nin.Length == 0)
                 throw new ArgumentException();
 
-            if (nin.Length > 1)
-            {
-                var stateParameterTypes = onRceiveAction.Parameters.Select(p => p.Type).ToArray();
-                var state = State.GetStateFor(stateParameterTypes);
+            var ns = Enumerable.Range(0, nin.Length)
+                               .Select(ix => new NameType(nin[ix], onRceiveAction.Parameters[ix].Type))
+                               .Select(GetName)
+                               .ToArray();
 
-                for (var ix = 0; ix < nin.Length; ix++)
-                {
-                    var ix2 = ix + 1;
-                    var l = GetListener(new NameType(nin[ix], onRceiveAction.Parameters[ix].Type));
+            var ni = new NodeInfo(onRceiveAction, ns, null);
+            _nodes.Add(ni);
 
-                    var s = Expression.Constant(state);
-                    var fs = Enumerable
-                        .Range(1, nin.Length)
-                        .Select(i => Expression.Property(s, "P" + i))
-                        .ToArray();
-                    var p = Expression.Parameter(l.Description.Type, l.Description.Name);
-
-                    var expr = Expression.Lambda(
-                        Expression.IfThen(
-                            Expression.Call(s, "Set" + ix2, null, p),
-                            Expression.Block(
-                                Expression.Call(s, "Reset", null),
-                                Expression.Invoke(onRceiveAction, fs))),
-                        p);
-                    l.AddRecipient(expr);
-                }
-            }
-            else
-            {
-                var l = GetListener(new NameType(nin[0], onRceiveAction.Parameters[0].Type));
-                l.AddRecipient(onRceiveAction);
-            }
+            foreach (var n in ns)
+                n.Outputs.Add(ni);
         }
 
-        private Listener GetListener(NameType desc)
+        public void AddProcessor(IEnumerable<string> nameIn, string nameOut, LambdaExpression processor)
         {
-            Listener listener;
+            if (_state != 0)
+                throw new Exception();
+            if (nameOut == null)
+                throw new ArgumentException();
+            if (nameIn == null)
+                throw new ArgumentException();
+            if (processor == null)
+                throw new ArgumentException();
+            if (processor.ReturnType == typeof(void))
+                throw new ArgumentException();
 
-            if (!_listeners.TryGetValue(desc.Name, out listener))
-            {
-                listener = new Listener(desc);
-                _listeners.Add(desc.Name, listener);
-            }
-            else if (listener.Description.Type != desc.Type)
-            {
+            var nin = nameIn.ToArray();
+
+            if (nin.Length != processor.Parameters.Count())
+                throw new Exception();
+            if (nin.Length == 0)
+                throw new ArgumentException();
+
+            var nout = GetName(new NameType(nameOut, processor.ReturnType));
+
+            // check that no parameters have multipl inputs
+            if (nout.Writer != null)
                 throw new InvalidOperationException();
-            }
+            if (nout.Input != null)
+                throw new InvalidOperationException();
 
-            return listener;
+            var ns = Enumerable.Range(0, nin.Length)
+                               .Select(ix => new NameType(nin[ix], processor.Parameters[ix].Type))
+                               .Select(GetName)
+                               .ToArray();
+            
+            var ni = new NodeInfo(processor, ns, nout);
+            _nodes.Add(ni);
+
+            nout.Input = ni;
+            foreach (var n in ns)
+                n.Outputs.Add(ni);
         }
 
         public IDataProcessor Build()
@@ -177,9 +201,9 @@ namespace dataprocessor
                 throw new Exception();
             _state = 1;
 
-            foreach (var w in _writers)
-                w.Compile();
-
+            CompileToIntermediate();
+            CompileToFinal();
+            
             return this;
         }
 
@@ -187,43 +211,254 @@ namespace dataprocessor
         {
             if (_state != 0)
                 throw new Exception();
-            return _listeners.Values.Select(l => l.Description);
+            return _names.Values.Select(l => l.Description);
         }
 
-        public void AddProcessor(IEnumerable<string> nameIn, string nameOut, LambdaExpression processor)
+        void IDataProcessor.Close() 
         {
-            if (_state != 0)
-                throw new Exception();
+            _state = 2;
 
-            var getW = Expression
-                .Lambda<Func<WriterBase>>(
-                    Expression.Convert(
-                        Expression.Call(
-                            Expression.Constant(this),
-                            "AddInput",
-                            new[] { processor.ReturnType },
-                            Expression.Constant(nameOut)),
-                        typeof(WriterBase)))
-                .Compile();
-            
-            var w = getW();
-
-            var parameters = processor.Parameters;
-            var ww = Expression.Constant(w);
-
-            var expr = Expression.Lambda(
-                Expression.Call(
-                    ww,
-                    "Send",
-                    null,
-                    processor.Body),
-                parameters);
-
-            AddListener(nameIn, expr);
+            foreach (var w in _writers)
+                w.Writer.Close();
         }
 
-        void IDataProcessor.Close() { _state = 2; }
+        void IDisposable.Dispose() { ((IDataProcessor)this).Close(); }
 
-        void IDisposable.Dispose() { _state = 2; }
+        private NameInfo GetName(NameType desc)
+        {
+            if (!_names.TryGetValue(desc.Name, out NameInfo name))
+            {
+                name = new NameInfo(desc);
+                _names.Add(desc.Name, name);
+            }
+            else if (name.Description.Type != desc.Type)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return name;
+        }
+
+        private void CompileToIntermediate()
+        {
+            var queue = SortDependenciesFirst(_nodes).ToList();
+
+            // check that all parameters are satisfiable
+            //if (name.Input == null && name.Writer == null)
+            //    throw new InvalidOperationException($"Parameter '{name.Description.Name}' does not have an input.");
+
+            // first time through, we want to find nodes that need splitting and fix 'em what for
+            for (var ix = 0; ix < queue.Count; ix++)
+            {
+                var o = queue[ix];
+
+                // do we need to split???
+                var needsSplit = DetermineTransitiveWritersFor(o).Count() > 1;
+
+                if (needsSplit)
+                {
+                    // 1. create "node" to track state
+                    LambdaExpression expr;
+                    string nodeName;
+                    var types = o.Inputs.Select(i => i.Description.Type).ToArray();
+                    var delegateType = Node.GetActionTypeFor(types);
+
+                    if (o.Output == null)
+                    {
+                        nodeName = string.Join(",", o.Inputs.Select(i => i.Description.Name));
+                        expr = o.Expr;
+                    }
+                    else
+                    {
+                        nodeName = o.Output.Description.Name;
+
+                        var writerType = typeof(Writer<>).MakeGenericType(new[] { o.Output.Description.Type });
+                        var writer = (WriterBase)Activator.CreateInstance(writerType);
+
+                        expr = Expression.Lambda(
+                            delegateType,
+                            Expression.Call(
+                                Expression.Constant(writer),
+                                "Send",
+                                null,
+                                o.Expr.Body),
+                            o.Expr.Parameters);
+                    }
+
+                    expr = expr.EnsureReturnTypeIsVoid();
+                    var action = OptimiseAndLog(nodeName, expr).Compile();
+                    var node = Node.GetNodeFor(types, action);
+
+                    var inputIx = 0;
+                    foreach (var i in o.Inputs)
+                    {
+                        // 2. remove from each of its inputs
+                        i.Outputs.Remove(o);
+
+                        // 3. add the new "split" nodes instead
+                        inputIx++;
+                        var p = Expression.Parameter(i.Description.Type, i.Description.Name);
+                        var splitExpr = Expression.Lambda(
+                            Expression.Call(
+                                Expression.Constant(node),
+                                "Set" + inputIx,
+                                null,
+                                p),
+                            p);
+
+                        var nodeInfo = new NodeInfo(
+                            splitExpr,
+                            new[] { i },
+                            null);
+
+                        i.Outputs.Add(nodeInfo);
+                    }
+                }
+
+                // after any splitting, we can get on with the good stuff
+                var w = o.TransitiveWriters.Single();
+
+                if (o.Output == null)
+                {
+                    var ps = o.Inputs.Select(w.GetPFor);
+                    var e = Expression.Invoke(o.Expr, ps);
+                    w.Expressions.Add(e);
+                }
+                else
+                {
+                    var v = Expression.Variable(o.Output.Description.Type, o.Output.Description.Name);
+                    var ps = o.Inputs.Select(w.GetPFor);
+                    var e = Expression.Assign(v, Expression.Invoke(o.Expr, ps));
+                    w.Variables.Add(v);
+                    w.Expressions.Add(e);
+                }
+            }
+        }
+
+        private void CompileToFinal()
+        {
+            foreach (var w in _writers)
+            {
+                var expr = Expression.Lambda(
+                    w.Writer.ActionType,
+                    Expression.Block(
+                        w.Variables,
+                        w.Expressions),
+                    w.Parameter);
+
+                expr = expr.EnsureReturnTypeIsVoid();
+                expr = OptimiseAndLog(w.Description.Name, expr);
+
+                var action = expr.Compile();
+                w.Writer.SetAction(action);
+            }
+        }
+
+        private ICollection<WriterInfo> DetermineTransitiveWritersFor(NodeInfo n)
+        {
+            if (n.TransitiveWriters != null)
+                return n.TransitiveWriters;
+
+            var ws = new HashSet<WriterInfo>();
+
+            foreach (var i in n.Inputs)
+            {
+                if (i.Input != null)
+                {
+                    foreach (var w in DetermineTransitiveWritersFor(i.Input))
+                        ws.Add(w);
+                }
+                if (i.Writer != null)
+                {
+                    ws.Add(i.Writer);
+                }
+            }
+
+            n.TransitiveWriters = ws;
+            return ws;
+        }
+
+        private IEnumerable<NameInfo> SortDependenciesFirst(IEnumerable<NameInfo> names)
+        {
+            var todo = names.ToList();
+            var trunks = new Queue<NameInfo>(todo.Where(n => !n.Outputs.Any(o => o.Output != null)));
+            var reverseResult = new List<NameInfo>(todo.Count);
+            var seen = new HashSet<NameInfo>(todo);
+
+            while (trunks.Any())
+            {
+                var ni = trunks.Dequeue();
+
+                if (!seen.Add(ni))
+                    reverseResult.Remove(ni);
+
+                reverseResult.Add(ni);
+
+                if (ni.Input != null)
+                    foreach (var dep in ni.Input.Inputs)
+                        trunks.Enqueue(dep);
+            }
+
+            var missed = todo.Except(seen).FirstOrDefault();
+            if (missed != null)
+                throw new InvalidOperationException($"Parameter '{missed.Description.Name}' does not have an input.");
+
+            reverseResult.Reverse();
+
+            Console.Out.WriteLine("SortDependenciesFirst : " + string.Join(", ", reverseResult.Select(n => n.Description.Name)));
+
+            return reverseResult;
+        }
+
+        private IEnumerable<NodeInfo> SortDependenciesFirst(IEnumerable<NodeInfo> nodes)
+        {
+            var todo = nodes.ToList();
+            var trunks = new Queue<NodeInfo>(todo.Where(n => n.Output == null));
+            var reverseResult = new List<NodeInfo>(todo.Count);
+            var seen = new HashSet<NodeInfo>(todo);
+
+            while (trunks.Any())
+            {
+                var ni = trunks.Dequeue();
+
+                if (!seen.Add(ni))
+                    reverseResult.Remove(ni);
+
+                reverseResult.Add(ni);
+
+                foreach (var dep in ni.Inputs)
+                    if (dep.Input != null)
+                        trunks.Enqueue(dep.Input);
+            }
+
+            var missed = todo.Except(seen).FirstOrDefault();
+            if (missed != null)
+                throw new InvalidOperationException($"Processor '{missed}' cannot be satisfied.");
+
+            reverseResult.Reverse();
+
+            Console.Out.WriteLine("SortDependenciesFirst : " + string.Join(", ", reverseResult));
+
+            return reverseResult;
+        }
+
+        private static TLambda OptimiseAndLog<TLambda>(string name, TLambda expr)
+            where TLambda : LambdaExpression
+        {
+            expr = InlineLambdaInvocations.Visit(expr);
+            //expr = RemoveRedundantCasts.Visit(expr);
+
+#if DEBUG
+            try
+            {
+                Console.Out.WriteLine(
+                    "After: {0} => {1}",
+                    string.Join(", ", name),
+                    expr.GetDebugString());
+            }
+            catch { }
+#endif
+            return expr;
+        }
     }
 }

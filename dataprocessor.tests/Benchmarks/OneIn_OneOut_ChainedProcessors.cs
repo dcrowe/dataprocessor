@@ -6,6 +6,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using NUnit.Framework;
 using dataprocessor;
+using dataprocessor.tests.Utilities;
 
 namespace dataprocessor.tests.benchmarks
 {
@@ -26,7 +27,7 @@ namespace dataprocessor.tests.benchmarks
         IWriter<int> _naive;
         IWriter<int> _draft1;
         IWriter<int> _draft2;
-        Action<int> _preferredCurrentTechnique;
+        IWriter<int> _preferredCurrentTechnique;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -36,19 +37,18 @@ namespace dataprocessor.tests.benchmarks
             _draft2 = Setup(new Draft2DataProcessor());
 
             var p = Expression.Parameter(typeof(int), "p");
-            _preferredCurrentTechnique = Expression
-                .Lambda<Action<int>>(
-                    Expression.Invoke(
-                        Expression.Constant((Action<int>)DoNothing),
-                        Expression.Add(
-                            Expression.Invoke(
-                                Expression.Constant((Func<int, int>)Plus1),
-                                p),
-                            Expression.Invoke(
-                                Expression.Constant((Func<int, int>)Plus2),
-                                p))),
-                    p)
-                .Compile();
+            var expr = Expression.Lambda<Action<int>>(
+                Expression.Invoke(
+                    Expression.Constant((Action<int>)DoNothing),
+                    Expression.Add(
+                        Expression.Invoke(
+                            Expression.Constant((Func<int, int>)Plus1),
+                            p),
+                        Expression.Invoke(
+                            Expression.Constant((Func<int, int>)Plus2),
+                            p))),
+                p);
+            _preferredCurrentTechnique = new ActionWriter<int>(expr.Compile());
         }
 
         [Benchmark(Baseline = true)]
@@ -64,14 +64,7 @@ namespace dataprocessor.tests.benchmarks
         }
 
         [Benchmark]
-        public void PreferredTechinque()
-        {
-            var runLength = RunLength;
-            while (runLength-- > 0)
-            {
-                _preferredCurrentTechnique(runLength);
-            }
-        }
+        public void PreferredTechinque() => Run(_preferredCurrentTechnique, RunLength);
 
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);

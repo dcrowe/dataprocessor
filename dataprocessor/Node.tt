@@ -1,0 +1,123 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Linq;
+
+namespace dataprocessor
+{
+<#
+int min_size = 2;
+int max_size = 10;
+#>
+    internal sealed partial class Node
+    {
+        public static Type GetTypeFor(Type[] parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            switch (parameters.Length)
+            {
+<# for (var size = 2; size <= max_size; size++) { #>
+                case <#= size #>:
+                    return typeof(Node<<#= new string(',', size-1) #>>).MakeGenericType(parameters);
+<# } #>
+                default:
+                    throw new ArgumentException(nameof(parameters));
+            }
+        }
+
+        public static Type GetActionTypeFor(Type[] parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            switch (parameters.Length)
+            {
+<# for (var size = 2; size <= max_size; size++) { #>
+                case <#= size #>:
+                    return typeof(Node<<#= new string(',', size-1) #>>.Action).MakeGenericType(parameters);
+<# } #>
+                default:
+                    throw new ArgumentException(nameof(parameters));
+            }
+        }
+
+        public static object GetNodeFor(Type[] parameters, Delegate action)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            var type = GetTypeFor(parameters);
+            var actionType = GetActionTypeFor(parameters);
+
+            var actionAction = action
+                .GetInvocationList()
+                .Select(d => Delegate.CreateDelegate(actionType, d.Target, d.Method))
+                .Aggregate(Delegate.Combine);
+
+            var obj = type.GetConstructor(new [] { actionType }).Invoke(new object[] { actionAction });
+            return obj;
+        }
+    }
+<#
+for (var size = 2; size <= max_size; size++)
+{
+    var typeNames = string.Join(", ", Enumerable
+        .Range(1, size)
+        .Select(i => "T" + i));
+    var parmNames = string.Join(", ", Enumerable
+        .Range(1, size)
+        .Select(i => "T" + i + " p" + i));
+    var fieldNames = string.Join(", ", Enumerable
+        .Range(1, size)
+        .Select(i => "_" + i));
+#>
+
+    internal sealed partial class Node<<#= typeNames #>>
+    {
+        public delegate void Action(<#= parmNames #>);
+
+        private const ulong _completionMask = <#= (1ul << size) - 1 #>ul;
+        private ulong _filled;
+        private readonly Action _action;
+<# for (var ix = 1; ix <= size; ix++) { #>
+        private T<#= ix #> _<#= ix #>;
+<# } #>
+
+        public Node(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
+        private bool IsFilled => _filled == _completionMask;
+        private void Reset() => _filled = 0;
+<# for (var ix = 1; ix <= size; ix++) { #>
+
+        public void Set<#= ix #>(T<#= ix #> p<#= ix #>)
+        {
+            var wasFilled = IsFilled;
+            _<#= ix #> = p<#= ix #>;
+            _filled |= <#= (1ul << (ix - 1)) #>ul;
+
+            if (!wasFilled && IsFilled)
+            {
+                _action(<#= fieldNames #>);
+                Reset();
+            }
+        }
+<# } #>
+    }
+<#
+}
+#>
+}
