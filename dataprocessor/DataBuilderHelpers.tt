@@ -1,0 +1,80 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Linq.Expressions;
+
+namespace dataprocessor
+{
+    public static partial class DataProcessorBuilderExtensions
+    {
+<# 
+    for (var size = 1; size < 8; size++) {
+        var vs = Enumerable.Range(1, size).ToList();
+        var types = string.Join(", ", vs.Select(i => "T" + i));
+        var ps = string.Join(", ", vs.Select(i => "p" + i));
+        var names = string.Join(", ", vs.Select(i => "n" + i));
+#>
+        public static void AddListener<<#=types#>>(
+            this IDataProcessorBuilder builder,
+<# foreach(var i in vs) { #>
+            string n<#=i#>,
+<# } #>
+            Action<<#=types#>> action)
+        {
+            if (builder == null)
+                throw new ArgumentException(nameof(builder));
+            if (action == null)
+                throw new ArgumentException(nameof(action));
+<# foreach(var i in vs) { #>
+
+            if (n<#=i#> == null)
+                throw new ArgumentException(nameof(n<#=i#>));
+            var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), n<#=i#>);
+<# } #>
+
+            var expr = Expression.Lambda<Action<<#=types#>>>(
+                Expression.Invoke(
+                    Expression.Constant(action), 
+                    <#=ps#>),
+                <#=ps#>);
+
+            builder.AddListener(new[] { <#=names#> }, expr);
+        }
+
+        public static void AddProcessor<<#=types#>, TResult>(
+            this IDataProcessorBuilder builder,
+<# foreach(var i in vs) { #>
+            string n<#=i#>,
+<# } #>
+            string nameResult,
+            Func<<#=types#>, TResult> function)
+        {
+            if (builder == null)
+                throw new ArgumentException(nameof(builder));
+            if (nameResult == null)
+                throw new ArgumentException(nameof(nameResult));
+            if (function == null)
+                throw new ArgumentException(nameof(function));
+<# foreach(var i in vs) { #>
+
+            if (n<#=i#> == null)
+                throw new ArgumentException(nameof(n<#=i#>));
+            var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), n<#=i#>);
+<# } #>
+
+            var expr = Expression.Lambda<Func<<#=types#>, TResult>>(
+                Expression.Invoke(
+                    Expression.Constant(function), 
+                    <#=ps#>),
+                <#=ps#>);
+
+            builder.AddProcessor(new[] { <#=names#> }, nameResult, expr);
+        }
+
+<# } #>
+    }
+}

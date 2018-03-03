@@ -12,7 +12,7 @@ namespace dataprocessor
             return expr2;
         }
 
-        private readonly Dictionary<ParameterExpression, Expression> 
+        private readonly Dictionary<ParameterExpression, Expression>
             _replacements = new Dictionary<ParameterExpression, Expression>();
 
         protected override Expression VisitInvocation(InvocationExpression node)

@@ -85,8 +85,8 @@ namespace dataprocessor.tests
                         a),
                     p),
                 p);
-            var actual = InlineLambdaInvocations.Visit(input);
 
+            var actual = InlineLambdaInvocations.Visit(input);
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
             Console.Out.WriteLine("In: " + input.GetDebugString());
@@ -94,5 +94,50 @@ namespace dataprocessor.tests
 
             Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
         }
+
+        [Test]
+        public void ImproveDelegateInvocation_Static_Single()
+        {
+            var expected = Expression.Lambda<Func<int>>(Expression.Call(
+                typeof(Optimisation),
+                "StaticDelegate",
+                null,
+                Expression.Constant(1)));
+            AssertAreEqual(StaticDelegate, expected);
+        }
+
+        [Test]
+        public void ImproveDelegateInvocation_Mixed_Double()
+        {
+            MultiDelegate = null;
+            MultiDelegate += StaticDelegate;
+            MultiDelegate += InstanceDelegate;
+
+            var v = Expression.Variable(typeof(int));
+            var expected = Expression.Lambda<Func<int>>(
+                Expression.Block(
+                    new[] { v },
+                    Expression.Assign(v, Expression.Constant(1)),
+                    Expression.Call(typeof(Optimisation), "StaticDelegate", null, v),
+                    Expression.Call(Expression.Constant(this), "InstanceDelegate", null, v)));
+
+            AssertAreEqual(MultiDelegate, expected);
+        }
+
+        private static void AssertAreEqual(Func<int, int> func, Expression<Func<int>> expected)
+        {
+            var orig = Expression.Lambda<Func<int>>(
+                Expression.Invoke(
+                    Expression.Constant(func, typeof(Func<int, int>)),
+                    Expression.Constant(1)));
+
+            var actual = ImproveDelegateInvocations.Apply(orig);
+            Console.Out.WriteLine(actual.GetDebugString());
+            Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
+        }
+
+        private static int StaticDelegate(int i) => i + 1;
+        private int InstanceDelegate(int i) => i + 2;
+        private event Func<int, int> MultiDelegate;
     }
 }

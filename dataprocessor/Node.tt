@@ -11,7 +11,7 @@ namespace dataprocessor
 {
 <#
 int min_size = 2;
-int max_size = 10;
+int max_size = 64;
 #>
     internal sealed partial class Node
     {
@@ -99,21 +99,23 @@ for (var size = 2; size <= max_size; size++)
             _action = action;
         }
 
-        private bool IsFilled => _filled == _completionMask;
-        private void Reset() => _filled = 0;
+        private void MaybeCallAndReset(ulong value)
+        {
+            var old = _filled;
+            _filled |= value;
+
+            if (old != _completionMask && _filled == _completionMask)
+            {
+                _filled = 0;
+                _action(<#= fieldNames #>);
+            }
+        }
 <# for (var ix = 1; ix <= size; ix++) { #>
 
         public void Set<#= ix #>(T<#= ix #> p<#= ix #>)
         {
-            var wasFilled = IsFilled;
             _<#= ix #> = p<#= ix #>;
-            _filled |= <#= (1ul << (ix - 1)) #>ul;
-
-            if (!wasFilled && IsFilled)
-            {
-                _action(<#= fieldNames #>);
-                Reset();
-            }
+            MaybeCallAndReset(<#= (1ul << (ix - 1)) #>ul);
         }
 <# } #>
     }

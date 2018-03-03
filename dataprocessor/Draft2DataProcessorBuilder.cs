@@ -99,6 +99,8 @@ namespace dataprocessor
 
                 _action(value);
             }
+
+            //void IWriter<T>.Send(T value) { Send(value); }
         }
 
         private int _state;
@@ -274,6 +276,9 @@ namespace dataprocessor
 
                         var writerType = typeof(Writer<>).MakeGenericType(new[] { o.Output.Description.Type });
                         var writer = (WriterBase)Activator.CreateInstance(writerType);
+                        o.Output.Input = null;
+                        o.Output.Writer = new WriterInfo(o.Output.Description, writer);
+                        _writers.Add(o.Output.Writer);
 
                         expr = Expression.Lambda(
                             delegateType,
@@ -312,11 +317,20 @@ namespace dataprocessor
                             null);
 
                         i.Outputs.Add(nodeInfo);
+                        queue.Insert(ix + inputIx, nodeInfo);
                     }
+
+                    // 4. remove the old unsplit node
+                    queue.RemoveAt(ix);
+                    o = queue[ix];
+                    DetermineTransitiveWritersFor(o);
                 }
 
                 // after any splitting, we can get on with the good stuff
-                var w = o.TransitiveWriters.Single();
+                var w = o.TransitiveWriters.SingleOrDefault();
+
+                if (w == null)
+                    continue;
 
                 if (o.Output == null)
                 {
@@ -446,6 +460,7 @@ namespace dataprocessor
             where TLambda : LambdaExpression
         {
             expr = InlineLambdaInvocations.Visit(expr);
+            expr = ImproveDelegateInvocations.Apply(expr);
             //expr = RemoveRedundantCasts.Visit(expr);
 
 #if DEBUG

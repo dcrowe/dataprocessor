@@ -124,7 +124,6 @@ namespace dataprocessor.tests
             {
                 _b.AddListener<int>("bob", v => actual = v);
                 w = _b.AddInput<int>("bob");
-
                 _dp = _b.Build();
             }
 
@@ -158,16 +157,7 @@ namespace dataprocessor.tests
         {
             var actual = new int[] { 0 };
 
-            var a = Expression.Parameter(typeof(int), "a");
-            var b = Expression.Parameter(typeof(int), "b");
-            _b.AddListener(new[] { "a", "b" }, Expression.Lambda(
-                Expression.Assign(
-                    Expression.ArrayAccess(
-                        Expression.Constant(actual),
-                        Expression.Constant(0)),
-                    Expression.Add(a, b)),
-                a, b));
-            
+            _b.AddListener<int, int>("a", "b", (a, b) => { actual[0] = a + b; });
             var w1 = _b.AddInput<int>("a");
             var w2 = _b.AddInput<int>("b");
 
@@ -247,9 +237,7 @@ namespace dataprocessor.tests
         {
             var w1 = _b.AddInput<int>("in1");
             var w2 = _b.AddInput<int>("in2");
-
-            Expression<Func<int, int, int>> expr = (in1, in2) => in1 + in2;
-            _b.AddProcessor(new[] { "in1", "in2" }, "out", expr);
+            _b.AddProcessor<int,int,int>( "in1", "in2" , "out", (in1, in2) => in1 + in2);
 
             var actual = 0;
             _b.AddListener<int>("out", v => actual = v);
@@ -273,10 +261,9 @@ namespace dataprocessor.tests
         public void Processor_Chained()
         {
             var w = _b.AddInput<int>("in");
-            _b.AddProcessor<int, int>("in", "tmp1", (int i) => i + 1);
-            _b.AddProcessor<int, int>("in", "tmp2", (int i) => i + 2);
-            _b.AddProcessor(new[] { "tmp1", "tmp2" }, "out",
-                           (Expression<Func<int, int, int>>)((int tmp1, int tmp2) => tmp1 + tmp2));
+            _b.AddProcessor<int, int>("in", "tmp1", Plus1);
+            _b.AddProcessor<int, int>("in", "tmp2", Plus2);
+            _b.AddProcessor<int, int, int>("tmp1", "tmp2", "out", (tmp1, tmp2) => tmp1 + tmp2);
 
             var actual = 0;
             _b.AddListener<int>("out", v => actual = v);
@@ -290,6 +277,9 @@ namespace dataprocessor.tests
             w.Send(3);
             Assert.AreEqual(9, actual);
         }
+
+        static int Plus1(int i) => i + 1;
+        static int Plus2(int i) => i + 2;
     }
 
     [TestFixture]

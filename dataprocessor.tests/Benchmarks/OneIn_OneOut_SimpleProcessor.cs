@@ -77,7 +77,7 @@ namespace dataprocessor.tests.benchmarks
         static IWriter<int> Setup(IDataProcessorBuilder b)
         {
             var w = b.AddInput<int>("in");
-            b.AddProcessor<int, int>("in", "out", (int i) => Plus1(i));
+            b.AddProcessor<int, int>("in", "out", Plus1);
             b.AddListener<int>("out", DoNothing);
 
             b.Build();

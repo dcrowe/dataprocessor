@@ -38,26 +38,27 @@
     <Compile Include="Draft2DataProcessorBuilder.cs" />
     <Compile Include="Optimisers\InlineLambdaInvocations.cs" />
     <Compile Include="Optimisers\RemoveRedundantCasts.cs" />
-    <Compile Include="State.cs">
-      <DependentUpon>State.tt</DependentUpon>
-    </Compile>
     <Compile Include="IDataProcessorBuilder.cs" />
     <Compile Include="Node.cs">
       <DependentUpon>Node.tt</DependentUpon>
     </Compile>
     <Compile Include="Optimisers\EnsureReturnTypeIsVoid.cs" />
+    <Compile Include="DataBuilderHelpers.cs">
+      <DependentUpon>DataBuilderHelpers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Optimisers\ImproveDelegateInvocations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Optimisers\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="State.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>State.cs</LastGenOutput>
-    </None>
     <None Include="Node.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Node.cs</LastGenOutput>
+    </None>
+    <None Include="DataBuilderHelpers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DataBuilderHelpers.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

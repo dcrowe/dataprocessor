@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
@@ -24,20 +23,21 @@ namespace dataprocessor.tests.benchmarks
         [Params(100)]
         public int RunLength;
 
-        IWriter<int> _naive;
-        IWriter<int> _draft1;
-        IWriter<int> _draft2;
-        IWriter<int> _preferredCurrentTechnique;
+        Action<int> _optimal;
+        Action<int> _naive;
+        Action<int> _draft1;
+        Action<int> _draft2;
+        Action<int> _preferredCurrentTechnique;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _naive = Setup(new NaiveDataProcessor());
-            _draft1 = Setup(new Draft1DataProcessor());
-            _draft2 = Setup(new Draft2DataProcessor());
+            _naive = Setup(new NaiveDataProcessor()).Send;
+            _draft1 = Setup(new Draft1DataProcessor()).Send;
+            _draft2 = Setup(new Draft2DataProcessor()).Send;
 
             var p = Expression.Parameter(typeof(int), "p");
-            var expr = Expression.Lambda<Action<int>>(
+            var expr1 = Expression.Lambda<Action<int>>(
                 Expression.Invoke(
                     Expression.Constant((Action<int>)DoNothing),
                     Expression.Add(
@@ -48,22 +48,37 @@ namespace dataprocessor.tests.benchmarks
                             Expression.Constant((Func<int, int>)Plus2),
                             p))),
                 p);
-            _preferredCurrentTechnique = new ActionWriter<int>(expr.Compile());
-        }
+            var expr2 = Expression.Lambda<Action<int>>(
+                Expression.Call(
+                    typeof(OneIn_OneOut_ChainedProcessors),
+                    "DoNothing",
+                    null,
+                    Expression.Add(
+                        Expression.Call(
+                            typeof(OneIn_OneOut_ChainedProcessors),
+                            "Plus1",
+                            null,
+                            p),
+                        Expression.Call(
+                            typeof(OneIn_OneOut_ChainedProcessors),
+                            "Plus2",
+                            null,
+                            p))),
+                p);
+            _preferredCurrentTechnique = new ActionWriter<int>(expr2.Compile()).Send;
 
-        [Benchmark(Baseline = true)]
-        public void Optimal()
-        {
-            var runLength = RunLength;
-            while (runLength-- > 0)
+            _optimal = i =>
             {
-                var tmp1 = Plus1(runLength);
-                var tmp2 = Plus2(runLength);
+                var tmp1 = Plus1(i);
+                var tmp2 = Plus2(i);
                 DoNothing(tmp1 + tmp2);
-            }
+            };
         }
 
         [Benchmark]
+        public void Optimal() => Run(_optimal, RunLength);
+
+        [Benchmark(Baseline = true)]
         public void PreferredTechinque() => Run(_preferredCurrentTechnique, RunLength);
 
         [Benchmark]
@@ -78,10 +93,9 @@ namespace dataprocessor.tests.benchmarks
         static IWriter<int> Setup(IDataProcessorBuilder b)
         {
             var w = b.AddInput<int>("in");
-            b.AddProcessor<int, int>("in", "tmp1", (int i) => Plus1(i));
-            b.AddProcessor<int, int>("in", "tmp2", (int i) => Plus2(i));
-            b.AddProcessor(new[] { "tmp1", "tmp2" }, "out",
-                           (Expression<Func<int, int, int>>)((int tmp1, int tmp2) => tmp1 + tmp2));
+            b.AddProcessor<int, int>("in", "tmp1", Plus1);
+            b.AddProcessor<int, int>("in", "tmp2", Plus2);
+            b.AddProcessor<int, int, int>("tmp1", "tmp2", "out", Add);
             b.AddListener<int>("out", DoNothing);
 
             b.Build();
@@ -89,30 +103,17 @@ namespace dataprocessor.tests.benchmarks
             return w;
         }
 
-        static void Run(IWriter<int> w, int runLength)
+        static void Run(Action<int> w, int runLength)
         {
             while (runLength-- > 0)
             {
-                w.Send(runLength);
+                w(runLength);
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static int Plus1(int i)
-        {
-            return i + 1;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static int Plus2(int i)
-        {
-            return i + 1;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static void DoNothing(int _)
-        {
-
-        }
+        static int Plus1(int i) => i + 1;
+        static int Plus2(int i) => i + 2;
+        static int Add(int i, int j) => i + j;
+        static void DoNothing(int _) { }
     }
 }
