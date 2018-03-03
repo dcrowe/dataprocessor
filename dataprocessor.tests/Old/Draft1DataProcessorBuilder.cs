@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    public class NaiveDataProcessor : IDataProcessorBuilder, IDataProcessor
+    public class Draft1DataProcessor : IDataProcessorBuilder, IDataProcessor
     {
         private class Listener
         {
@@ -13,18 +13,12 @@ namespace dataprocessor
 
             public NameType Description { get; }
 
-            private List<Action<object>> _recipients = new List<Action<object>>();
+            public readonly List<LambdaExpression> Recipients = new List<LambdaExpression>();
             private bool hasWriter = false;
 
-            public void Call(object value)
+            public void AddRecipient(LambdaExpression action)
             {
-                foreach (var r in _recipients)
-                    r(value);
-            }
-
-            public void AddRecipient<T>(Action<T> action)
-            {
-                _recipients.Add(v => action((T)v));
+                Recipients.Add(action);
             }
 
             public void AssertFirstWriter()
@@ -35,29 +29,49 @@ namespace dataprocessor
             }
         }
 
-        private class Writer<T> : IWriter<T>
+        private interface WriterBase 
+        {
+            void Compile();
+        }
+
+        private class Writer<T> : IWriter<T>, WriterBase
         {
             private readonly Listener _listener;
-            readonly NaiveDataProcessor _dp;
+            readonly Draft1DataProcessor _dp;
+            private Action<T> _action;
 
-            public Writer(NaiveDataProcessor dp, Listener listener)
+            public Writer(Draft1DataProcessor dp, Listener listener)
             {
                 _dp = dp;
                 _listener = listener;
             }
 
-            public void Send(T value)
+            public virtual void Compile()
             {
-                if (_dp._state == 0)
-                    throw new InvalidOperationException();
-                if (_dp._state == 2)
-                    return;
+                var p = Expression.Parameter(typeof(T), _listener.Description.Name + "_listener");
+                var expr = Expression.Lambda<Action<T>>(
+                    Expression.Block(
+                        _listener.Recipients.Select(
+                            r => Expression.Invoke(r, p))),
+                    p);
 
-                _listener.Call(value);
+#if DEBUG
+                try
+                {
+                    Console.Out.WriteLine(
+                        "{0} => {1}",
+                        string.Join(", ", _listener.Description.Name),
+                        expr.GetDebugString());
+                }
+                catch(Exception) {}
+#endif
+
+                _action = expr.Compile();
+                SetAction(_action);
             }
         }
 
-        private class ProcessorState
+        private class State
         {
             private readonly int _count;
             private readonly Action<object[]> _action;
@@ -65,7 +79,7 @@ namespace dataprocessor
             private bool[] _filled;
             private int _remaining;
 
-            public ProcessorState(int count, Action<object[]> action)
+            public State(int count, Action<object[]> action)
             {
                 _count = count;
                 _action = action;
@@ -100,6 +114,7 @@ namespace dataprocessor
 
         private int _state = 0;
         private readonly Dictionary<string, Listener> _listeners = new Dictionary<string, Listener>();
+        private readonly List<WriterBase> _writers = new List<WriterBase>();
 
         public IWriter<T> AddInput<T>(string name)
         {
@@ -108,11 +123,13 @@ namespace dataprocessor
             if (name == null)
                 throw new ArgumentException();
 
-
             var l = GetListener(NameType.From<T>(name));
             l.AssertFirstWriter();
 
-            return new Writer<T>(this, l);
+            var w = new Writer<T>(this, l);
+            _writers.Add(w);
+
+            return w;
         }
 
         public void AddListener(IEnumerable<string> nameIn, LambdaExpression onRceiveAction)
@@ -131,16 +148,23 @@ namespace dataprocessor
 
             var func = onRceiveAction.Compile();
             Action<object[]> resultAction = vs => func.DynamicInvoke(vs);
-            var state = new ProcessorState(nin.Length, resultAction);
+            var state = new State(nin.Length, resultAction);
 
             for (var ix = 0; ix < nin.Length; ix++)
             {
                 var ix2 = ix;
                 var l = GetListener(new NameType(nin[ix], onRceiveAction.Parameters[ix].Type));
-                l.AddRecipient<object>(v =>
-                {
-                    state.Received(ix2, v);
-                });
+
+                var p = Expression.Parameter(l.Description.Type, l.Description.Name);
+                var expr = Expression.Lambda(
+                    Expression.Call(
+                        Expression.Constant(state),
+                        "Received",
+                        null,
+                        Expression.Constant(ix2),
+                        Expression.Convert(p, typeof(object))),
+                    p);
+                l.AddRecipient(expr);
             }
         }
 
@@ -166,6 +190,10 @@ namespace dataprocessor
             if (_state != 0)
                 throw new Exception();
             _state = 1;
+
+            foreach (var w in _writers)
+                w.Compile();
+
             return this;
         }
 
@@ -180,22 +208,32 @@ namespace dataprocessor
         {
             if (_state != 0)
                 throw new Exception();
-
-            var func = processor.Compile();
-            var resultListener = GetListener(new NameType(nameOut, processor.ReturnType));
-            var parameters = processor.Parameters;
-
-            var resultAction = Expression.Lambda(
-                Expression.Call(
-                    Expression.Constant(resultListener),
-                    "Call",
-                    null,
-                    Expression.Convert(
-                        processor.Body,
-                        typeof(object))),
-                parameters);
             
-            AddListener(nameIn, resultAction);
+            var getW = Expression
+                .Lambda<Func<WriterBase>>(
+                    Expression.Convert(
+                        Expression.Call(
+                            Expression.Constant(this),
+                            "AddInput",
+                            new[] { processor.ReturnType },
+                            Expression.Constant(nameOut)),
+                        typeof(WriterBase)))
+                .Compile();
+
+            var w = getW();
+
+            var parameters = processor.Parameters;
+            var ww = Expression.Constant(w);
+
+            var expr = Expression.Lambda(
+                Expression.Call(
+                    ww,
+                    "Send",
+                    null,
+                    processor.Body),
+                parameters);
+
+            AddListener(nameIn, expr);
         }
 
         void IDataProcessor.Close() { _state = 2; }

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    public class Draft2DataProcessor : IDataProcessorBuilder, IDataProcessor
+    public class DataProcessorBuilder : IDataProcessorBuilder, IDataProcessor
     {
         private class NameInfo
         {
@@ -65,42 +65,26 @@ namespace dataprocessor
             }
         }
 
-        private abstract class WriterBase
+        private interface WriterBase
         {
-            public abstract Type ActionType { get; }
-            public abstract void SetAction(Delegate action);
-            public abstract void Close();
+            Type ActionType { get; }
+            void SetAction(Delegate action);
+            void Close();
         }
 
-        private class Writer<T> : WriterBase, IWriter<T>
+        private class W<T> : Writer<T>, WriterBase
         {
-            private Action<T> _action;
-            private bool _isClosed;
+            public virtual Type ActionType => typeof(Action<T>);
+            public virtual void Close() => base.SetAction(null);
 
-            public override Type ActionType => typeof(Action<T>);
-            public override void Close() => _isClosed = true;
-
-            public override void SetAction(Delegate action)
+            public virtual void SetAction(Delegate action)
             {
                 if (action == null)
                     throw new ArgumentNullException(nameof(action));
-                if (_action != null)
-                    throw new InvalidOperationException();
-                
-                _action = (Action<T>)action;
+
+                var a = (Action<T>)action;
+                base.SetAction(a);
             }
-
-            public void Send(T value)
-            {
-                if (_action == null)
-                    throw new InvalidOperationException();
-                if (_isClosed)
-                    return;
-
-                _action(value);
-            }
-
-            //void IWriter<T>.Send(T value) { Send(value); }
         }
 
         private int _state;
@@ -108,7 +92,7 @@ namespace dataprocessor
         private readonly List<WriterInfo> _writers = new List<WriterInfo>();
         private readonly List<NodeInfo> _nodes = new List<NodeInfo>();
 
-        public IWriter<T> AddInput<T>(string name)
+        public Writer<T> AddInput<T>(string name)
         {
             if (_state != 0)
                 throw new InvalidOperationException();
@@ -120,7 +104,7 @@ namespace dataprocessor
             if (n.Writer != null)
                 throw new InvalidOperationException();
 
-            var w = new Writer<T>();
+            var w = new W<T>();
             var wi = new WriterInfo(n.Description, w);
             _writers.Add(wi);
             n.Writer = wi;
@@ -188,7 +172,7 @@ namespace dataprocessor
                                .Select(ix => new NameType(nin[ix], processor.Parameters[ix].Type))
                                .Select(GetName)
                                .ToArray();
-            
+
             var ni = new NodeInfo(processor, ns, nout);
             _nodes.Add(ni);
 
@@ -205,7 +189,7 @@ namespace dataprocessor
 
             CompileToIntermediate();
             CompileToFinal();
-            
+
             return this;
         }
 
@@ -216,7 +200,7 @@ namespace dataprocessor
             return _names.Values.Select(l => l.Description);
         }
 
-        void IDataProcessor.Close() 
+        void IDataProcessor.Close()
         {
             _state = 2;
 
@@ -274,7 +258,7 @@ namespace dataprocessor
                     {
                         nodeName = o.Output.Description.Name;
 
-                        var writerType = typeof(Writer<>).MakeGenericType(new[] { o.Output.Description.Type });
+                        var writerType = typeof(W<>).MakeGenericType(new[] { o.Output.Description.Type });
                         var writer = (WriterBase)Activator.CreateInstance(writerType);
                         o.Output.Input = null;
                         o.Output.Writer = new WriterInfo(o.Output.Description, writer);

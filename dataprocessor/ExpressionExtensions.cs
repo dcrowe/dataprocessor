@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    public static partial class DataProcessorBuilderExtensions
+    public static partial class ExpressionExtensions
     {
         private static readonly System.Reflection.PropertyInfo _debugViewProperty =
                                           typeof(Expression).GetProperty(
