@@ -4,7 +4,6 @@ using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using NUnit.Framework;
-using dataprocessor;
 using dataprocessor.tests.Utilities;
 
 namespace dataprocessor.tests.benchmarks
@@ -23,32 +22,21 @@ namespace dataprocessor.tests.benchmarks
         [Params(100)]
         public int RunLength;
 
-        Action<int> _optimal;
-        Action<int> _naive;
-        Action<int> _draft1;
-        Action<int> _draft2;
-        Action<int> _preferredCurrentTechnique;
+        Writer<int> _optimal;
+        Writer<int> _naive;
+        Writer<int> _draft1;
+        Writer<int> _draft2;
+        Writer<int> _preferredCurrentTechnique;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _naive = Setup(new NaiveDataProcessor()).Send;
-            _draft1 = Setup(new Draft1DataProcessor()).Send;
-            _draft2 = Setup(new Draft2DataProcessor()).Send;
+            _naive = Setup(new NaiveDataProcessor());
+            _draft1 = Setup(new Draft1DataProcessor());
+            _draft2 = Setup(new DataProcessorBuilder());
 
             var p = Expression.Parameter(typeof(int), "p");
-            var expr1 = Expression.Lambda<Action<int>>(
-                Expression.Invoke(
-                    Expression.Constant((Action<int>)DoNothing),
-                    Expression.Add(
-                        Expression.Invoke(
-                            Expression.Constant((Func<int, int>)Plus1),
-                            p),
-                        Expression.Invoke(
-                            Expression.Constant((Func<int, int>)Plus2),
-                            p))),
-                p);
-            var expr2 = Expression.Lambda<Action<int>>(
+            var expr = Expression.Lambda<Action<int>>(
                 Expression.Call(
                     typeof(OneIn_OneOut_ChainedProcessors),
                     "DoNothing",
@@ -65,14 +53,14 @@ namespace dataprocessor.tests.benchmarks
                             null,
                             p))),
                 p);
-            _preferredCurrentTechnique = new ActionWriter<int>(expr2.Compile()).Send;
+            _preferredCurrentTechnique = new ActionWriter<int>(expr.Compile());
 
-            _optimal = i =>
+            _optimal = new ActionWriter<int>(i =>
             {
                 var tmp1 = Plus1(i);
                 var tmp2 = Plus2(i);
                 DoNothing(tmp1 + tmp2);
-            };
+            });
         }
 
         [Benchmark]
@@ -90,24 +78,23 @@ namespace dataprocessor.tests.benchmarks
         [Benchmark]
         public void Draft2() => Run(_draft2, RunLength);
 
-        static IWriter<int> Setup(IDataProcessorBuilder b)
+        static Writer<int> Setup(IDataProcessorBuilder b)
         {
             var w = b.AddInput<int>("in");
             b.AddProcessor<int, int>("in", "tmp1", Plus1);
             b.AddProcessor<int, int>("in", "tmp2", Plus2);
             b.AddProcessor<int, int, int>("tmp1", "tmp2", "out", Add);
             b.AddListener<int>("out", DoNothing);
-
             b.Build();
 
             return w;
         }
 
-        static void Run(Action<int> w, int runLength)
+        static void Run(Writer<int> w, int runLength)
         {
             while (runLength-- > 0)
             {
-                w(runLength);
+                w.Send(runLength);
             }
         }
 

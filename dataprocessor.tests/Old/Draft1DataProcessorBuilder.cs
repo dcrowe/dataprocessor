@@ -34,13 +34,13 @@ namespace dataprocessor
             void Compile();
         }
 
-        private class Writer<T> : IWriter<T>, WriterBase
+        private class W<T> : Writer<T>, WriterBase
         {
             private readonly Listener _listener;
             readonly Draft1DataProcessor _dp;
             private Action<T> _action;
 
-            public Writer(Draft1DataProcessor dp, Listener listener)
+            public W(Draft1DataProcessor dp, Listener listener)
             {
                 _dp = dp;
                 _listener = listener;
@@ -116,7 +116,7 @@ namespace dataprocessor
         private readonly Dictionary<string, Listener> _listeners = new Dictionary<string, Listener>();
         private readonly List<WriterBase> _writers = new List<WriterBase>();
 
-        public IWriter<T> AddInput<T>(string name)
+        public Writer<T> AddInput<T>(string name)
         {
             if (_state != 0)
                 throw new InvalidOperationException();
@@ -126,13 +126,13 @@ namespace dataprocessor
             var l = GetListener(NameType.From<T>(name));
             l.AssertFirstWriter();
 
-            var w = new Writer<T>(this, l);
+            var w = new W<T>(this, l);
             _writers.Add(w);
 
             return w;
         }
 
-        public void AddListener(IEnumerable<string> nameIn, LambdaExpression onRceiveAction)
+        public void AddListener(LambdaExpression onRceiveAction, params NameType[] nameIn)
         {
             if (_state != 0)
                 throw new Exception();
@@ -140,20 +140,17 @@ namespace dataprocessor
                 throw new ArgumentException();
             if (nameIn == null)
                 throw new ArgumentException();
-
-            var nin = nameIn.ToArray();
-
-            if (nin.Length != onRceiveAction.Parameters.Count())
+            if (nameIn.Length != onRceiveAction.Parameters.Count())
                 throw new Exception();
 
             var func = onRceiveAction.Compile();
             Action<object[]> resultAction = vs => func.DynamicInvoke(vs);
-            var state = new State(nin.Length, resultAction);
+            var state = new State(nameIn.Length, resultAction);
 
-            for (var ix = 0; ix < nin.Length; ix++)
+            for (var ix = 0; ix < nameIn.Length; ix++)
             {
                 var ix2 = ix;
-                var l = GetListener(new NameType(nin[ix], onRceiveAction.Parameters[ix].Type));
+                var l = GetListener(nameIn[ix]);
 
                 var p = Expression.Parameter(l.Description.Type, l.Description.Name);
                 var expr = Expression.Lambda(
@@ -204,7 +201,7 @@ namespace dataprocessor
             return _listeners.Values.Select(l => l.Description);
         }
 
-        public void AddProcessor(IEnumerable<string> nameIn, string nameOut, LambdaExpression processor)
+        public void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn)
         {
             if (_state != 0)
                 throw new Exception();
@@ -216,7 +213,7 @@ namespace dataprocessor
                             Expression.Constant(this),
                             "AddInput",
                             new[] { processor.ReturnType },
-                            Expression.Constant(nameOut)),
+                            Expression.Constant(nameOut.Name)),
                         typeof(WriterBase)))
                 .Compile();
 
@@ -233,7 +230,7 @@ namespace dataprocessor
                     processor.Body),
                 parameters);
 
-            AddListener(nameIn, expr);
+            AddListener(expr, nameIn);
         }
 
         void IDataProcessor.Close() { _state = 2; }

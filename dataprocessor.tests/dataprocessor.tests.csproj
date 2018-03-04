@@ -133,6 +133,9 @@
     <Compile Include="Timer.cs" />
     <Compile Include="Benchmarks\OneIn_OneOut_ChainedProcessors.cs" />
     <Compile Include="Utilities\ActionWriter.cs" />
+    <Compile Include="Old\Draft1DataProcessorBuilder.cs" />
+    <Compile Include="Old\NaiveDataProcessor.cs" />
+    <Compile Include="Benchmarks\TwoIn_OneOut_ChainedProcessors.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -146,6 +149,7 @@
   <ItemGroup>
     <Folder Include="Benchmarks\" />
     <Folder Include="Utilities\" />
+    <Folder Include="Old\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
@@ -11,23 +10,23 @@ using dataprocessor.tests.Utilities;
 namespace dataprocessor.tests.benchmarks
 {
     [ShortRunJob, MemoryDiagnoser, Category("Benchmarks"), Explicit]
-    public class OneIn_OneOut_SimpleProcessor
+    public class TwoIn_OneOut_ChainedProcessors
     {
         [Test]
         public void Benchmark()
         {
             Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
-            var r = BenchmarkRunner.Run<OneIn_OneOut_SimpleProcessor>();
+            var r = BenchmarkRunner.Run<TwoIn_OneOut_ChainedProcessors>();
             Assert.IsEmpty(r.ValidationErrors);
         }
 
         [Params(100)]
         public int RunLength;
 
-        Writer<int> _naive;
-        Writer<int> _draft1;
-        Writer<int> _draft2;
-        Writer<int> _optimal;
+        Tuple<Writer<int>, Writer<int>> _optimal;
+        Tuple<Writer<int>, Writer<int>> _naive;
+        Tuple<Writer<int>, Writer<int>> _draft1;
+        Tuple<Writer<int>, Writer<int>> _draft2;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -35,7 +34,11 @@ namespace dataprocessor.tests.benchmarks
             _naive = Setup(new NaiveDataProcessor());
             _draft1 = Setup(new Draft1DataProcessor());
             _draft2 = Setup(new DataProcessorBuilder());
-            _optimal = new ActionWriter<int>(i => DoNothing(Plus1(i)));
+
+            var n = new Node<int, int>((a, b) => DoNothing(Add(a, b)));
+            _optimal = Tuple.Create<Writer<int>, Writer<int>>(
+                new ActionWriter<int>(a => n.Set1(Plus1(a))),
+                new ActionWriter<int>(b => n.Set2(Plus2(b))));
         }
 
         [Benchmark(Baseline = true)]
@@ -47,35 +50,31 @@ namespace dataprocessor.tests.benchmarks
         [Benchmark]
         public void Draft2() => Run(_draft2, RunLength);
 
-        static Writer<int> Setup(IDataProcessorBuilder b)
+        static Tuple<Writer<int>, Writer<int>> Setup(IDataProcessorBuilder b)
         {
-            var w = b.AddInput<int>("in");
-            b.AddProcessor<int, int>("in", "out", Plus1);
+            var w1 = b.AddInput<int>("in1");
+            var w2 = b.AddInput<int>("in2");
+            b.AddProcessor<int, int>("in1", "tmp1", Plus1);
+            b.AddProcessor<int, int>("in2", "tmp2", Plus2);
+            b.AddProcessor<int, int, int>("tmp1", "tmp2", "out", Add);
             b.AddListener<int>("out", DoNothing);
-
             b.Build();
 
-            return w;
+            return Tuple.Create(w1, w2);
         }
 
-        static void Run(Writer<int> w, int runLength)
+        static void Run(Tuple<Writer<int>, Writer<int>> w, int runLength)
         {
             while (runLength-- > 0)
             {
-                w.Send(runLength);
+                w.Item1.Send(runLength);
+                w.Item2.Send(runLength);
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static int Plus1(int i)
-        {
-            return i + 1;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static void DoNothing(int _)
-        {
-
-        }
+        static int Plus1(int i) => i + 1;
+        static int Plus2(int i) => i + 2;
+        static int Add(int i, int j) => i + j;
+        static void DoNothing(int _) { }
     }
 }

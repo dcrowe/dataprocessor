@@ -31,22 +31,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataProcessorBuilderExtensions.cs" />
-    <Compile Include="NaiveDataProcessor.cs" />
     <Compile Include="NameType.cs" />
-    <Compile Include="Draft1DataProcessorBuilder.cs" />
-    <Compile Include="Draft2DataProcessorBuilder.cs" />
     <Compile Include="Optimisers\InlineLambdaInvocations.cs" />
     <Compile Include="Optimisers\RemoveRedundantCasts.cs" />
     <Compile Include="IDataProcessorBuilder.cs" />
     <Compile Include="Node.cs">
       <DependentUpon>Node.tt</DependentUpon>
     </Compile>
-    <Compile Include="Optimisers\EnsureReturnTypeIsVoid.cs" />
-    <Compile Include="DataBuilderHelpers.cs">
-      <DependentUpon>DataBuilderHelpers.tt</DependentUpon>
+    <Compile Include="DataBuilderExtensions.cs">
+      <DependentUpon>DataBuilderExtensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Optimisers\ImproveDelegateInvocations.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
+    <Compile Include="DataProcessorBuilder.cs" />
+    <Compile Include="DataProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Optimisers\" />
@@ -56,9 +54,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Node.cs</LastGenOutput>
     </None>
-    <None Include="DataBuilderHelpers.tt">
+    <None Include="DataBuilderExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DataBuilderHelpers.cs</LastGenOutput>
+      <LastGenOutput>DataBuilderExtensions.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

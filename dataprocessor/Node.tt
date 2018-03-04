@@ -86,7 +86,7 @@ for (var size = 2; size <= max_size; size++)
 
         private const ulong _completionMask = <#= (1ul << size) - 1 #>ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
 <# for (var ix = 1; ix <= size; ix++) { #>
         private T<#= ix #> _<#= ix #>;
 <# } #>
@@ -99,8 +99,23 @@ for (var size = 2; size <= max_size; size++)
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 

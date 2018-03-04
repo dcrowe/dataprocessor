@@ -1,12 +1,22 @@
-﻿namespace dataprocessor
-{
-    internal class DataProcessor : IDataProcessor
-    {
-        private WriterBase[] writerBase;
+﻿using System;
 
-        public DataProcessor(WriterBase[] writerBase)
+namespace dataprocessor
+{
+    public sealed class DataProcessor : IDataProcessor
+    {
+        private IClosable[] _writers;
+
+        public DataProcessor(IClosable[] writers)
         {
-            this.writerBase = writerBase;
+            _writers = writers;
         }
+
+        void IDataProcessor.Close()
+        {
+            foreach (var w in _writers)
+                w.Close();
+        }
+
+        void IDisposable.Dispose() { ((IDataProcessor)this).Close(); }
     }
 }

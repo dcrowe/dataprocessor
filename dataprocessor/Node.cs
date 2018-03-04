@@ -308,7 +308,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 3ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
 
@@ -320,8 +320,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -351,7 +366,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 7ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -364,8 +379,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -401,7 +431,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 15ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -415,8 +445,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -458,7 +503,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 31ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -473,8 +518,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -522,7 +582,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 63ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -538,8 +598,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -593,7 +668,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 127ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -610,8 +685,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -671,7 +761,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 255ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -689,8 +779,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -756,7 +861,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 511ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -775,8 +880,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -848,7 +968,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 1023ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -868,8 +988,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -947,7 +1082,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 2047ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -968,8 +1103,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1053,7 +1203,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 4095ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1075,8 +1225,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1166,7 +1331,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 8191ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1189,8 +1354,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1286,7 +1466,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 16383ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1310,8 +1490,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1413,7 +1608,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 32767ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1438,8 +1633,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1547,7 +1757,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 65535ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1573,8 +1783,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1688,7 +1913,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 131071ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1715,8 +1940,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1836,7 +2076,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 262143ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -1864,8 +2104,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -1991,7 +2246,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 524287ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -2020,8 +2275,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -2153,7 +2423,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 1048575ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -2183,8 +2453,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -2322,7 +2607,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 2097151ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -2353,8 +2638,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -2498,7 +2798,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 4194303ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -2530,8 +2830,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -2681,7 +2996,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 8388607ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -2714,8 +3029,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -2871,7 +3201,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 16777215ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -2905,8 +3235,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -3068,7 +3413,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 33554431ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -3103,8 +3448,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -3272,7 +3632,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 67108863ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -3308,8 +3668,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -3483,7 +3858,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 134217727ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -3520,8 +3895,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -3701,7 +4091,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 268435455ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -3739,8 +4129,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -3926,7 +4331,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 536870911ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -3965,8 +4370,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -4158,7 +4578,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 1073741823ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -4198,8 +4618,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -4397,7 +4832,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 2147483647ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -4438,8 +4873,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -4643,7 +5093,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 4294967295ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -4685,8 +5135,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -4896,7 +5361,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 8589934591ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -4939,8 +5404,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -5156,7 +5636,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 17179869183ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -5200,8 +5680,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -5423,7 +5918,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 34359738367ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -5468,8 +5963,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -5697,7 +6207,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 68719476735ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -5743,8 +6253,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -5978,7 +6503,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 137438953471ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -6025,8 +6550,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -6266,7 +6806,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 274877906943ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -6314,8 +6854,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -6561,7 +7116,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 549755813887ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -6610,8 +7165,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -6863,7 +7433,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 1099511627775ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -6913,8 +7483,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -7172,7 +7757,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 2199023255551ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -7223,8 +7808,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -7488,7 +8088,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 4398046511103ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -7540,8 +8140,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -7811,7 +8426,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 8796093022207ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -7864,8 +8479,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -8141,7 +8771,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 17592186044415ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -8195,8 +8825,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -8478,7 +9123,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 35184372088831ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -8533,8 +9178,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -8822,7 +9482,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 70368744177663ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -8878,8 +9538,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -9173,7 +9848,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 140737488355327ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -9230,8 +9905,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -9531,7 +10221,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 281474976710655ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -9589,8 +10279,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -9896,7 +10601,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 562949953421311ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -9955,8 +10660,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -10268,7 +10988,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 1125899906842623ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -10328,8 +11048,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -10647,7 +11382,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 2251799813685247ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -10708,8 +11443,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -11033,7 +11783,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 4503599627370495ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -11095,8 +11845,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -11426,7 +12191,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 9007199254740991ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -11489,8 +12254,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -11826,7 +12606,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 18014398509481983ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -11890,8 +12670,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -12233,7 +13028,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 36028797018963967ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -12298,8 +13093,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -12647,7 +13457,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 72057594037927935ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -12713,8 +13523,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -13068,7 +13893,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 144115188075855871ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -13135,8 +13960,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -13496,7 +14336,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 288230376151711743ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -13564,8 +14404,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -13931,7 +14786,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 576460752303423487ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -14000,8 +14855,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -14373,7 +15243,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 1152921504606846975ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -14443,8 +15313,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -14822,7 +15707,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 2305843009213693951ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -14893,8 +15778,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -15278,7 +16178,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 4611686018427387903ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -15350,8 +16250,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -15741,7 +16656,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 9223372036854775807ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -15814,8 +16729,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 
@@ -16211,7 +17141,7 @@ namespace dataprocessor
 
         private const ulong _completionMask = 0ul;
         private ulong _filled;
-        private readonly Action _action;
+        private Action _action;
         private T1 _1;
         private T2 _2;
         private T3 _3;
@@ -16285,8 +17215,23 @@ namespace dataprocessor
             _action = action;
         }
 
+        public Node()
+        {
+        }
+
+        public void SetAction(Action action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            _action = action;
+        }
+
         private void MaybeCallAndReset(ulong value)
         {
+            if (_action == null)
+                throw new InvalidOperationException();
+
             var old = _filled;
             _filled |= value;
 

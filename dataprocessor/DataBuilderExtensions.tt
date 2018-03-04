@@ -16,12 +16,12 @@ namespace dataprocessor
         var vs = Enumerable.Range(1, size).ToList();
         var types = string.Join(", ", vs.Select(i => "T" + i));
         var ps = string.Join(", ", vs.Select(i => "p" + i));
-        var names = string.Join(", ", vs.Select(i => "n" + i));
+        var ns = string.Join(", ", vs.Select(i => "n" + i));
 #>
         public static void AddListener<<#=types#>>(
             this IDataProcessorBuilder builder,
 <# foreach(var i in vs) { #>
-            string n<#=i#>,
+            string name<#=i#>,
 <# } #>
             Action<<#=types#>> action)
         {
@@ -31,9 +31,10 @@ namespace dataprocessor
                 throw new ArgumentException(nameof(action));
 <# foreach(var i in vs) { #>
 
-            if (n<#=i#> == null)
-                throw new ArgumentException(nameof(n<#=i#>));
-            var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), n<#=i#>);
+            if (name<#=i#> == null)
+                throw new ArgumentException(nameof(name<#=i#>));
+            var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
+            var p<#=i#> = n<#=i#>.AsParameter();
 <# } #>
 
             var expr = Expression.Lambda<Action<<#=types#>>>(
@@ -42,13 +43,13 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddListener(new[] { <#=names#> }, expr);
+            builder.AddListener(expr, <#=ns#>);
         }
 
         public static void AddProcessor<<#=types#>, TResult>(
             this IDataProcessorBuilder builder,
 <# foreach(var i in vs) { #>
-            string n<#=i#>,
+            string name<#=i#>,
 <# } #>
             string nameResult,
             Func<<#=types#>, TResult> function)
@@ -61,9 +62,10 @@ namespace dataprocessor
                 throw new ArgumentException(nameof(function));
 <# foreach(var i in vs) { #>
 
-            if (n<#=i#> == null)
-                throw new ArgumentException(nameof(n<#=i#>));
-            var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), n<#=i#>);
+            if (name<#=i#> == null)
+                throw new ArgumentException(nameof(name<#=i#>));
+            var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
+            var p<#=i#> = n<#=i#>.AsParameter();
 <# } #>
 
             var expr = Expression.Lambda<Func<<#=types#>, TResult>>(
@@ -72,7 +74,7 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddProcessor(new[] { <#=names#> }, nameResult, expr);
+            builder.AddProcessor(expr, NameType.From<TResult>(nameResult), <#=ns#>);
         }
 
 <# } #>

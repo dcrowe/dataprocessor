@@ -6,23 +6,42 @@ namespace dataprocessor
 {
     public interface IDataProcessorBuilder
     {
-        IWriter<T> AddInput<T>(string name);
+        Writer<T> AddInput<T>(string name);
 
-        void AddProcessor(IEnumerable<string> nameIn, string nameOut, LambdaExpression processor);
+        void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn);
 
-        void AddListener(IEnumerable<string> nameIn, LambdaExpression onRceiveAction);
+        void AddListener(LambdaExpression onRceiveAction, params NameType[] nameIn);
 
         IEnumerable<NameType> GetDefinedInputs();
 
         IDataProcessor Build();
     }
 
-    public interface IWriter<T>
+    public class Writer<T> : IClosable
     {
-        void Send(T value);
+        private Action<T> _action;
+
+        protected void SetAction(Action<T> action)
+        {
+            _action = action;
+        }
+
+        public void Send(T value)
+        {
+            if (_action == null)
+                throw new InvalidOperationException();
+            _action(value);
+        }
+
+        public void Close() => SetAction(null);
     }
 
     public interface IDataProcessor : IDisposable
+    {
+        void Close();
+    }
+
+    public interface IClosable 
     {
         void Close();
     }

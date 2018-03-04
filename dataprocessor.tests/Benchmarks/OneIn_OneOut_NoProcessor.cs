@@ -6,6 +6,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using NUnit.Framework;
 using dataprocessor;
+using dataprocessor.tests.Utilities;
 
 namespace dataprocessor.tests.benchmarks
 {
@@ -23,31 +24,13 @@ namespace dataprocessor.tests.benchmarks
         [Params(1000)]
         public int RunLength;
 
-        IWriter<int> _naive;
-        IWriter<int> _draft1;
-        IWriter<int> _draft2;
-        Action<int> _preferredCurrentTechnique;
+        Writer<int> _naive;
+        Writer<int> _draft1;
+        Writer<int> _draft2;
+        Writer<int> _optimal;
 
         [Benchmark(Baseline = true)]
-        public void Optimal()
-        {
-            var runLength = RunLength;
-            while (runLength-- > 0)
-            {
-                DoNothing(runLength);
-            }
-        }
-
-        [Benchmark]
-        public void PreferredTechinque() 
-        {
-            var runLength = RunLength;
-            while (runLength-- > 0)
-            {
-                _preferredCurrentTechnique(runLength);
-            }
-        }
-
+        public void Optimal() => Run(_optimal, RunLength);
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
         [Benchmark]
@@ -60,19 +43,12 @@ namespace dataprocessor.tests.benchmarks
         {
             _naive = Setup(new NaiveDataProcessor());
             _draft1 = Setup(new Draft1DataProcessor());
-            _draft2 = Setup(new Draft2DataProcessor());
+            _draft2 = Setup(new DataProcessorBuilder());
 
-            var p = Expression.Parameter(typeof(int), "p");
-            _preferredCurrentTechnique = Expression
-                .Lambda<Action<int>>(
-                    Expression.Invoke(
-                        Expression.Constant((Action<int>)DoNothing),
-                        p),
-                    p)
-                .Compile();
+            _optimal = new ActionWriter<int>(b => DoNothing(b));
         }
 
-        static IWriter<int> Setup(IDataProcessorBuilder b)
+        static Writer<int> Setup(IDataProcessorBuilder b)
         {
             b.AddListener<int>("b", DoNothing);
             var w = b.AddInput<int>("b");
@@ -80,7 +56,7 @@ namespace dataprocessor.tests.benchmarks
             return w;
         }
 
-        static void Run(IWriter<int> w, int runLength)
+        static void Run(Writer<int> w, int runLength)
         {
             while (runLength-- > 0)
             {
@@ -88,10 +64,6 @@ namespace dataprocessor.tests.benchmarks
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static void DoNothing(int _) 
-        {
-            
-        }
+        static void DoNothing(int _) { }
     }
 }

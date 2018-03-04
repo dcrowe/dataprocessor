@@ -5,8 +5,9 @@ using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    public class DataProcessorBuilder : IDataProcessorBuilder, IDataProcessor
+    public class DataProcessorBuilder : IDataProcessorBuilder
     {
+        [System.Diagnostics.DebuggerDisplay("Name: {Description}")]
         private class NameInfo
         {
             public NameInfo(NameType desc) { Description = desc; }
@@ -41,13 +42,14 @@ namespace dataprocessor
             }
         }
 
+        [System.Diagnostics.DebuggerDisplay("Writer: {Description}")]
         private class WriterInfo
         {
             public WriterInfo(NameType description, WriterBase writer)
             {
                 Description = description;
                 Writer = writer;
-                Parameter = Expression.Parameter(description.Type, description.Name);
+                Parameter = description.AsParameter();
             }
 
             public readonly NameType Description;
@@ -69,13 +71,11 @@ namespace dataprocessor
         {
             Type ActionType { get; }
             void SetAction(Delegate action);
-            void Close();
         }
 
-        private class W<T> : Writer<T>, WriterBase
+        private class Writer<T> : dataprocessor.Writer<T>, WriterBase
         {
             public virtual Type ActionType => typeof(Action<T>);
-            public virtual void Close() => base.SetAction(null);
 
             public virtual void SetAction(Delegate action)
             {
@@ -92,7 +92,7 @@ namespace dataprocessor
         private readonly List<WriterInfo> _writers = new List<WriterInfo>();
         private readonly List<NodeInfo> _nodes = new List<NodeInfo>();
 
-        public Writer<T> AddInput<T>(string name)
+        public dataprocessor.Writer<T> AddInput<T>(string name)
         {
             if (_state != 0)
                 throw new InvalidOperationException();
@@ -104,7 +104,7 @@ namespace dataprocessor
             if (n.Writer != null)
                 throw new InvalidOperationException();
 
-            var w = new W<T>();
+            var w = new Writer<T>();
             var wi = new WriterInfo(n.Description, w);
             _writers.Add(wi);
             n.Writer = wi;
@@ -112,7 +112,7 @@ namespace dataprocessor
             return w;
         }
 
-        public void AddListener(IEnumerable<string> nameIn, LambdaExpression onRceiveAction)
+        public void AddListener(LambdaExpression onRceiveAction, params NameType[] nameIn)
         {
             if (_state != 0)
                 throw new Exception();
@@ -120,19 +120,12 @@ namespace dataprocessor
                 throw new ArgumentException();
             if (nameIn == null)
                 throw new ArgumentException();
-
-            var nin = nameIn.ToArray();
-
-            if (nin.Length != onRceiveAction.Parameters.Count())
+            if (nameIn.Length != onRceiveAction.Parameters.Count())
                 throw new Exception();
-            if (nin.Length == 0)
+            if (nameIn.Length == 0)
                 throw new ArgumentException();
 
-            var ns = Enumerable.Range(0, nin.Length)
-                               .Select(ix => new NameType(nin[ix], onRceiveAction.Parameters[ix].Type))
-                               .Select(GetName)
-                               .ToArray();
-
+            var ns = nameIn.Select(GetName).ToArray();
             var ni = new NodeInfo(onRceiveAction, ns, null);
             _nodes.Add(ni);
 
@@ -140,27 +133,22 @@ namespace dataprocessor
                 n.Outputs.Add(ni);
         }
 
-        public void AddProcessor(IEnumerable<string> nameIn, string nameOut, LambdaExpression processor)
+        public void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn)
         {
             if (_state != 0)
                 throw new Exception();
-            if (nameOut == null)
-                throw new ArgumentException();
             if (nameIn == null)
                 throw new ArgumentException();
             if (processor == null)
                 throw new ArgumentException();
             if (processor.ReturnType == typeof(void))
                 throw new ArgumentException();
-
-            var nin = nameIn.ToArray();
-
-            if (nin.Length != processor.Parameters.Count())
+            if (nameIn.Length != processor.Parameters.Count())
                 throw new Exception();
-            if (nin.Length == 0)
+            if (nameIn.Length == 0)
                 throw new ArgumentException();
 
-            var nout = GetName(new NameType(nameOut, processor.ReturnType));
+            var nout = GetName(nameOut);
 
             // check that no parameters have multipl inputs
             if (nout.Writer != null)
@@ -168,11 +156,7 @@ namespace dataprocessor
             if (nout.Input != null)
                 throw new InvalidOperationException();
 
-            var ns = Enumerable.Range(0, nin.Length)
-                               .Select(ix => new NameType(nin[ix], processor.Parameters[ix].Type))
-                               .Select(GetName)
-                               .ToArray();
-
+            var ns = nameIn.Select(GetName).ToArray();
             var ni = new NodeInfo(processor, ns, nout);
             _nodes.Add(ni);
 
@@ -190,7 +174,8 @@ namespace dataprocessor
             CompileToIntermediate();
             CompileToFinal();
 
-            return this;
+            var cs = _writers.Select(w => (IClosable)w.Writer).ToArray();
+            return new DataProcessor(cs);
         }
 
         public IEnumerable<NameType> GetDefinedInputs()
@@ -199,16 +184,6 @@ namespace dataprocessor
                 throw new Exception();
             return _names.Values.Select(l => l.Description);
         }
-
-        void IDataProcessor.Close()
-        {
-            _state = 2;
-
-            foreach (var w in _writers)
-                w.Writer.Close();
-        }
-
-        void IDisposable.Dispose() { ((IDataProcessor)this).Close(); }
 
         private NameInfo GetName(NameType desc)
         {
@@ -229,10 +204,6 @@ namespace dataprocessor
         {
             var queue = SortDependenciesFirst(_nodes).ToList();
 
-            // check that all parameters are satisfiable
-            //if (name.Input == null && name.Writer == null)
-            //    throw new InvalidOperationException($"Parameter '{name.Description.Name}' does not have an input.");
-
             // first time through, we want to find nodes that need splitting and fix 'em what for
             for (var ix = 0; ix < queue.Count; ix++)
             {
@@ -243,34 +214,34 @@ namespace dataprocessor
 
                 if (needsSplit)
                 {
+                    var nodeName = o.Output?.Description.Name
+                                   ?? string.Join(",", o.Inputs.Select(i => i.Description.Name));
+                    Log($"Splitting: {nodeName}");
+
                     // 1. create "node" to track state
-                    LambdaExpression expr;
-                    string nodeName;
+                    LambdaExpression expr = o.Expr;
                     var types = o.Inputs.Select(i => i.Description.Type).ToArray();
                     var delegateType = Node.GetActionTypeFor(types);
 
-                    if (o.Output == null)
+                    if (o.Output != null)
                     {
-                        nodeName = string.Join(",", o.Inputs.Select(i => i.Description.Name));
-                        expr = o.Expr;
-                    }
-                    else
-                    {
-                        nodeName = o.Output.Description.Name;
-
-                        var writerType = typeof(W<>).MakeGenericType(new[] { o.Output.Description.Type });
+                        var writerType = typeof(Writer<>).MakeGenericType(new[] { o.Output.Description.Type });
                         var writer = (WriterBase)Activator.CreateInstance(writerType);
                         o.Output.Input = null;
                         o.Output.Writer = new WriterInfo(o.Output.Description, writer);
                         _writers.Add(o.Output.Writer);
 
+                        var v = o.Output.Description.AsVariable();
                         expr = Expression.Lambda(
                             delegateType,
-                            Expression.Call(
-                                Expression.Constant(writer),
-                                "Send",
-                                null,
-                                o.Expr.Body),
+                            Expression.Block(
+                                new[] { v },
+                                Expression.Assign(v, o.Expr.Body),
+                                Expression.Call(
+                                    Expression.Constant(writer),
+                                    "Send",
+                                    null,
+                                    v)),
                             o.Expr.Parameters);
                     }
 
@@ -286,7 +257,7 @@ namespace dataprocessor
 
                         // 3. add the new "split" nodes instead
                         inputIx++;
-                        var p = Expression.Parameter(i.Description.Type, i.Description.Name);
+                        var p = i.Description.AsParameter();
                         var splitExpr = Expression.Lambda(
                             Expression.Call(
                                 Expression.Constant(node),
@@ -324,7 +295,7 @@ namespace dataprocessor
                 }
                 else
                 {
-                    var v = Expression.Variable(o.Output.Description.Type, o.Output.Description.Name);
+                    var v = o.Output.Description.AsVariable();
                     var ps = o.Inputs.Select(w.GetPFor);
                     var e = Expression.Assign(v, Expression.Invoke(o.Expr, ps));
                     w.Variables.Add(v);
@@ -376,38 +347,6 @@ namespace dataprocessor
             return ws;
         }
 
-        private IEnumerable<NameInfo> SortDependenciesFirst(IEnumerable<NameInfo> names)
-        {
-            var todo = names.ToList();
-            var trunks = new Queue<NameInfo>(todo.Where(n => !n.Outputs.Any(o => o.Output != null)));
-            var reverseResult = new List<NameInfo>(todo.Count);
-            var seen = new HashSet<NameInfo>(todo);
-
-            while (trunks.Any())
-            {
-                var ni = trunks.Dequeue();
-
-                if (!seen.Add(ni))
-                    reverseResult.Remove(ni);
-
-                reverseResult.Add(ni);
-
-                if (ni.Input != null)
-                    foreach (var dep in ni.Input.Inputs)
-                        trunks.Enqueue(dep);
-            }
-
-            var missed = todo.Except(seen).FirstOrDefault();
-            if (missed != null)
-                throw new InvalidOperationException($"Parameter '{missed.Description.Name}' does not have an input.");
-
-            reverseResult.Reverse();
-
-            Console.Out.WriteLine("SortDependenciesFirst : " + string.Join(", ", reverseResult.Select(n => n.Description.Name)));
-
-            return reverseResult;
-        }
-
         private IEnumerable<NodeInfo> SortDependenciesFirst(IEnumerable<NodeInfo> nodes)
         {
             var todo = nodes.ToList();
@@ -435,8 +374,7 @@ namespace dataprocessor
 
             reverseResult.Reverse();
 
-            Console.Out.WriteLine("SortDependenciesFirst : " + string.Join(", ", reverseResult));
-
+            Log($"SortDependenciesFirst: {string.Join(", ", reverseResult)}");
             return reverseResult;
         }
 
@@ -450,14 +388,18 @@ namespace dataprocessor
 #if DEBUG
             try
             {
-                Console.Out.WriteLine(
-                    "After: {0} => {1}",
-                    string.Join(", ", name),
-                    expr.GetDebugString());
+                Log($"OptimiseAndLog: {name} => {expr.GetDebugString()}");
             }
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
             catch { }
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
 #endif
             return expr;
+        }
+
+        private static void Log(string value)
+        {
+            Console.WriteLine(value);
         }
     }
 }

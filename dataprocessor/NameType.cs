@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace dataprocessor
 {
+    [System.Diagnostics.DebuggerDisplay("{Name} : {Type}")]
     public struct NameType
     {
         public NameType(string name, Type type)
@@ -13,14 +15,9 @@ namespace dataprocessor
         public string Name { get; }
         public Type Type { get; }
 
-        public static NameType From<T>(string name)
-        {
-            return new NameType(name, typeof(T));
-        }
+        public static NameType From<T>(string name) => new NameType(name, typeof(T));
 
-        public static NameType Unique<T>() 
-        {
-            return new NameType(new Guid().ToString(), typeof(T));
-        }
+        internal ParameterExpression AsParameter() => Expression.Parameter(Type, Name);
+        internal ParameterExpression AsVariable() => Expression.Variable(Type, Name);
     }
 }

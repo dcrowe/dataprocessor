@@ -118,7 +118,7 @@ namespace dataprocessor.tests
         public void OneIn_OneOut_MiniBench()
         {
             var actual = 0;
-            IWriter<int> w;
+            Writer<int> w;
 
             using (Timer.Step("Setup"))
             {
@@ -278,6 +278,24 @@ namespace dataprocessor.tests
             Assert.AreEqual(9, actual);
         }
 
+        [Test]
+        public void Processor_TwoIn_Chained() 
+        {
+            var w1 = _b.AddInput<int>("in1");
+            var w2 = _b.AddInput<int>("in2");
+            _b.AddProcessor<int, int>("in1", "tmp1", Plus1);
+            _b.AddProcessor<int, int>("in2", "tmp2", Plus2);
+            _b.AddProcessor<int, int, int>("tmp1", "tmp2", "out", (a, b) => a + b);
+            var actual = 0;
+            _b.AddListener<int>("out", v => actual = v);
+            _dp = _b.Build();
+
+            w1.Send(1);
+            Assert.AreEqual(0, actual);
+            w2.Send(3);
+            Assert.AreEqual(7, actual);
+        }
+
         static int Plus1(int i) => i + 1;
         static int Plus2(int i) => i + 2;
     }
@@ -300,6 +318,6 @@ namespace dataprocessor.tests
     public class Draft2 : VerifyAPI
     {
         protected override IDataProcessorBuilder GetBuilder() =>
-            new Draft2DataProcessor();
+            new DataProcessorBuilder();
     }
 }
