@@ -20,7 +20,7 @@ namespace dataprocessor.tests.benchmarks
             Assert.IsEmpty(r.ValidationErrors);
         }
 
-        [Params(100)]
+        [Params(1)]
         public int RunLength;
 
         Tuple<Writer<int>, Writer<int>> _optimal;

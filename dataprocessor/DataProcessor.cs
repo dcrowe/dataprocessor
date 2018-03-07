@@ -13,10 +13,14 @@ namespace dataprocessor
 
         void IDataProcessor.Close()
         {
-            foreach (var w in _writers)
-                w.Close();
+            var ws = _writers;
+            _writers = null;
+
+            if (ws != null)
+                foreach (var w in ws)
+                    w.Close();
         }
 
-        void IDisposable.Dispose() { ((IDataProcessor)this).Close(); }
+        void IDisposable.Dispose() => ((IDataProcessor)this).Close();
     }
 }

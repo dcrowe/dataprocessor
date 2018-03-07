@@ -33,6 +33,9 @@ namespace dataprocessor
 
             public HashSet<WriterInfo> TransitiveWriters;
 
+            public string Name => Output?.Description.Name
+                                  ?? string.Join(",", Inputs.Select(i => i.Description.Name));
+
             public override string ToString()
             {
                 return string.Format(
@@ -45,35 +48,35 @@ namespace dataprocessor
         [System.Diagnostics.DebuggerDisplay("Writer: {Description}")]
         private class WriterInfo
         {
-            public WriterInfo(NameType description, WriterBase writer)
+            public WriterInfo(string name, ICanSetAction writer, 
+                              params ParameterExpression[] parameters)
             {
-                Description = description;
+                Name = name;
                 Writer = writer;
-                Parameter = description.AsParameter();
+                Parameters = parameters;
             }
 
-            public readonly NameType Description;
-            public readonly WriterBase Writer;
+            public readonly string Name;
+            public readonly ICanSetAction Writer;
 
-            public readonly ParameterExpression Parameter;
+            public readonly ParameterExpression[] Parameters;
             public readonly List<ParameterExpression> Variables = new List<ParameterExpression>();
             public readonly List<Expression> Expressions = new List<Expression>();
 
             public ParameterExpression GetPFor(NameInfo name)
             {
-                if (name.Description.Name == Parameter.Name)
-                    return Parameter;
-                return Variables.First(p => p.Name == name.Description.Name);
+                return Parameters.FirstOrDefault(p => p.Name == name.Description.Name)
+                                 ?? Variables.First(p => p.Name == name.Description.Name);
             }
         }
 
-        private interface WriterBase
+        private interface ICanSetAction
         {
             Type ActionType { get; }
             void SetAction(Delegate action);
         }
 
-        private class Writer<T> : dataprocessor.Writer<T>, WriterBase
+        private class Writer<T> : dataprocessor.Writer<T>, ICanSetAction
         {
             public virtual Type ActionType => typeof(Action<T>);
 
@@ -84,6 +87,26 @@ namespace dataprocessor
 
                 var a = (Action<T>)action;
                 base.SetAction(a);
+            }
+        }
+
+        private class NodeSetAction : ICanSetAction
+        {
+            private readonly object _node;
+            private readonly Type _actionType;
+
+            public NodeSetAction(object node, Type actionType)
+            {
+                _node = node;
+                _actionType = actionType;
+            }
+
+            public Type ActionType => _actionType;
+
+            public void SetAction(Delegate action)
+            {
+                var meth = _node.GetType().GetMethod("SetAction");
+                meth.Invoke(_node, new[] { action });
             }
         }
 
@@ -105,7 +128,7 @@ namespace dataprocessor
                 throw new InvalidOperationException();
 
             var w = new Writer<T>();
-            var wi = new WriterInfo(n.Description, w);
+            var wi = new WriterInfo(n.Description.Name, w, n.Description.AsParameter());
             _writers.Add(wi);
             n.Writer = wi;
 
@@ -139,6 +162,8 @@ namespace dataprocessor
                 throw new Exception();
             if (nameIn == null)
                 throw new ArgumentException();
+            if (!nameOut.IsValid)
+                throw new ArgumentException();
             if (processor == null)
                 throw new ArgumentException();
             if (processor.ReturnType == typeof(void))
@@ -150,7 +175,7 @@ namespace dataprocessor
 
             var nout = GetName(nameOut);
 
-            // check that no parameters have multipl inputs
+            // check that no parameters have multiple inputs
             if (nout.Writer != null)
                 throw new InvalidOperationException();
             if (nout.Input != null)
@@ -174,7 +199,7 @@ namespace dataprocessor
             CompileToIntermediate();
             CompileToFinal();
 
-            var cs = _writers.Select(w => (IClosable)w.Writer).ToArray();
+            var cs = _writers.Select(w => w.Writer).OfType<IClosable>().ToArray();
             return new DataProcessor(cs);
         }
 
@@ -187,6 +212,9 @@ namespace dataprocessor
 
         private NameInfo GetName(NameType desc)
         {
+            if (!desc.IsValid)
+                throw new ArgumentException();
+
             if (!_names.TryGetValue(desc.Name, out NameInfo name))
             {
                 name = new NameInfo(desc);
@@ -209,84 +237,28 @@ namespace dataprocessor
             {
                 var o = queue[ix];
 
-                // do we need to split???
                 var needsSplit = DetermineTransitiveWritersFor(o).Count() > 1;
 
                 if (needsSplit)
                 {
-                    var nodeName = o.Output?.Description.Name
-                                   ?? string.Join(",", o.Inputs.Select(i => i.Description.Name));
-                    Log($"Splitting: {nodeName}");
+                    var newNodes = SplitNode(o);
 
-                    // 1. create "node" to track state
-                    LambdaExpression expr = o.Expr;
-                    var types = o.Inputs.Select(i => i.Description.Type).ToArray();
-                    var delegateType = Node.GetActionTypeFor(types);
-
-                    if (o.Output != null)
-                    {
-                        var writerType = typeof(Writer<>).MakeGenericType(new[] { o.Output.Description.Type });
-                        var writer = (WriterBase)Activator.CreateInstance(writerType);
-                        o.Output.Input = null;
-                        o.Output.Writer = new WriterInfo(o.Output.Description, writer);
-                        _writers.Add(o.Output.Writer);
-
-                        var v = o.Output.Description.AsVariable();
-                        expr = Expression.Lambda(
-                            delegateType,
-                            Expression.Block(
-                                new[] { v },
-                                Expression.Assign(v, o.Expr.Body),
-                                Expression.Call(
-                                    Expression.Constant(writer),
-                                    "Send",
-                                    null,
-                                    v)),
-                            o.Expr.Parameters);
-                    }
-
-                    expr = expr.EnsureReturnTypeIsVoid();
-                    var action = OptimiseAndLog(nodeName, expr).Compile();
-                    var node = Node.GetNodeFor(types, action);
-
-                    var inputIx = 0;
-                    foreach (var i in o.Inputs)
-                    {
-                        // 2. remove from each of its inputs
-                        i.Outputs.Remove(o);
-
-                        // 3. add the new "split" nodes instead
-                        inputIx++;
-                        var p = i.Description.AsParameter();
-                        var splitExpr = Expression.Lambda(
-                            Expression.Call(
-                                Expression.Constant(node),
-                                "Set" + inputIx,
-                                null,
-                                p),
-                            p);
-
-                        var nodeInfo = new NodeInfo(
-                            splitExpr,
-                            new[] { i },
-                            null);
-
-                        i.Outputs.Add(nodeInfo);
-                        queue.Insert(ix + inputIx, nodeInfo);
-                    }
-
-                    // 4. remove the old unsplit node
+                    // update the queue
                     queue.RemoveAt(ix);
+                    queue.InsertRange(ix, newNodes);
+
+                    // reprime the current node
                     o = queue[ix];
                     DetermineTransitiveWritersFor(o);
                 }
 
-                // after any splitting, we can get on with the good stuff
                 var w = o.TransitiveWriters.SingleOrDefault();
 
+                // no source writer, then nothing to do
                 if (w == null)
                     continue;
 
+                // attach the node's expressions to the writer
                 if (o.Output == null)
                 {
                     var ps = o.Inputs.Select(w.GetPFor);
@@ -304,6 +276,65 @@ namespace dataprocessor
             }
         }
 
+        private IEnumerable<NodeInfo> SplitNode(NodeInfo o)
+        {
+            var nodeName = o.Name;
+            Log($"Splitting: {nodeName}");
+
+            // create "node" to hold state
+            var types = o.Inputs.Select(i => i.Description.Type).ToArray();
+            var delegateType = Node.GetActionTypeFor(types);
+            var node = Node.GetNodeFor(types);
+
+            var writer = new NodeSetAction(node, delegateType);
+            var info = new WriterInfo(nodeName, writer, o.Expr.Parameters.ToArray());
+            _writers.Add(info);
+
+            var expr = o.Expr.Body;
+
+            // modify action to return output to the tree
+            if (o.Output != null)
+            {
+                o.Output.Input = null;
+                o.Output.Writer = info;
+
+                var v = o.Output.Description.AsVariable();
+                info.Variables.Add(v);
+                expr = Expression.Assign(v, o.Expr.Body);
+            }
+
+            info.Expressions.Add(expr);
+
+            var results = new List<NodeInfo>();
+            var inputIx = 0;
+            foreach (var i in o.Inputs)
+            {
+                // remove old node from each of its inputs
+                i.Outputs.Remove(o);
+
+                // add the new "split" nodes instead
+                inputIx++;
+                var p = i.Description.AsParameter();
+                var splitExpr = Expression.Lambda(
+                    Expression.Call(
+                        Expression.Constant(node),
+                        "Set" + inputIx,
+                        null,
+                        p),
+                    p);
+
+                var nodeInfo = new NodeInfo(
+                    splitExpr,
+                    new[] { i },
+                    null);
+
+                i.Outputs.Add(nodeInfo);
+                results.Add(nodeInfo);
+            }
+
+            return results;
+        }
+
         private void CompileToFinal()
         {
             foreach (var w in _writers)
@@ -313,10 +344,10 @@ namespace dataprocessor
                     Expression.Block(
                         w.Variables,
                         w.Expressions),
-                    w.Parameter);
+                    w.Parameters);
 
                 expr = expr.EnsureReturnTypeIsVoid();
-                expr = OptimiseAndLog(w.Description.Name, expr);
+                expr = OptimiseAndLog(w.Name, expr);
 
                 var action = expr.Compile();
                 w.Writer.SetAction(action);
@@ -390,9 +421,10 @@ namespace dataprocessor
             {
                 Log($"OptimiseAndLog: {name} => {expr.GetDebugString()}");
             }
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch { }
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
+            catch 
+            {
+                Log($"OptimiseAndLog: {name} => eeeek.");
+            }
 #endif
             return expr;
         }

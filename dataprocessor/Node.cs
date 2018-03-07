@@ -300,6 +300,18 @@ namespace dataprocessor
             var obj = type.GetConstructor(new [] { actionType }).Invoke(new object[] { actionAction });
             return obj;
         }
+
+        public static object GetNodeFor(Type[] parameters)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            var type = GetTypeFor(parameters);
+            var actionType = GetActionTypeFor(parameters);
+
+            var obj = type.GetConstructor(new Type[0]).Invoke(new object[0]);
+            return obj;
+        }
     }
 
     internal sealed partial class Node<T1, T2>

@@ -14,6 +14,7 @@ namespace dataprocessor
 
         public string Name { get; }
         public Type Type { get; }
+        public bool IsValid => !string.IsNullOrEmpty(Name) && Type != null;
 
         public static NameType From<T>(string name) => new NameType(name, typeof(T));
 
