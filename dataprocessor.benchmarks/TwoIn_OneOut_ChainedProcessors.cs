@@ -20,19 +20,17 @@ namespace dataprocessor.tests.benchmarks
             Assert.IsEmpty(r.ValidationErrors);
         }
 
-        [Params(1)]
+        [Params(100)]
         public int RunLength;
 
         Tuple<Writer<int>, Writer<int>> _optimal;
         Tuple<Writer<int>, Writer<int>> _naive;
-        Tuple<Writer<int>, Writer<int>> _draft1;
         Tuple<Writer<int>, Writer<int>> _draft2;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _draft1 = Setup(new Draft1DataProcessor());
             _draft2 = Setup(new DataProcessorBuilder());
 
             var n = new Node<int, int>((a, b) => DoNothing(Add(a, b)));
@@ -45,8 +43,6 @@ namespace dataprocessor.tests.benchmarks
         public void Optimal() => Run(_optimal, RunLength);
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
-        [Benchmark]
-        public void Draft1() => Run(_draft1, RunLength);
         [Benchmark]
         public void Draft2() => Run(_draft2, RunLength);
 

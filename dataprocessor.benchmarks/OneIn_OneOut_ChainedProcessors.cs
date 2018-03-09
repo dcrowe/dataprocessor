@@ -24,7 +24,6 @@ namespace dataprocessor.tests.benchmarks
 
         Writer<int> _optimal;
         Writer<int> _naive;
-        Writer<int> _draft1;
         Writer<int> _draft2;
         Writer<int> _preferredCurrentTechnique;
 
@@ -32,7 +31,6 @@ namespace dataprocessor.tests.benchmarks
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _draft1 = Setup(new Draft1DataProcessor());
             _draft2 = Setup(new DataProcessorBuilder());
 
             var p = Expression.Parameter(typeof(int), "p");
@@ -71,9 +69,6 @@ namespace dataprocessor.tests.benchmarks
 
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
-
-        [Benchmark]
-        public void Draft1() => Run(_draft1, RunLength);
 
         [Benchmark]
         public void Draft2() => Run(_draft2, RunLength);

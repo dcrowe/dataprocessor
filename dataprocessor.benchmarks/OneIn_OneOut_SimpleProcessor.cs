@@ -25,7 +25,6 @@ namespace dataprocessor.tests.benchmarks
         public int RunLength;
 
         Writer<int> _naive;
-        Writer<int> _draft1;
         Writer<int> _draft2;
         Writer<int> _optimal;
 
@@ -33,7 +32,6 @@ namespace dataprocessor.tests.benchmarks
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _draft1 = Setup(new Draft1DataProcessor());
             _draft2 = Setup(new DataProcessorBuilder());
             _optimal = new ActionWriter<int>(i => DoNothing(Plus1(i)));
         }
@@ -42,8 +40,6 @@ namespace dataprocessor.tests.benchmarks
         public void Optimal() => Run(_optimal, RunLength);
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
-        [Benchmark]
-        public void Draft1() => Run(_draft1, RunLength);
         [Benchmark]
         public void Draft2() => Run(_draft2, RunLength);
 
@@ -66,16 +62,7 @@ namespace dataprocessor.tests.benchmarks
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static int Plus1(int i)
-        {
-            return i + 1;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static void DoNothing(int _)
-        {
-
-        }
+        static int Plus1(int i) => i + 1;
+        static void DoNothing(int _) { }
     }
 }
