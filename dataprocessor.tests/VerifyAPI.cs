@@ -308,7 +308,7 @@ namespace dataprocessor.tests
     }
 
     [TestFixture]
-    public class Draft2 : VerifyAPI
+    public class Actual : VerifyAPI
     {
         protected override IDataProcessorBuilder GetBuilder() =>
             new DataProcessorBuilder();

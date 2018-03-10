@@ -26,7 +26,7 @@ namespace dataprocessor.benchmarks
         public int RunLength;
 
         Writer<int> _naive;
-        Writer<int> _draft2;
+        Writer<int> _actual;
         Writer<int> _optimal;
 
         [Benchmark(Baseline = true)]
@@ -34,13 +34,13 @@ namespace dataprocessor.benchmarks
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
         [Benchmark]
-        public void Draft2() => Run(_draft2, RunLength);
+        public void Actual() => Run(_actual, RunLength);
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _draft2 = Setup(new DataProcessorBuilder());
+            _actual = Setup(new DataProcessorBuilder());
 
             _optimal = new ActionWriter<int>(b => DoNothing(b));
         }

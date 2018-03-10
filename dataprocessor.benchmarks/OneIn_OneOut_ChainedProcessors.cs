@@ -25,14 +25,14 @@ namespace dataprocessor.benchmarks
 
         Writer<int> _optimal;
         Writer<int> _naive;
-        Writer<int> _draft2;
+        Writer<int> _actual;
         Writer<int> _preferredCurrentTechnique;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _draft2 = Setup(new DataProcessorBuilder());
+            _actual = Setup(new DataProcessorBuilder());
 
             var p = Expression.Parameter(typeof(int), "p");
             var expr = Expression.Lambda<Action<int>>(
@@ -72,7 +72,7 @@ namespace dataprocessor.benchmarks
         public void Naive() => Run(_naive, RunLength);
 
         [Benchmark]
-        public void Draft2() => Run(_draft2, RunLength);
+        public void Actual() => Run(_actual, RunLength);
 
         static Writer<int> Setup(IDataProcessorBuilder b)
         {

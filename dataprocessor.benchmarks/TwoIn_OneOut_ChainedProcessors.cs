@@ -26,13 +26,13 @@ namespace dataprocessor.benchmarks
 
         Tuple<Writer<int>, Writer<int>> _optimal;
         Tuple<Writer<int>, Writer<int>> _naive;
-        Tuple<Writer<int>, Writer<int>> _draft2;
+        Tuple<Writer<int>, Writer<int>> _actual;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _draft2 = Setup(new DataProcessorBuilder());
+            _actual = Setup(new DataProcessorBuilder());
 
             var n = new Node<int, int>((a, b) => DoNothing(Add(a, b)));
             _optimal = Tuple.Create<Writer<int>, Writer<int>>(
@@ -45,7 +45,7 @@ namespace dataprocessor.benchmarks
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
         [Benchmark]
-        public void Draft2() => Run(_draft2, RunLength);
+        public void Actual() => Run(_actual, RunLength);
 
         static Tuple<Writer<int>, Writer<int>> Setup(IDataProcessorBuilder b)
         {
