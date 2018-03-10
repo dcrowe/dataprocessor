@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace dataprocessor
+namespace dataprocessor.Old
 {
-    public class NaiveDataProcessor : IDataProcessorBuilder, IDataProcessor
+    internal class NaiveDataProcessor : IDataProcessorBuilder, IDataProcessor
     {
         private class Listener
         {

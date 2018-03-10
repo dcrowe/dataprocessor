@@ -45,9 +45,11 @@
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="DataProcessorBuilder.cs" />
     <Compile Include="DataProcessor.cs" />
+    <Compile Include="Old\NaiveDataProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Optimisers\" />
+    <Folder Include="Old\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.tt">

@@ -431,7 +431,9 @@ namespace dataprocessor
 
         private static void Log(string value)
         {
+#if DEBUG
             Console.WriteLine(value);
+#endif
         }
     }
 }

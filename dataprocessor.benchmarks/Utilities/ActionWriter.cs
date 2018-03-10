@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace dataprocessor.tests.Utilities
+namespace dataprocessor.benchmarks.Utilities
 {
     public sealed class ActionWriter<T> : Writer<T>
     {

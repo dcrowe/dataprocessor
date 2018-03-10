@@ -5,9 +5,10 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using NUnit.Framework;
 using dataprocessor;
-using dataprocessor.tests.Utilities;
+using dataprocessor.Old;
+using dataprocessor.benchmarks.Utilities;
 
-namespace dataprocessor.tests.benchmarks
+namespace dataprocessor.benchmarks
 {
     [ShortRunJob, MemoryDiagnoser, Category("Benchmarks"), Explicit]
     public class TwoIn_OneOut_ChainedProcessors

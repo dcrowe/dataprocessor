@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq.Expressions;
-using dataprocessor;
+using dataprocessor.Old;
 
 namespace dataprocessor.tests
 {
@@ -305,13 +305,6 @@ namespace dataprocessor.tests
     {
         protected override IDataProcessorBuilder GetBuilder() =>
             new NaiveDataProcessor();
-    }
-
-    [TestFixture]
-    public class Draft1 : VerifyAPI
-    {
-        protected override IDataProcessorBuilder GetBuilder() =>
-            new Draft1DataProcessor();
     }
 
     [TestFixture]
