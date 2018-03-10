@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Emit;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Jobs;
-using NUnit.Framework;
 using dataprocessor.Old;
 using dataprocessor.benchmarks.Utilities;
 
@@ -19,6 +19,7 @@ namespace dataprocessor.benchmarks
         Writer<int> _naive;
         Writer<int> _actual;
         Writer<int> _preferredCurrentTechnique;
+        Writer<int> _reflectionEmit;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -52,6 +53,27 @@ namespace dataprocessor.benchmarks
                 var tmp2 = Plus2(i);
                 DoNothing(tmp1 + tmp2);
             });
+
+            var myAsmBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
+               new AssemblyName { Name = "OneIn_OneOut_ChainedProcessors" },
+               AssemblyBuilderAccess.Run);
+            var myModule = myAsmBuilder.DefineDynamicModule("MyDynamicAsm");
+            var myTypeBld = myModule.DefineType("MyDynamicType",
+                                                TypeAttributes.Public);
+            var myMthdBld = myTypeBld.DefineMethod(
+                "UsingReflectionEmit",
+                MethodAttributes.Public | MethodAttributes.Static,
+                typeof(void),
+                new[] { typeof(int) });
+
+            expr.CompileToMethod(myMthdBld);
+
+            var newType = myTypeBld.CreateType();
+            var action = (Action<int>)Delegate.CreateDelegate(
+                typeof(Action<int>),
+                newType.GetMethod(myMthdBld.Name));
+            action(1);
+            _reflectionEmit = new ActionWriter<int>(action);
         }
 
         [Benchmark]
@@ -65,6 +87,9 @@ namespace dataprocessor.benchmarks
 
         [Benchmark]
         public void Actual() => Run(_actual, RunLength);
+
+        [Benchmark]
+        public void UsingReflectionEmit() => Run(_reflectionEmit, RunLength);
 
         static Writer<int> Setup(IDataProcessorBuilder b)
         {
@@ -86,13 +111,9 @@ namespace dataprocessor.benchmarks
             }
         }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        static int Plus1(int i) => i + 1;
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        static int Plus2(int i) => i + 2;
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        static int Add(int i, int j) => i + j;
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        static void DoNothing(int _) { }
+        public static int Plus1(int i) => i + 1;
+        public static int Plus2(int i) => i + 2;
+        public static int Add(int i, int j) => i + j;
+        public static void DoNothing(int _) { }
     }
 }

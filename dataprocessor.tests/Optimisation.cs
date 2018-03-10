@@ -3,6 +3,10 @@ using System.Linq.Expressions;
 using dataprocessor;
 using NUnit.Framework;
 
+using System.IO;
+using System.Reflection;
+using System.Reflection.Emit;
+
 namespace dataprocessor.tests
 {
     public class Optimisation
