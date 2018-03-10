@@ -135,6 +135,9 @@
     <Compile Include="OneIn_OneOut_SimpleProcessor.cs" />
     <Compile Include="TwoIn_OneOut_ChainedProcessors.cs" />
     <Compile Include="Utilities\ActionWriter.cs" />
+    <Compile Include="Benchmarks.cs" />
+    <Compile Include="Utilities\QuietLogger.cs" />
+    <Compile Include="Utilities\NullExporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\" />

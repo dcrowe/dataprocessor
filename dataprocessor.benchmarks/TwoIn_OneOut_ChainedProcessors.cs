@@ -10,17 +10,9 @@ using dataprocessor.benchmarks.Utilities;
 
 namespace dataprocessor.benchmarks
 {
-    [ShortRunJob, MemoryDiagnoser, Category("Benchmarks"), Explicit]
+    [MemoryDiagnoser]
     public class TwoIn_OneOut_ChainedProcessors
     {
-        [Test]
-        public void Benchmark()
-        {
-            Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
-            var r = BenchmarkRunner.Run<TwoIn_OneOut_ChainedProcessors>();
-            Assert.IsEmpty(r.ValidationErrors);
-        }
-
         [Params(100)]
         public int RunLength;
 

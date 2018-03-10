@@ -7,13 +7,8 @@ namespace dataprocessor.benchmarks
     {
         public static void Main(string[] args)
         {
-            var switcher = new BenchmarkSwitcher(new[]
-            {
-                typeof(TwoIn_OneOut_ChainedProcessors),
-                typeof(OneIn_OneOut_ChainedProcessors),
-                typeof(OneIn_OneOut_NoProcessor),
-                typeof(OneIn_OneOut_SimpleProcessor)
-            });
+            var types = Benchmarks.FindBenchmarks();
+            var switcher = new BenchmarkSwitcher(types);
             switcher.Run(args);
         }
     }

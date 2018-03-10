@@ -11,17 +11,9 @@ using dataprocessor.benchmarks.Utilities;
 
 namespace dataprocessor.benchmarks
 {
-    [ShortRunJob, MemoryDiagnoser, Category("Benchmarks"), Explicit]
+    [MemoryDiagnoser]
     public class OneIn_OneOut_SimpleProcessor
     {
-        [Test]
-        public void Benchmark()
-        {
-            Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
-            var r = BenchmarkRunner.Run<OneIn_OneOut_SimpleProcessor>();
-            Assert.IsEmpty(r.ValidationErrors);
-        }
-
         [Params(100)]
         public int RunLength;
 
