@@ -339,9 +339,12 @@ namespace dataprocessor
         {
             foreach (var w in _writers)
             {
+                w.Expressions.Add(Expression.Empty());
+
                 var expr = Expression.Lambda(
                     w.Writer.ActionType,
                     Expression.Block(
+                        typeof(void),
                         w.Variables,
                         w.Expressions),
                     w.Parameters);

@@ -64,7 +64,10 @@ namespace dataprocessor
                         assigns.Add(call);
                     }
 
-                    var block = Expression.Block(vars, assigns);
+                    var block = Expression.Block(
+                        methodInfo.ReturnType,
+                        vars, 
+                        assigns);
                     return block;
                 }
             }
