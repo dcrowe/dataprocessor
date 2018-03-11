@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
+using dataprocessor.Compilers;
 using dataprocessor.Old;
 using dataprocessor.benchmarks.Utilities;
 
@@ -18,7 +19,8 @@ namespace dataprocessor.benchmarks
         Writer<int> _optimal;
         Writer<int> _naive;
         Writer<int> _actual;
-        Writer<int> _preferredCurrentTechnique;
+        Writer<int> _actualWithBuilder;
+        Writer<int> _dynamicMethod;
         Writer<int> _reflectionEmit;
 
         [GlobalSetup]
@@ -26,7 +28,9 @@ namespace dataprocessor.benchmarks
         {
             _naive = Setup(new NaiveDataProcessor());
             _actual = Setup(new DataProcessorBuilder());
-
+            _actualWithBuilder = Setup(new DataProcessorBuilder(
+                new MethodBuilderCompiler("OneIn_OneOut_ChainedProcessors")));
+            
             var p = Expression.Parameter(typeof(int), "p");
             var expr = Expression.Lambda<Action<int>>(
                 Expression.Call(
@@ -45,7 +49,7 @@ namespace dataprocessor.benchmarks
                             null,
                             p))),
                 p);
-            _preferredCurrentTechnique = new ActionWriter<int>(expr.Compile());
+            _dynamicMethod = new ActionWriter<int>(expr.Compile());
 
             _optimal = new ActionWriter<int>(i =>
             {
@@ -55,11 +59,10 @@ namespace dataprocessor.benchmarks
             });
 
             var myAsmBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
-               new AssemblyName { Name = "OneIn_OneOut_ChainedProcessors" },
-               AssemblyBuilderAccess.Run);
+                new AssemblyName { Name = "OneIn_OneOut_ChainedProcessors" },
+                AssemblyBuilderAccess.RunAndCollect);
             var myModule = myAsmBuilder.DefineDynamicModule("MyDynamicAsm");
-            var myTypeBld = myModule.DefineType("MyDynamicType",
-                                                TypeAttributes.Public);
+            var myTypeBld = myModule.DefineType("MyDynamicType", TypeAttributes.Public);
             var myMthdBld = myTypeBld.DefineMethod(
                 "UsingReflectionEmit",
                 MethodAttributes.Public | MethodAttributes.Static,
@@ -69,24 +72,25 @@ namespace dataprocessor.benchmarks
             expr.CompileToMethod(myMthdBld);
 
             var newType = myTypeBld.CreateType();
-            var action = (Action<int>)Delegate.CreateDelegate(
+            _reflectionEmit = new ActionWriter<int>((Action<int>)Delegate.CreateDelegate(
                 typeof(Action<int>),
-                newType.GetMethod(myMthdBld.Name));
-            action(1);
-            _reflectionEmit = new ActionWriter<int>(action);
+                newType.GetMethod(myMthdBld.Name)));
         }
 
         [Benchmark]
         public void Optimal() => Run(_optimal, RunLength);
 
         [Benchmark(Baseline = true)]
-        public void PreferredTechinque() => Run(_preferredCurrentTechnique, RunLength);
+        public void DynamicMethod() => Run(_dynamicMethod, RunLength);
 
         [Benchmark]
         public void Naive() => Run(_naive, RunLength);
 
         [Benchmark]
         public void Actual() => Run(_actual, RunLength);
+
+        [Benchmark]
+        public void ActualWithBuilder() => Run(_actualWithBuilder, RunLength);
 
         [Benchmark]
         public void UsingReflectionEmit() => Run(_reflectionEmit, RunLength);

@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Collections.Generic;
 
-namespace dataprocessor
+namespace dataprocessor.Expressions
 {
     public class InlineLambdaInvocations : ExpressionVisitor
     {

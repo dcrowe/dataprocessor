@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Linq.Expressions;
-using dataprocessor;
+using dataprocessor.Expressions;
 using NUnit.Framework;
 
-using System.IO;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace dataprocessor.tests
 {
-    public class Optimisation
+    public class Expressions
     {
         [Test]
         public void InlineLambdas_Single()
@@ -103,7 +100,7 @@ namespace dataprocessor.tests
         public void ImproveDelegateInvocation_Static_Single()
         {
             var expected = Expression.Lambda<Func<int>>(Expression.Call(
-                typeof(Optimisation),
+                typeof(Expressions),
                 "StaticDelegate",
                 null,
                 Expression.Constant(1)));
@@ -122,7 +119,7 @@ namespace dataprocessor.tests
                 Expression.Block(
                     new[] { v },
                     Expression.Assign(v, Expression.Constant(1)),
-                    Expression.Call(typeof(Optimisation), "StaticDelegate", null, v),
+                    Expression.Call(typeof(Expressions), "StaticDelegate", null, v),
                     Expression.Call(Expression.Constant(this), "InstanceDelegate", null, v)));
 
             AssertAreEqual(MultiDelegate, expected);

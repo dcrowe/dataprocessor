@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace dataprocessor
+namespace dataprocessor.Expressions
 {
     public static class ExpressionExtensions
     {
@@ -32,6 +32,11 @@ namespace dataprocessor
             expr = Expression.Lambda(body, expr.Parameters);
 
             return expr;
+        }
+
+        public static void AssertNoPrivateMethods(this LambdaExpression expr)
+        {
+            new ThrowOnPrivateMethods().Visit(expr);
         }
     }
 }

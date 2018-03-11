@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using dataprocessor.Compilers;
+using dataprocessor.Expressions;
 
 namespace dataprocessor
 {
     public class DataProcessorBuilder : IDataProcessorBuilder
     {
-        [System.Diagnostics.DebuggerDisplay("Name: {Description}")]
+        [DebuggerDisplay("Name: {Description}")]
         private class NameInfo
         {
             public NameInfo(NameType desc) { Description = desc; }
@@ -45,7 +48,7 @@ namespace dataprocessor
             }
         }
 
-        [System.Diagnostics.DebuggerDisplay("Writer: {Description}")]
+        [DebuggerDisplay("Writer: {Description}")]
         private class WriterInfo
         {
             public WriterInfo(string name, ICanSetAction writer, 
@@ -114,6 +117,18 @@ namespace dataprocessor
         private readonly Dictionary<string, NameInfo> _names = new Dictionary<string, NameInfo>();
         private readonly List<WriterInfo> _writers = new List<WriterInfo>();
         private readonly List<NodeInfo> _nodes = new List<NodeInfo>();
+        private readonly ICompiler _compiler;
+
+        public DataProcessorBuilder() : this(new DynamicMethodCompiler())
+        {
+        }
+
+        public DataProcessorBuilder(ICompiler compiler)
+        {
+            if (compiler == null)
+                throw new ArgumentNullException(nameof(compiler));
+            _compiler = compiler;
+        }
 
         public dataprocessor.Writer<T> AddInput<T>(string name)
         {
@@ -352,7 +367,7 @@ namespace dataprocessor
                 expr = expr.EnsureReturnTypeIsVoid();
                 expr = OptimiseAndLog(w.Name, expr);
 
-                var action = expr.Compile();
+                var action = _compiler.Compile(w.Name, expr);
                 w.Writer.SetAction(action);
             }
         }
@@ -417,9 +432,7 @@ namespace dataprocessor
         {
             expr = InlineLambdaInvocations.Visit(expr);
             expr = ImproveDelegateInvocations.Apply(expr);
-            //expr = RemoveRedundantCasts.Visit(expr);
 
-#if DEBUG
             try
             {
                 Log($"OptimiseAndLog: {name} => {expr.GetDebugString()}");
@@ -428,7 +441,7 @@ namespace dataprocessor
             {
                 Log($"OptimiseAndLog: {name} => eeeek.");
             }
-#endif
+
             return expr;
         }
 
