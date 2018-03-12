@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Jobs;
-using NUnit.Framework;
-using dataprocessor;
+using dataprocessor.Compilers;
 using dataprocessor.Old;
 using dataprocessor.benchmarks.Utilities;
 
@@ -25,7 +20,7 @@ namespace dataprocessor.benchmarks
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _actual = Setup(new DataProcessorBuilder());
+            _actual = Setup(new DataProcessorBuilder(new MethodBuilderCompiler()));
             _optimal = new ActionWriter<int>(i => DoNothing(Plus1(i)));
         }
 
@@ -55,7 +50,7 @@ namespace dataprocessor.benchmarks
             }
         }
 
-        static int Plus1(int i) => i + 1;
-        static void DoNothing(int _) { }
+        public static int Plus1(int i) => i + 1;
+        public static void DoNothing(int _) { }
     }
 }

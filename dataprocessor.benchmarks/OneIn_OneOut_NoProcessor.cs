@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Jobs;
-using NUnit.Framework;
-using dataprocessor;
+using dataprocessor.Compilers;
 using dataprocessor.Old;
 using dataprocessor.benchmarks.Utilities;
 
@@ -14,7 +9,7 @@ namespace dataprocessor.benchmarks
     [MemoryDiagnoser]
     public class OneIn_OneOut_NoProcessor
     {
-        [Params(1000)]
+        [Params(100)]
         public int RunLength;
 
         Writer<int> _naive;
@@ -32,8 +27,7 @@ namespace dataprocessor.benchmarks
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _actual = Setup(new DataProcessorBuilder());
-
+            _actual = Setup(new DataProcessorBuilder(new MethodBuilderCompiler()));
             _optimal = new ActionWriter<int>(b => DoNothing(b));
         }
 
@@ -53,6 +47,6 @@ namespace dataprocessor.benchmarks
             }
         }
 
-        static void DoNothing(int _) { }
+        public static void DoNothing(int _) { }
     }
 }

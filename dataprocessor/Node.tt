@@ -13,7 +13,7 @@ namespace dataprocessor
 int min_size = 2;
 int max_size = 64;
 #>
-    internal sealed partial class Node
+    public sealed partial class Node
     {
         public static Type GetTypeFor(Type[] parameters)
         {
@@ -92,7 +92,7 @@ for (var size = 2; size <= max_size; size++)
         .Select(i => "_" + i));
 #>
 
-    internal sealed partial class Node<<#= typeNames #>>
+    public sealed partial class Node<<#= typeNames #>>
     {
         public delegate void Action(<#= parmNames #>);
 

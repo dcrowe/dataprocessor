@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq.Expressions;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Jobs;
-using NUnit.Framework;
-using dataprocessor;
 using dataprocessor.Old;
 using dataprocessor.benchmarks.Utilities;
+using dataprocessor.Compilers;
 
 namespace dataprocessor.benchmarks
 {
@@ -24,7 +21,7 @@ namespace dataprocessor.benchmarks
         public void GlobalSetup()
         {
             _naive = Setup(new NaiveDataProcessor());
-            _actual = Setup(new DataProcessorBuilder());
+            _actual = Setup(new DataProcessorBuilder(new MethodBuilderCompiler()));
 
             var n = new Node<int, int>((a, b) => DoNothing(Add(a, b)));
             _optimal = Tuple.Create<Writer<int>, Writer<int>>(
@@ -61,9 +58,9 @@ namespace dataprocessor.benchmarks
             }
         }
 
-        static int Plus1(int i) => i + 1;
-        static int Plus2(int i) => i + 2;
-        static int Add(int i, int j) => i + j;
-        static void DoNothing(int _) { }
+        public static int Plus1(int i) => i + 1;
+        public static int Plus2(int i) => i + 2;
+        public static int Add(int i, int j) => i + j;
+        public static void DoNothing(int _) { }
     }
 }

@@ -17,7 +17,29 @@ namespace dataprocessor
         var types = string.Join(", ", vs.Select(i => "T" + i));
         var ps = string.Join(", ", vs.Select(i => "p" + i));
         var ns = string.Join(", ", vs.Select(i => "n" + i));
+        var names = string.Join(", ", vs.Select(i => "name" + i));
 #>
+        public static void AddListenerExpression<<#=types#>>(
+            this IDataProcessorBuilder builder,
+<# foreach(var i in vs) { #>
+            string name<#=i#>,
+<# } #>
+            Expression<Action<<#=types#>>> action)
+        {
+            if (builder == null)
+                throw new ArgumentException(nameof(builder));
+            if (action == null)
+                throw new ArgumentException(nameof(action));
+<# foreach(var i in vs) { #>
+
+            if (name<#=i#> == null)
+                throw new ArgumentException(nameof(name<#=i#>));
+            var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
+<# } #>
+
+            builder.AddListener(action, <#=ns#>);
+        }
+
         public static void AddListener<<#=types#>>(
             this IDataProcessorBuilder builder,
 <# foreach(var i in vs) { #>
@@ -33,8 +55,7 @@ namespace dataprocessor
 
             if (name<#=i#> == null)
                 throw new ArgumentException(nameof(name<#=i#>));
-            var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
-            var p<#=i#> = n<#=i#>.AsParameter();
+            var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), name<#=i#>);
 <# } #>
 
             var expr = Expression.Lambda<Action<<#=types#>>>(
@@ -43,7 +64,7 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddListener(expr, <#=ns#>);
+            builder.AddListenerExpression<<#=types#>>(<#=names#>, expr);
         }
 
         public static void AddProcessor<<#=types#>, TResult>(

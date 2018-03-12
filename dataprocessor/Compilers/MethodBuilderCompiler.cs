@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,9 +10,42 @@ namespace dataprocessor.Compilers
 {
     public sealed class MethodBuilderCompiler : ICompiler
     {
+        private class AddFieldsForConstantsVisitor : ExpressionVisitor
+        {
+            public readonly Dictionary<ConstantExpression, FieldInfo> Fields
+                = new Dictionary<ConstantExpression, FieldInfo>();
+            private readonly TypeBuilder _tb;
+
+            public AddFieldsForConstantsVisitor(TypeBuilder tb)
+            {
+                _tb = tb;
+            }
+
+            protected override Expression VisitConstant(ConstantExpression node)
+            {
+                FieldInfo f;
+                if (!Fields.TryGetValue(node, out f))
+                {
+                    f = _tb.DefineField(
+                       "_" + Fields.Count,
+                       node.Type,
+                        FieldAttributes.Public | FieldAttributes.Static);
+
+                    Fields.Add(node, f);
+                }
+
+                return Expression.Field(null, f);
+            }
+        }
+
         private const string MethodName = "Invoke";
-        readonly AssemblyName _assemblyName;
-        readonly ModuleBuilder _module;
+        private readonly AssemblyName _assemblyName;
+        private readonly ModuleBuilder _module;
+
+        public MethodBuilderCompiler()
+            : this(Guid.NewGuid().ToString())
+        {
+        }
 
         public MethodBuilderCompiler(string assemblyName)
             : this(new AssemblyName(assemblyName))
@@ -39,6 +73,10 @@ namespace dataprocessor.Compilers
             expression.AssertNoPrivateMethods();
 
             var typeB = _module.DefineType(name, TypeAttributes.Public);
+
+            var v = new AddFieldsForConstantsVisitor(typeB);
+            expression = v.VisitAndConvert(expression, nameof(Compile));
+
             var methodB = typeB.DefineMethod(
                 MethodName,
                 MethodAttributes.Public | MethodAttributes.Static,
@@ -48,6 +86,13 @@ namespace dataprocessor.Compilers
             expression.CompileToMethod(methodB);
 
             var type = typeB.CreateType();
+
+            foreach(var f in v.Fields)
+            {
+                var fi = type.GetField(f.Value.Name);
+                fi.SetValue(null, f.Key.Value);
+            }
+
             var method = type.GetMethod(MethodName);
             var del = Delegate.CreateDelegate(expression.Type, method);
             return del;

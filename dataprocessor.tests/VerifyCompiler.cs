@@ -46,6 +46,19 @@ namespace dataprocessor.tests
         }
 
         [Test]
+        public void SupportsClosures()
+        {
+            var p = Expression.Parameter(typeof(int));
+            var e = Expression.Lambda(
+                typeof(Func<int, int>),
+                Expression.Call(Expression.Constant(this), nameof(PublicInstanceMethod), null, p),
+                p);
+
+            var del = (Func<int, int>)_c.Compile("test", e);
+            Assert.AreEqual(3, del(2));
+        }
+
+        [Test]
         public void FailEarlyIfPrivateMethodsAreNotSupported()
         {
             Func<int, int> del;
@@ -74,6 +87,7 @@ namespace dataprocessor.tests
         }
 
         private static int PrivateMethod(int v) => v + 1;
+        public int PublicInstanceMethod(int v) => v + 1;
 
     }
 
