@@ -12,7 +12,8 @@ namespace dataprocessor
     public static partial class DataProcessorBuilderExtensions
     {
 <# 
-    for (var size = 1; size < 8; size++) {
+    var max_args = 8;
+    for (var size = 1; size < max_args; size++) {
         var vs = Enumerable.Range(1, size).ToList();
         var types = string.Join(", ", vs.Select(i => "T" + i));
         var ps = string.Join(", ", vs.Select(i => "p" + i));
@@ -67,6 +68,30 @@ namespace dataprocessor
             builder.AddListenerExpression<<#=types#>>(<#=names#>, expr);
         }
 
+        public static void AddProcessorExpression<<#=types#>, TResult>(
+            this IDataProcessorBuilder builder,
+<# foreach(var i in vs) { #>
+            string name<#=i#>,
+<# } #>
+            string nameResult,
+            Expression<Func<<#=types#>, TResult>> function)
+        {
+            if (builder == null)
+                throw new ArgumentException(nameof(builder));
+            if (nameResult == null)
+                throw new ArgumentException(nameof(nameResult));
+            if (function == null)
+                throw new ArgumentException(nameof(function));
+<# foreach(var i in vs) { #>
+
+            if (name<#=i#> == null)
+                throw new ArgumentException(nameof(name<#=i#>));
+            var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
+<# } #>
+
+            builder.AddProcessor(function, NameType.From<TResult>(nameResult), <#=ns#>);
+        }
+
         public static void AddProcessor<<#=types#>, TResult>(
             this IDataProcessorBuilder builder,
 <# foreach(var i in vs) { #>
@@ -85,8 +110,7 @@ namespace dataprocessor
 
             if (name<#=i#> == null)
                 throw new ArgumentException(nameof(name<#=i#>));
-            var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
-            var p<#=i#> = n<#=i#>.AsParameter();
+            var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), name<#=i#>);
 <# } #>
 
             var expr = Expression.Lambda<Func<<#=types#>, TResult>>(
@@ -95,7 +119,7 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddProcessor(expr, NameType.From<TResult>(nameResult), <#=ns#>);
+            builder.AddProcessorExpression<<#=types#>, TResult>(<#=names#>, nameResult, expr);
         }
 
 <# } #>

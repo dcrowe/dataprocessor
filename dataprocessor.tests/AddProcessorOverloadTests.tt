@@ -1,0 +1,60 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Linq;
+using NUnit.Framework;
+using dataprocessor;
+
+namespace dataprocessor.tests
+{
+    public class AddProcessorOverloadTests
+    {
+        private const string I = "i";
+        private DataProcessorBuilder _b;
+        private Writer<int> _i;
+        private int _actual;
+
+        [SetUp]
+        public void Setup()
+        {
+            _actual = 0;
+            _b = new DataProcessorBuilder();
+            _i = _b.AddInput<int>(I);
+            _b.AddListener<int>("o", o => _actual = o);
+        }
+<# 
+for (var size = 1; size < 8; size++) {
+    var ps = string.Join(", ", Enumerable.Range(1, size).Select(s => "p" + s));
+    var ts = string.Join(", ", Enumerable.Repeat("int", size + 1));
+    var iis = string.Join(", ", Enumerable.Repeat("I", size));
+#>
+
+        [Test]
+        public void AddProcessor<#=size#>()
+        {
+            _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Sum(<#=ps#>));
+            RunAndAssert(<#=size#>);
+        }
+
+        [Test]
+        public void AddProcessorExpression<#=size#>()
+        {
+            _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Sum(<#=ps#>));
+            RunAndAssert(<#=size#>);
+        }
+<# } #>
+
+        private int Sum(params int[] parms) => parms.Sum();
+
+        private void RunAndAssert(int i)
+        {
+            var d = _b.Build();
+            _i.Send(1);
+            Assert.AreEqual(i, _actual);
+        }
+    }
+}
