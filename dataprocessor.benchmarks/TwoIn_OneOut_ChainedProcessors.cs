@@ -23,10 +23,10 @@ namespace dataprocessor.benchmarks
             _naive = Setup(new NaiveDataProcessor());
             _actual = Setup(new DataProcessorBuilder(new MethodBuilderCompiler()));
 
-            var n = new Node<int, int>((a, b) => DoNothing(Add(a, b)));
+            var n = new Node<int, int>((a, b) => DoNothing(a + b));
             _optimal = Tuple.Create<Writer<int>, Writer<int>>(
-                new ActionWriter<int>(a => n.Set1(Plus1(a))),
-                new ActionWriter<int>(b => n.Set2(Plus2(b))));
+                new ActionWriter<int>(a => n.Set1(a + 1)),
+                new ActionWriter<int>(b => n.Set2(b + 2)));
         }
 
         [Benchmark(Baseline = true)]
@@ -40,9 +40,9 @@ namespace dataprocessor.benchmarks
         {
             var w1 = b.AddInput<int>("in1");
             var w2 = b.AddInput<int>("in2");
-            b.AddProcessor<int, int>("in1", "tmp1", Plus1);
-            b.AddProcessor<int, int>("in2", "tmp2", Plus2);
-            b.AddProcessor<int, int, int>("tmp1", "tmp2", "out", Add);
+            b.AddProcessorExpression<int, int>("in1", "tmp1", i => i + 1);
+            b.AddProcessorExpression<int, int>("in2", "tmp2", i => i + 2);
+            b.AddProcessorExpression<int, int, int>("tmp1", "tmp2", "out", (i, j) => i + j);
             b.AddListener<int>("out", DoNothing);
             b.Build();
 
