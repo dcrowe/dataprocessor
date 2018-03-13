@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="VerifyAPI.cs" />
     <Compile Include="Expressions.cs" />
-    <Compile Include="Timer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VerifyCompiler.cs" />
     <Compile Include="AddListenerOverloadTests.cs">

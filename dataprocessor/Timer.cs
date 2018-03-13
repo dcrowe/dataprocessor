@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace dataprocessor.tests
+namespace dataprocessor
 {
-    public struct Timer : IDisposable
+    internal class Timer : IDisposable
     {
         public static Timer Step(string name)
         {
+#if DEBUG
             return new Timer(name);
+#else   
+            return null;
+#endif
         }
 
         private readonly string _name;
@@ -15,7 +19,6 @@ namespace dataprocessor.tests
 
         public Timer(string name)
         {
-
             _name = name;
             _sw = new Stopwatch();
             _sw.Start();

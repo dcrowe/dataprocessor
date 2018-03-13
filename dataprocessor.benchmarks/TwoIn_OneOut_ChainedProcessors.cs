@@ -58,9 +58,6 @@ namespace dataprocessor.benchmarks
             }
         }
 
-        public static int Plus1(int i) => i + 1;
-        public static int Plus2(int i) => i + 2;
-        public static int Add(int i, int j) => i + j;
         public static void DoNothing(int _) { }
     }
 }

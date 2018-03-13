@@ -11,7 +11,9 @@ namespace dataprocessor.Compilers
                 throw new ArgumentNullException(nameof(name));
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
-            return expression.Compile();
+
+            using (Timer.Step("DynamicMethodCompiler.Compile"))
+                return expression.Compile();
         }
     }
 }

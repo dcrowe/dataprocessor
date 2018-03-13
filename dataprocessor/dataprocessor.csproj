@@ -50,6 +50,7 @@
     <Compile Include="Compilers\MethodBuilderCompiler.cs" />
     <Compile Include="Expressions\ExpressionExtensions.cs" />
     <Compile Include="Expressions\ThrowOnPrivateMethods.cs" />
+    <Compile Include="Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />

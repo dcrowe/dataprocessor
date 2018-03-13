@@ -211,11 +211,14 @@ namespace dataprocessor
                 throw new Exception();
             _state = 1;
 
-            CompileToIntermediate();
-            CompileToFinal();
+            using (Timer.Step("DataProcessorBuilder.Build"))
+            {
+                CompileToIntermediate();
+                CompileToFinal();
 
-            var cs = _writers.Select(w => w.Writer).OfType<IClosable>().ToArray();
-            return new DataProcessor(cs);
+                var cs = _writers.Select(w => w.Writer).OfType<IClosable>().ToArray();
+                return new DataProcessor(cs);
+            }
         }
 
         public IEnumerable<NameType> GetDefinedInputs()

@@ -70,32 +70,35 @@ namespace dataprocessor.Compilers
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            expression.AssertNoPrivateMethods();
-
-            var typeB = _module.DefineType(name, TypeAttributes.Public);
-
-            var v = new AddFieldsForConstantsVisitor(typeB);
-            expression = v.VisitAndConvert(expression, nameof(Compile));
-
-            var methodB = typeB.DefineMethod(
-                MethodName,
-                MethodAttributes.Public | MethodAttributes.Static,
-                expression.ReturnType,
-                expression.Parameters.Select(p => p.Type).ToArray());
-
-            expression.CompileToMethod(methodB);
-
-            var type = typeB.CreateType();
-
-            foreach(var f in v.Fields)
+            using (Timer.Step("MethodBuilderCompiler.Compile"))
             {
-                var fi = type.GetField(f.Value.Name);
-                fi.SetValue(null, f.Key.Value);
-            }
+                expression.AssertNoPrivateMethods();
 
-            var method = type.GetMethod(MethodName);
-            var del = Delegate.CreateDelegate(expression.Type, method);
-            return del;
+                var typeB = _module.DefineType(name, TypeAttributes.Public);
+
+                var v = new AddFieldsForConstantsVisitor(typeB);
+                expression = v.VisitAndConvert(expression, nameof(Compile));
+
+                var methodB = typeB.DefineMethod(
+                    MethodName,
+                    MethodAttributes.Public | MethodAttributes.Static,
+                    expression.ReturnType,
+                    expression.Parameters.Select(p => p.Type).ToArray());
+
+                expression.CompileToMethod(methodB);
+
+                var type = typeB.CreateType();
+
+                foreach (var f in v.Fields)
+                {
+                    var fi = type.GetField(f.Value.Name);
+                    fi.SetValue(null, f.Key.Value);
+                }
+
+                var method = type.GetMethod(MethodName);
+                var del = Delegate.CreateDelegate(expression.Type, method);
+                return del;
+            }
         }
     }
 }
