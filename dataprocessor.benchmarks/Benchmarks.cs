@@ -5,6 +5,8 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Environments;
+using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
@@ -22,9 +24,14 @@ namespace dataprocessor.benchmarks
 
             var c = ManualConfig
                 .CreateEmpty()
-                .With(Job.ShortRun)
+                .With(new[] 
+                {
+                    Job.ShortRun.With(Runtime.Clr),
+                    //Job.ShortRun.With(Runtime.Core),
+                    Job.ShortRun.With(Runtime.Mono)
+                })
                 .With(MemoryDiagnoser.Default)
-                .With(new NullExporter())
+                .With(new HtmlExporter())
                 .With(DefaultColumnProviders.Instance)
                 .With(new QuietLogger(new ConsoleLogger()));
 
