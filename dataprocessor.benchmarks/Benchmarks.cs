@@ -28,7 +28,7 @@ namespace dataprocessor.benchmarks
                 {
                     Job.ShortRun.With(Runtime.Clr),
                     //Job.ShortRun.With(Runtime.Core),
-                    Job.ShortRun.With(Runtime.Mono)
+                    //Job.ShortRun.With(Runtime.Mono)
                 })
                 .With(MemoryDiagnoser.Default)
                 .With(new HtmlExporter())
