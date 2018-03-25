@@ -51,6 +51,8 @@
     <Compile Include="Expressions\ExpressionExtensions.cs" />
     <Compile Include="Expressions\ThrowOnPrivateMethods.cs" />
     <Compile Include="Timer.cs" />
+    <Compile Include="Maybe.cs" />
+    <Compile Include="Expressions\UnwrapConstantJusts.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />

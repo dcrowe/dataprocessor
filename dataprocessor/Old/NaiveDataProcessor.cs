@@ -175,21 +175,50 @@ namespace dataprocessor.Old
             if (_state != 0)
                 throw new Exception();
 
-            var func = processor.Compile();
             var resultListener = GetListener(nameOut);
             var parameters = processor.Parameters;
 
-            var resultAction = Expression.Lambda(
-                Expression.Call(
-                    Expression.Constant(resultListener),
-                    "Call",
-                    null,
-                    Expression.Convert(
-                        processor.Body,
-                        typeof(object))),
-                parameters);
-            
-            AddListener(resultAction, nameIn);
+            var maybeType = typeof(Maybe<>).MakeGenericType(nameOut.Type);
+            var body = processor.Body;
+
+            if (processor.ReturnType != maybeType && processor.ReturnType != nameOut.Type)
+                throw new ArgumentException();
+
+            var isMaybe = processor.ReturnType == maybeType;
+            if (isMaybe)
+            {
+                var v = Expression.Variable(maybeType, nameOut.Name);
+                var resultAction = Expression.Lambda(
+                    Expression.Block(
+                        new[] { v },
+                        Expression.Assign(v, processor.Body),
+                        Expression.IfThen(
+                            Expression.Field(v, "IsPresent"),
+                            Expression.Call(
+                                Expression.Constant(resultListener),
+                                "Call",
+                                null,
+                                Expression.Convert(
+                                    Expression.Field(processor.Body, "Value"), 
+                                    typeof(object))))),
+                    parameters);
+
+                AddListener(resultAction, nameIn); 
+            }
+            else
+            {
+                var resultAction = Expression.Lambda(
+                    Expression.Call(
+                        Expression.Constant(resultListener),
+                        "Call",
+                        null,
+                        Expression.Convert(
+                            processor.Body,
+                            typeof(object))),
+                    parameters);
+
+                AddListener(resultAction, nameIn);   
+            }
         }
 
         void IDataProcessor.Close() { _state = 2; }

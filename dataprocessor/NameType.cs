@@ -19,6 +19,6 @@ namespace dataprocessor
         public static NameType From<T>(string name) => new NameType(name, typeof(T));
 
         internal ParameterExpression AsParameter() => Expression.Parameter(Type, Name);
-        internal ParameterExpression AsVariable() => Expression.Variable(Type, Name);
+        internal ParameterExpression AsMaybeVariable() => Expression.Variable(Type.ToMaybe(), Name);
     }
 }

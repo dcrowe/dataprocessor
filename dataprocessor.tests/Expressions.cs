@@ -24,9 +24,7 @@ namespace dataprocessor.tests
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
             Console.Out.WriteLine("In: " + input.GetDebugString());
-            Console.Out.WriteLine("Out: " + actual.GetDebugString());
-
-            Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
+            AreEqual(expected, actual);
         }
 
         [Test]
@@ -50,9 +48,7 @@ namespace dataprocessor.tests
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
             Console.Out.WriteLine("In: " + input.GetDebugString());
-            Console.Out.WriteLine("Out: " + actual.GetDebugString());
-
-            Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
+            AreEqual(expected, actual);
         }
 
         [Test]
@@ -91,8 +87,12 @@ namespace dataprocessor.tests
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
             Console.Out.WriteLine("In: " + input.GetDebugString());
-            Console.Out.WriteLine("Out: " + actual.GetDebugString());
+            AreEqual(expected, actual);
+        }
 
+        private static void AreEqual(Expression expected, Expression actual)
+        {
+            Console.Out.WriteLine("Actual: " + actual.GetDebugString());
             Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
         }
 
@@ -140,5 +140,110 @@ namespace dataprocessor.tests
         private static int StaticDelegate(int i) => i + 1;
         private int InstanceDelegate(int i) => i + 2;
         private event Func<int, int> MultiDelegate;
+
+        [Test]
+        public void UnwrapJusts_Constants()
+        {
+            var v = Expression.Variable(typeof(Maybe<int>), "v");
+            var e = Expression.Block(
+                new[] { v },
+                Expression.Assign(v, Expression.Constant(Maybe<int>.Just(1))),
+                Expression.Field(v, "Value"));
+
+            var vv = Expression.Variable(typeof(int), "v");
+            var expected = Expression.Block(
+                new[] { vv },
+                Expression.Assign(vv, Expression.Constant(1)),
+                vv);
+
+            var actual = new UnwrapConstantJusts().VisitAndConvert(e, "");
+            AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void UnwrapJusts_CallsToJust()
+        {
+            var v = Expression.Variable(typeof(Maybe<int>), "v");
+            var e = Expression.Block(
+                new[] { v },
+                Expression.Assign(v, Expression.Call(
+                    typeof(Maybe<int>),
+                    "Just",
+                    null,
+                    Expression.Constant(1))),
+                Expression.Field(v, "Value"));
+
+            var vv = Expression.Variable(typeof(int), "v");
+            var expected = Expression.Block(
+                new[] { vv },
+                Expression.Assign(vv, Expression.Constant(1)),
+                vv);
+
+            var actual = new UnwrapConstantJusts().VisitAndConvert(e, "");
+            AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void UnwrapJusts_ReduceIfs()
+        {
+            var v = Expression.Variable(typeof(int), "v");
+            var e = Expression.Block(
+                new[] { v },
+                Expression.IfThen(
+                    Expression.And(
+                        Expression.Constant(true),
+                        Expression.Constant(true)),
+                    Expression.Assign(v, Expression.Constant(1))));
+
+            var expected = Expression.Block(
+                new[] { v },
+                Expression.Assign(v, Expression.Constant(1)));
+
+            var actual = new UnwrapConstantJusts().Visit(e);
+            AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void UnwrapJusts_DontReduceIncompleteIfs()
+        {
+            var b = Expression.Variable(typeof(bool), "b");
+            var v = Expression.Variable(typeof(Maybe<int>), "v");
+            var e = Expression.Block(
+                new[] { v },
+                Expression.IfThen(
+                    b,
+                    Expression.Assign(v, Expression.Constant(Maybe<int>.Just(1)))),
+                Expression.Field(v, "Value"));
+
+            var vv = Expression.Variable(typeof(int), "v");
+            var expected = e;
+
+            var actual = new UnwrapConstantJusts().VisitAndConvert(e, "");
+            AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void UnwrapJusts_DontReduceIncompleteIfs_2()
+        {
+            var b = Expression.Variable(typeof(bool), "b");
+            var v1 = Expression.Variable(typeof(Maybe<int>), "v1");
+            var v2 = Expression.Variable(typeof(Maybe<int>), "v2");
+            var e = Expression.Block(
+                new[] { v1, v2 },
+                Expression.IfThen(
+                    b,
+                    Expression.Assign(v1, Expression.Constant(Maybe<int>.Just(1)))),
+                Expression.IfThen(
+                    Expression.Field(v1, "IsPresent"),
+                    Expression.Assign(v2, v1)),
+                Expression.Field(v2, "Value"));
+
+            var vv = Expression.Variable(typeof(int), "v");
+            var expected = e;
+
+            Console.Out.WriteLine("Expected: " + e.GetDebugString());
+            var actual = new UnwrapConstantJusts().VisitAndConvert(e, "");
+            AreEqual(expected, actual);
+        }
     }
 }

@@ -66,10 +66,24 @@ namespace dataprocessor
             public readonly List<ParameterExpression> Variables = new List<ParameterExpression>();
             public readonly List<Expression> Expressions = new List<Expression>();
 
-            public ParameterExpression GetPFor(NameInfo name)
+            public Expression GetPFor(NameInfo name)
             {
-                return Parameters.FirstOrDefault(p => p.Name == name.Description.Name)
-                                 ?? Variables.First(p => p.Name == name.Description.Name);
+                Expression pp = Parameters.FirstOrDefault(p => p.Name == name.Description.Name);
+                if (pp != null)
+                    return pp;
+
+                var v = Variables.First(p => p.Name == name.Description.Name);
+                return Expression.Field(v, "Value");
+            }
+
+            public Expression GetIsPresentFor(NameInfo name)
+            {
+                Expression pp = Parameters.FirstOrDefault(p => p.Name == name.Description.Name);
+                if (pp != null)
+                    return Expression.Constant(true);
+
+                var v = Variables.First(p => p.Name == name.Description.Name);
+                return Expression.Field(v, "IsPresent");
             }
         }
 
@@ -188,6 +202,10 @@ namespace dataprocessor
             if (nameIn.Length == 0)
                 throw new ArgumentException();
 
+            var maybeType = nameOut.Type.ToMaybe();
+            if (processor.ReturnType != nameOut.Type && processor.ReturnType != maybeType)
+                throw new ArgumentException();
+            
             var nout = GetName(nameOut);
 
             // check that no parameters have multiple inputs
@@ -195,6 +213,18 @@ namespace dataprocessor
                 throw new InvalidOperationException();
             if (nout.Input != null)
                 throw new InvalidOperationException();
+
+            // lift return type to Maybe<> if required
+            if (processor.ReturnType != maybeType)
+            {
+                processor = Expression.Lambda(
+                    Expression.Call(
+                        maybeType,
+                        "Just",
+                        null,
+                        processor.Body),
+                    processor.Parameters);
+            }
 
             var ns = nameIn.Select(GetName).ToArray();
             var ni = new NodeInfo(processor, ns, nout);
@@ -280,14 +310,24 @@ namespace dataprocessor
                 if (o.Output == null)
                 {
                     var ps = o.Inputs.Select(w.GetPFor);
-                    var e = Expression.Invoke(o.Expr, ps);
+                    var ifs = o.Inputs
+                               .Select(w.GetIsPresentFor)
+                               .Aggregate(Expression.AndAlso);
+                    var e = Expression.IfThen(
+                        ifs,
+                        Expression.Invoke(o.Expr, ps));
                     w.Expressions.Add(e);
                 }
                 else
                 {
-                    var v = o.Output.Description.AsVariable();
+                    var v = o.Output.Description.AsMaybeVariable();
                     var ps = o.Inputs.Select(w.GetPFor);
-                    var e = Expression.Assign(v, Expression.Invoke(o.Expr, ps));
+                    var ifs = o.Inputs
+                               .Select(w.GetIsPresentFor)
+                               .Aggregate(Expression.AndAlso);
+                    var e = Expression.IfThen(
+                        ifs,
+                        Expression.Assign(v, Expression.Invoke(o.Expr, ps)));
                     w.Variables.Add(v);
                     w.Expressions.Add(e);
                 }
@@ -316,7 +356,7 @@ namespace dataprocessor
                 o.Output.Input = null;
                 o.Output.Writer = info;
 
-                var v = o.Output.Description.AsVariable();
+                var v = o.Output.Description.AsMaybeVariable();
                 info.Variables.Add(v);
                 expr = Expression.Assign(v, o.Expr.Body);
             }
@@ -435,6 +475,7 @@ namespace dataprocessor
         {
             expr = InlineLambdaInvocations.Visit(expr);
             expr = ImproveDelegateInvocations.Apply(expr);
+            expr = new UnwrapConstantJusts().VisitAndConvert(expr, name);
 
             try
             {

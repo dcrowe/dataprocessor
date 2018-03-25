@@ -205,6 +205,83 @@ namespace dataprocessor.tests
             Assert.AreEqual(7, _actual);
         }
 
+        [Test]
+        public void Processor_Optional()
+        {
+            var w = _b.AddInput<int>("in");
+            _b.AddProcessorExpression<int, int>(
+                "in", "out",
+                i => i == 10 ? Maybe<int>.Nothing : Maybe<int>.Just(i));
+            _b.AddListener<int>("out", SetActual);
+            _dp = _b.Build();
+
+            w.Send(1);
+            Assert.AreEqual(1, _actual);
+
+            w.Send(10);
+            Assert.AreEqual(1, _actual);
+
+            w.Send(2);
+            Assert.AreEqual(2, _actual);
+
+            w.Send(10);
+            Assert.AreEqual(2, _actual);
+        }
+
+        [Test]
+        public void Processor_Optional_Two()
+        {
+            var w1 = _b.AddInput<int>("in1");
+            var w2 = _b.AddInput<int>("in2");
+            _b.AddProcessorExpression<int, int, int>(
+                "in1", "in2", "out",
+                (i,j) => i == 0 ? Maybe<int>.Nothing : Maybe<int>.Just(j));
+            _b.AddListener<int>("out", SetActual);
+            _dp = _b.Build();
+
+            w1.Send(1);
+            w2.Send(1);
+            Assert.AreEqual(1, _actual);
+
+            w2.Send(2);
+            w1.Send(1);
+            Assert.AreEqual(2, _actual);
+
+            w1.Send(0);
+            w2.Send(3);
+            Assert.AreEqual(2, _actual);
+
+            w2.Send(4);
+            w1.Send(0);
+            Assert.AreEqual(2, _actual);
+        }
+
+        [Test]
+        public void Processor_Optional_Chained()
+        {
+            var w1 = _b.AddInput<int>("in1");
+            _b.AddProcessorExpression<int, int>(
+                "in1", "in2",
+                i => i == 10 ? Maybe<int>.Nothing : Maybe<int>.Just(i));
+            _b.AddProcessorExpression<int, int>(
+                "in2", "out",
+                i => i + 1);
+            _b.AddListener<int>("out", SetActual);
+            _dp = _b.Build();
+
+            w1.Send(1);
+            Assert.AreEqual(2, _actual);
+
+            w1.Send(2);
+            Assert.AreEqual(3, _actual);
+
+            w1.Send(10);
+            Assert.AreEqual(3, _actual);
+
+            w1.Send(11);
+            Assert.AreEqual(12, _actual);
+        }
+
         public int Add(int i, int j) => i + j;
         public int Plus1(int i) => i + 1;
         public int Plus2(int i) => i + 2;
