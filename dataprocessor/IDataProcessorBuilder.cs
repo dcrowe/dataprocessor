@@ -10,9 +10,11 @@ namespace dataprocessor
 
         void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn);
 
-        void AddListener(LambdaExpression onRceiveAction, params NameType[] nameIn);
+        void AddListener(LambdaExpression listener, params NameType[] nameIn);
 
-        IEnumerable<NameType> GetDefinedInputs();
+        IEnumerable<NameType> GetAllNames();
+
+        NameType GetName(string name);
 
         IDataProcessor Build();
     }

@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    public static partial class DataProcessorBuilderExtensions
+    public static class DataProcessorBuilderExtensions
     {
 <# 
     var max_args = 8;
@@ -65,7 +65,7 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddListenerExpression<<#=types#>>(<#=names#>, expr);
+            builder.AddListenerExpression(<#=names#>, expr);
         }
 
         public static void AddProcessorExpression<<#=types#>, TResult>(
@@ -143,7 +143,7 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddProcessorExpression<<#=types#>, TResult>(<#=names#>, nameResult, expr);
+            builder.AddProcessorExpression(<#=names#>, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<<#=types#>, TResult>(
@@ -173,7 +173,7 @@ namespace dataprocessor
                     <#=ps#>),
                 <#=ps#>);
 
-            builder.AddProcessorExpression<<#=types#>, TResult>(<#=names#>, nameResult, expr);
+            builder.AddProcessorExpression(<#=names#>, nameResult, expr);
         }
 
 <# } #>

@@ -27,7 +27,7 @@ namespace dataprocessor
         public void Stop()
         {
             _sw.Stop();
-            Console.Out.WriteLine($"{_name}: {_sw.Elapsed.TotalMilliseconds:0.##}ms");
+            Logger.WriteLine($"{_name}: {_sw.Elapsed.TotalMilliseconds:0.##}ms");
         }
 
         void IDisposable.Dispose()

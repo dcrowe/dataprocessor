@@ -138,7 +138,6 @@
     <Compile Include="Benchmarks.cs" />
     <Compile Include="Utilities\QuietLogger.cs" />
     <Compile Include="Utilities\NullExporter.cs" />
-    <Compile Include="NodeSynchronisationPrimitives.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utilities\" />

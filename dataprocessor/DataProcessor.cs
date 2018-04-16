@@ -11,7 +11,7 @@ namespace dataprocessor
             _writers = writers;
         }
 
-        void IDataProcessor.Close()
+        public void Close()
         {
             var ws = _writers;
             _writers = null;
@@ -21,6 +21,6 @@ namespace dataprocessor
                     w.Close();
         }
 
-        void IDisposable.Dispose() => ((IDataProcessor)this).Close();
+        void IDisposable.Dispose() => this.Close();
     }
 }

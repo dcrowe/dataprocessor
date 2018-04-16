@@ -163,11 +163,23 @@ namespace dataprocessor.Old
             return this;
         }
 
-        public IEnumerable<NameType> GetDefinedInputs()
+        public IEnumerable<NameType> GetAllNames()
         {
             if (_state != 0)
                 throw new Exception();
             return _listeners.Values.Select(l => l.Description);
+        }
+
+        public NameType GetName(string name)
+        {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
+            Listener l;
+            if (_listeners.TryGetValue(name, out l))
+                return l.Description;
+
+            return NameType.Empty;
         }
 
         public void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn)

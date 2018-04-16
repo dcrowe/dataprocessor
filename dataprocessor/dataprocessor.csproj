@@ -33,7 +33,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NameType.cs" />
     <Compile Include="Expressions\InlineLambdaInvocations.cs" />
-    <Compile Include="Expressions\RemoveRedundantCasts.cs" />
     <Compile Include="IDataProcessorBuilder.cs" />
     <Compile Include="Node.cs">
       <DependentUpon>Node.tt</DependentUpon>
@@ -44,7 +43,6 @@
     <Compile Include="Expressions\ImproveDelegateInvocations.cs" />
     <Compile Include="DataProcessorBuilder.cs" />
     <Compile Include="DataProcessor.cs" />
-    <Compile Include="Old\NaiveDataProcessor.cs" />
     <Compile Include="Compilers\DynamicMethodCompiler.cs" />
     <Compile Include="Compilers\ICompiler.cs" />
     <Compile Include="Compilers\MethodBuilderCompiler.cs" />
@@ -52,12 +50,20 @@
     <Compile Include="Expressions\ThrowOnPrivateMethods.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Maybe.cs" />
-    <Compile Include="Expressions\UnwrapConstantJusts.cs" />
+    <Compile Include="Old\NaiveDataProcessor.cs" />
+    <Compile Include="Collation\ICanSetAction.cs" />
+    <Compile Include="Collation\NameInfo.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Collation\ProcessorInfo.cs" />
+    <Compile Include="Collation\WriterInfo.cs" />
+    <Compile Include="Collation\WriterSetAction.cs" />
+    <Compile Include="Collation\NodeSetAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
-    <Folder Include="Old\" />
     <Folder Include="Compilers\" />
+    <Folder Include="Old\" />
+    <Folder Include="Collation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Node.tt">

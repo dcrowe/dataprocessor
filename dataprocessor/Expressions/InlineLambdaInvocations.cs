@@ -6,7 +6,7 @@ namespace dataprocessor.Expressions
 {
     public class InlineLambdaInvocations : ExpressionVisitor
     {
-        public static T Visit<T>(T expr) where T : LambdaExpression
+        public static T Visit<T>(T expr) where T : Expression
         {
             var expr2 = new InlineLambdaInvocations().VisitAndConvert(expr, nameof(Visit));
             return expr2;
@@ -26,10 +26,8 @@ namespace dataprocessor.Expressions
 
                 // save parameters for inline replacement
                 for (var ix = 0; ix < node.Arguments.Count; ix++)
-                {
                     _replacements.Add(expr.Parameters[ix], node.Arguments[ix]);
-                }
-
+                
                 return base.Visit(expr.Body);
             }
 
@@ -40,10 +38,8 @@ namespace dataprocessor.Expressions
         {
             Expression expr = null;
             if (_replacements.TryGetValue(node, out expr))
-            {
                 return expr;
-            }
-
+            
             return node;
         }
     }

@@ -287,6 +287,35 @@ namespace dataprocessor.tests
         public int Plus2(int i) => i + 2;
         public void SetActual(int i) => _actual = i;
         public void SetActual2(int i) => _actual2 = i;
+
+        [Test]
+        public void GetName()
+        {
+            Assert.Throws<ArgumentNullException>(() => _b.GetName(null));
+
+            _b.AddInput<int>("yep");
+
+            Assert.AreEqual(NameType.Empty, _b.GetName("nope"));
+            Assert.AreEqual(NameType.From<int>("yep"), _b.GetName("yep"));
+        }
+
+        [Test]
+        public void GetAllNames()
+        {
+            CollectionAssert.IsEmpty(_b.GetAllNames());
+
+            _b.AddInput<int>("a");
+            _b.AddInput<float>("b");
+            _b.AddInput<char>("c");
+
+            var expected = new[]
+            {
+                NameType.From<int>("a"),
+                NameType.From<float>("b"),
+                NameType.From<char>("c"),
+            };
+            CollectionAssert.AreEquivalent(expected, _b.GetAllNames());
+        }
     }
 
     [TestFixture]

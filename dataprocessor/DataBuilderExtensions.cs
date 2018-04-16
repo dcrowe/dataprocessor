@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    public static partial class DataProcessorBuilderExtensions
+    public static class DataProcessorBuilderExtensions
     {
         public static void AddListenerExpression<T1>(
             this IDataProcessorBuilder builder,
@@ -43,7 +43,7 @@ namespace dataprocessor
                     p1),
                 p1);
 
-            builder.AddListenerExpression<T1>(name1, expr);
+            builder.AddListenerExpression(name1, expr);
         }
 
         public static void AddProcessorExpression<T1, TResult>(
@@ -109,7 +109,7 @@ namespace dataprocessor
                     p1),
                 p1);
 
-            builder.AddProcessorExpression<T1, TResult>(name1, nameResult, expr);
+            builder.AddProcessorExpression(name1, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, TResult>(
@@ -135,7 +135,7 @@ namespace dataprocessor
                     p1),
                 p1);
 
-            builder.AddProcessorExpression<T1, TResult>(name1, nameResult, expr);
+            builder.AddProcessorExpression(name1, nameResult, expr);
         }
 
         public static void AddListenerExpression<T1, T2>(
@@ -185,7 +185,7 @@ namespace dataprocessor
                     p1, p2),
                 p1, p2);
 
-            builder.AddListenerExpression<T1, T2>(name1, name2, expr);
+            builder.AddListenerExpression(name1, name2, expr);
         }
 
         public static void AddProcessorExpression<T1, T2, TResult>(
@@ -266,7 +266,7 @@ namespace dataprocessor
                     p1, p2),
                 p1, p2);
 
-            builder.AddProcessorExpression<T1, T2, TResult>(name1, name2, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, T2, TResult>(
@@ -297,7 +297,7 @@ namespace dataprocessor
                     p1, p2),
                 p1, p2);
 
-            builder.AddProcessorExpression<T1, T2, TResult>(name1, name2, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, nameResult, expr);
         }
 
         public static void AddListenerExpression<T1, T2, T3>(
@@ -357,7 +357,7 @@ namespace dataprocessor
                     p1, p2, p3),
                 p1, p2, p3);
 
-            builder.AddListenerExpression<T1, T2, T3>(name1, name2, name3, expr);
+            builder.AddListenerExpression(name1, name2, name3, expr);
         }
 
         public static void AddProcessorExpression<T1, T2, T3, TResult>(
@@ -453,7 +453,7 @@ namespace dataprocessor
                     p1, p2, p3),
                 p1, p2, p3);
 
-            builder.AddProcessorExpression<T1, T2, T3, TResult>(name1, name2, name3, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, T2, T3, TResult>(
@@ -489,7 +489,7 @@ namespace dataprocessor
                     p1, p2, p3),
                 p1, p2, p3);
 
-            builder.AddProcessorExpression<T1, T2, T3, TResult>(name1, name2, name3, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, nameResult, expr);
         }
 
         public static void AddListenerExpression<T1, T2, T3, T4>(
@@ -559,7 +559,7 @@ namespace dataprocessor
                     p1, p2, p3, p4),
                 p1, p2, p3, p4);
 
-            builder.AddListenerExpression<T1, T2, T3, T4>(name1, name2, name3, name4, expr);
+            builder.AddListenerExpression(name1, name2, name3, name4, expr);
         }
 
         public static void AddProcessorExpression<T1, T2, T3, T4, TResult>(
@@ -670,7 +670,7 @@ namespace dataprocessor
                     p1, p2, p3, p4),
                 p1, p2, p3, p4);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, TResult>(name1, name2, name3, name4, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, T2, T3, T4, TResult>(
@@ -711,7 +711,7 @@ namespace dataprocessor
                     p1, p2, p3, p4),
                 p1, p2, p3, p4);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, TResult>(name1, name2, name3, name4, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, nameResult, expr);
         }
 
         public static void AddListenerExpression<T1, T2, T3, T4, T5>(
@@ -791,7 +791,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5),
                 p1, p2, p3, p4, p5);
 
-            builder.AddListenerExpression<T1, T2, T3, T4, T5>(name1, name2, name3, name4, name5, expr);
+            builder.AddListenerExpression(name1, name2, name3, name4, name5, expr);
         }
 
         public static void AddProcessorExpression<T1, T2, T3, T4, T5, TResult>(
@@ -917,7 +917,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5),
                 p1, p2, p3, p4, p5);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, T5, TResult>(name1, name2, name3, name4, name5, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, name5, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, T2, T3, T4, T5, TResult>(
@@ -963,7 +963,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5),
                 p1, p2, p3, p4, p5);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, T5, TResult>(name1, name2, name3, name4, name5, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, name5, nameResult, expr);
         }
 
         public static void AddListenerExpression<T1, T2, T3, T4, T5, T6>(
@@ -1053,7 +1053,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5, p6),
                 p1, p2, p3, p4, p5, p6);
 
-            builder.AddListenerExpression<T1, T2, T3, T4, T5, T6>(name1, name2, name3, name4, name5, name6, expr);
+            builder.AddListenerExpression(name1, name2, name3, name4, name5, name6, expr);
         }
 
         public static void AddProcessorExpression<T1, T2, T3, T4, T5, T6, TResult>(
@@ -1194,7 +1194,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5, p6),
                 p1, p2, p3, p4, p5, p6);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, T5, T6, TResult>(name1, name2, name3, name4, name5, name6, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, name5, name6, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, T2, T3, T4, T5, T6, TResult>(
@@ -1245,7 +1245,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5, p6),
                 p1, p2, p3, p4, p5, p6);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, T5, T6, TResult>(name1, name2, name3, name4, name5, name6, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, name5, name6, nameResult, expr);
         }
 
         public static void AddListenerExpression<T1, T2, T3, T4, T5, T6, T7>(
@@ -1345,7 +1345,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5, p6, p7),
                 p1, p2, p3, p4, p5, p6, p7);
 
-            builder.AddListenerExpression<T1, T2, T3, T4, T5, T6, T7>(name1, name2, name3, name4, name5, name6, name7, expr);
+            builder.AddListenerExpression(name1, name2, name3, name4, name5, name6, name7, expr);
         }
 
         public static void AddProcessorExpression<T1, T2, T3, T4, T5, T6, T7, TResult>(
@@ -1501,7 +1501,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5, p6, p7),
                 p1, p2, p3, p4, p5, p6, p7);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, T5, T6, T7, TResult>(name1, name2, name3, name4, name5, name6, name7, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, name5, name6, name7, nameResult, expr);
         }
 
         public static void AddProcessorMaybe<T1, T2, T3, T4, T5, T6, T7, TResult>(
@@ -1557,7 +1557,7 @@ namespace dataprocessor
                     p1, p2, p3, p4, p5, p6, p7),
                 p1, p2, p3, p4, p5, p6, p7);
 
-            builder.AddProcessorExpression<T1, T2, T3, T4, T5, T6, T7, TResult>(name1, name2, name3, name4, name5, name6, name7, nameResult, expr);
+            builder.AddProcessorExpression(name1, name2, name3, name4, name5, name6, name7, nameResult, expr);
         }
 
     }

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace dataprocessor
 {
-    [System.Diagnostics.DebuggerDisplay("{Name} : {Type}")]
+    [DebuggerDisplay("{Name} : {Type}")]
     public struct NameType
     {
         public NameType(string name, Type type)
@@ -16,9 +17,7 @@ namespace dataprocessor
         public Type Type { get; }
         public bool IsValid => !string.IsNullOrEmpty(Name) && Type != null;
 
+        public static NameType Empty => new NameType();
         public static NameType From<T>(string name) => new NameType(name, typeof(T));
-
-        internal ParameterExpression AsParameter() => Expression.Parameter(Type, Name);
-        internal ParameterExpression AsMaybeVariable() => Expression.Variable(Type.ToMaybe(), Name);
     }
 }

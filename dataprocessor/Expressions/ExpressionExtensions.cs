@@ -17,23 +17,6 @@ namespace dataprocessor.Expressions
             return dv;
         }
 
-        public static LambdaExpression EnsureReturnTypeIsVoid(this LambdaExpression expr)
-        {
-            if (expr == null)
-                throw new System.ArgumentNullException(nameof(expr));
-            if (expr.ReturnType == typeof(void))
-                return expr;
-
-            var bodyExpr = expr.Body as BlockExpression;
-            var body = bodyExpr != null
-                ? Expression.Block(typeof(void), bodyExpr?.Expressions)
-                : Expression.Block(typeof(void), expr.Body);
-
-            expr = Expression.Lambda(body, expr.Parameters);
-
-            return expr;
-        }
-
         public static void AssertNoPrivateMethods(this LambdaExpression expr)
         {
             new ThrowOnPrivateMethods().Visit(expr);
