@@ -43,7 +43,7 @@ for (var size = 1; size < 8; size++) {
         [Test]
         public void AddProcessorMaybe<#=size#>()
         {
-            _b.AddProcessor<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Maybe<int>.Just(Sum(<#=ps#>)));
+            _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Maybe<int>.Just(Sum(<#=ps#>)));
             RunAndAssert(<#=size#>);
         }
 
