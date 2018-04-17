@@ -4,3 +4,5 @@ obj
 packages
 .DS_Store
 .vs
+coverage
+coverage.xml

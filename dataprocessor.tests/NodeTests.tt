@@ -1,0 +1,96 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Linq;
+using NUnit.Framework;
+using dataprocessor;
+
+namespace dataprocessor.tests
+{
+    public class NodeTests
+    {
+        [Test]
+        public void GetTypeFor_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => Node.GetTypeFor(null));
+            Assert.Throws<ArgumentNullException>(() => Node.GetActionTypeFor(null));
+            Assert.Throws<ArgumentNullException>(() => Node.GetNodeFor(null));
+
+            Assert.Throws<ArgumentException>(() => Node.GetTypeFor(new Type[0]));
+            Assert.Throws<ArgumentException>(() => Node.GetActionTypeFor(new Type[0]));
+            Assert.Throws<ArgumentException>(() => Node.GetNodeFor(new Type[0]));
+
+            Assert.Throws<ArgumentException>(() => Node.GetTypeFor(new[] { typeof(int) }));
+            Assert.Throws<ArgumentException>(() => Node.GetActionTypeFor(new[] { typeof(int) }));
+            Assert.Throws<ArgumentException>(() => Node.GetNodeFor(new[] { typeof(int) }));
+
+            Assert.Throws<ArgumentException>(() => Node.GetTypeFor(new[] { <#=string.Join(", ", Enumerable.Repeat("typeof(int)", 65))#> }));
+            Assert.Throws<ArgumentException>(() => Node.GetActionTypeFor(new[] { <#=string.Join(", ", Enumerable.Repeat("typeof(int)", 65))#> }));
+            Assert.Throws<ArgumentException>(() => Node.GetNodeFor(new[] { <#=string.Join(", ", Enumerable.Repeat("typeof(int)", 65))#> }));
+        }
+<# 
+for (var size = 2; size <= 64; size++) {
+    var ps = string.Join(", ", Enumerable.Range(1, size).Select(s => "p" + s));
+    var plus_ps = string.Join(" + ", Enumerable.Range(1, size).Select(s => "p" + s));
+    var ints = string.Join(", ", Enumerable.Repeat("int", size));
+    var typeofs = string.Join(", ", Enumerable.Repeat("typeof(int)", size));
+#>
+
+        [Test]
+        public void GetTypeFor<#=size#>()
+        {
+            Assert.AreEqual(
+                typeof(Node<<#=ints#>>),
+                Node.GetTypeFor(new[] { <#= typeofs #> }));
+            Assert.AreEqual(
+                typeof(Node<<#=ints#>>.Action),
+                Node.GetActionTypeFor(new[] { <#= typeofs #> }));
+        }
+
+        [Test]
+        public void SetActionThrows<#=size#>()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Node<<#=ints#>>(null));
+            var n = new Node<<#=ints#>>();
+            Assert.Throws<ArgumentNullException>(() => n.SetAction(null));
+            Assert.Throws<InvalidOperationException>(() => n.Set1(0));
+        }
+
+        [Test]
+        public void SetValues<#=size#>()
+        {
+            var result = 0;
+            Node<<#=ints#>>.Action action = (<#=ps#>) => result = <#=plus_ps#>;
+
+            var n = new Node<<#=ints#>>();
+            n.SetAction(action);
+<# for(var i = 1; i <= size; i++) { #>
+            Assert.AreEqual(0, result);
+            n.Set<#=i#>(<#=i#>);
+<# } #>
+
+            Assert.AreEqual(<#= size * (size + 1) / 2 #>, result);
+        }
+
+        [Test]
+        public void SetValues_Reversed<#=size#>()
+        {
+            var result = 0;
+            Node<<#=ints#>>.Action action = (<#=ps#>) => result = <#=plus_ps#>;
+
+            var n = new Node<<#=ints#>>(action);
+<# for(var i = size; i >= 1; i--) { #>
+            Assert.AreEqual(0, result);
+            n.Set<#=i#>(<#=i#>);
+<# } #>
+
+            Assert.AreEqual(<#= size * (size + 1) / 2 #>, result);
+        }
+
+<# } #>
+    }
+}
