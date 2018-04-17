@@ -41,9 +41,23 @@ for (var size = 1; size < 8; size++) {
         }
 
         [Test]
+        public void AddProcessorMaybe<#=size#>()
+        {
+            _b.AddProcessor<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Maybe<int>.Just(Sum(<#=ps#>)));
+            RunAndAssert(<#=size#>);
+        }
+
+        [Test]
         public void AddProcessorExpression<#=size#>()
         {
             _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Sum(<#=ps#>));
+            RunAndAssert(<#=size#>);
+        }
+
+        [Test]
+        public void AddProcessorExpressionMaybe<#=size#>()
+        {
+            _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Maybe<int>.Just(Sum(<#=ps#>)));
             RunAndAssert(<#=size#>);
         }
 <# } #>

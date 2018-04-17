@@ -112,7 +112,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, TResult>(
+        public static void AddProcessor<T1, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string nameResult,
@@ -269,7 +269,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, name2, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, T2, TResult>(
+        public static void AddProcessor<T1, T2, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string name2,
@@ -456,7 +456,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, name2, name3, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, T2, T3, TResult>(
+        public static void AddProcessor<T1, T2, T3, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string name2,
@@ -673,7 +673,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, name2, name3, name4, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, T2, T3, T4, TResult>(
+        public static void AddProcessor<T1, T2, T3, T4, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string name2,
@@ -920,7 +920,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, name2, name3, name4, name5, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, T2, T3, T4, T5, TResult>(
+        public static void AddProcessor<T1, T2, T3, T4, T5, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string name2,
@@ -1197,7 +1197,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, name2, name3, name4, name5, name6, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, T2, T3, T4, T5, T6, TResult>(
+        public static void AddProcessor<T1, T2, T3, T4, T5, T6, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string name2,
@@ -1504,7 +1504,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(name1, name2, name3, name4, name5, name6, name7, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<T1, T2, T3, T4, T5, T6, T7, TResult>(
+        public static void AddProcessor<T1, T2, T3, T4, T5, T6, T7, TResult>(
             this IDataProcessorBuilder builder,
             string name1,
             string name2,

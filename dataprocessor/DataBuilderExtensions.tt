@@ -146,7 +146,7 @@ namespace dataprocessor
             builder.AddProcessorExpression(<#=names#>, nameResult, expr);
         }
 
-        public static void AddProcessorMaybe<<#=types#>, TResult>(
+        public static void AddProcessor<<#=types#>, TResult>(
             this IDataProcessorBuilder builder,
 <# foreach(var i in vs) { #>
             string name<#=i#>,
