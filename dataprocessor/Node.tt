@@ -47,25 +47,6 @@ int max_size = 64;
             }
         }
 
-        public static object GetNodeFor(Type[] parameters, Delegate action)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            var type = GetTypeFor(parameters);
-            var actionType = GetActionTypeFor(parameters);
-
-            var actionAction = action
-                .GetInvocationList()
-                .Select(d => Delegate.CreateDelegate(actionType, d.Target, d.Method))
-                .Aggregate(Delegate.Combine);
-
-            var obj = type.GetConstructor(new [] { actionType }).Invoke(new object[] { actionAction });
-            return obj;
-        }
-
         public static object GetNodeFor(Type[] parameters)
         {
             if (parameters == null)
@@ -96,7 +77,7 @@ for (var size = 2; size <= max_size; size++)
     {
         public delegate void Action(<#= parmNames #>);
 
-        private const ulong _completionMask = <#= (1ul << size) - 1 #>ul;
+        private const ulong _completionMask = <#= size != 64 ? (1ul << size) - 1 : ~0ul #>ul;
         private ulong _filled;
         private Action _action;
 <# for (var ix = 1; ix <= size; ix++) { #>
@@ -105,10 +86,7 @@ for (var size = 2; size <= max_size; size++)
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()

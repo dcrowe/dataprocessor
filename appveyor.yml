@@ -1,0 +1,29 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+cache: packages -> **\packages.config
+before_build:
+- cmd: nuget restore
+build:
+  project: dataprocessor_play.sln
+  verbosity: minimal
+test_script:
+- ps: >-
+    .\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe `
+        -register:user `
+        -target:"nunit3-console.exe" `
+        -targetargs:"-domain=single -result=TestResult.xml;format=AppVeyor dataprocessor.tests\bin\Release\dataprocessor.tests.dll" `
+        -output:".\coverage.xml" `
+        -filter:"+[dataprocessor*]* -[dataprocessor.tests*]*"
+
+    nunit3-console.exe `
+        -domain=single `
+        "-result=TestResult2.xml;format=AppVeyor" `
+        dataprocessor.benchmarks\bin\Release\dataprocessor.benchmarks.exe
+
+    .\packages\Codecov.1.0.3\tools\codecov.exe -f coverage.xml
+artifacts:
+- path: dataprocessor.benchmarks/bin/Release/BenchmarkDotNet.Artifacts/
+  name: Benchmarks
+- path: coverage/
+  name: Coverage

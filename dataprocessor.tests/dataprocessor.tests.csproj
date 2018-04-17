@@ -17,12 +17,16 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -52,6 +56,9 @@
     <Compile Include="AddProcessorOverloadTests.cs">
       <DependentUpon>AddProcessorOverloadTests.tt</DependentUpon>
     </Compile>
+    <Compile Include="NodeTests.cs">
+      <DependentUpon>NodeTests.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dataprocessor\dataprocessor.csproj">
@@ -69,6 +76,10 @@
     <None Include="AddProcessorOverloadTests.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AddProcessorOverloadTests.cs</LastGenOutput>
+    </None>
+    <None Include="NodeTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NodeTests.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

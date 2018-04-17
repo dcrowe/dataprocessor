@@ -88,7 +88,7 @@ namespace dataprocessor
             var maybeType = nameOut.Type.ToMaybe();
             if (processor.ReturnType != nameOut.Type && processor.ReturnType != maybeType)
                 throw new ArgumentException();
-            
+
             var nout = Get(nameOut);
 
             // check that no parameters have multiple inputs
@@ -96,7 +96,7 @@ namespace dataprocessor
                 throw new InvalidOperationException();
             if (nout.SourceProcessor != null)
                 throw new InvalidOperationException();
-            
+
             var ns = nameIn.Select(Get).ToArray();
             var ni = new ProcessorInfo(processor, ns, nout);
             _nodes.Add(ni);

@@ -282,25 +282,6 @@ namespace dataprocessor
             }
         }
 
-        public static object GetNodeFor(Type[] parameters, Delegate action)
-        {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            var type = GetTypeFor(parameters);
-            var actionType = GetActionTypeFor(parameters);
-
-            var actionAction = action
-                .GetInvocationList()
-                .Select(d => Delegate.CreateDelegate(actionType, d.Target, d.Method))
-                .Aggregate(Delegate.Combine);
-
-            var obj = type.GetConstructor(new [] { actionType }).Invoke(new object[] { actionAction });
-            return obj;
-        }
-
         public static object GetNodeFor(Type[] parameters)
         {
             if (parameters == null)
@@ -326,10 +307,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -385,10 +363,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -451,10 +426,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -524,10 +496,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -604,10 +573,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -691,10 +657,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -785,10 +748,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -886,10 +846,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -994,10 +951,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1109,10 +1063,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1231,10 +1182,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1360,10 +1308,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1496,10 +1441,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1639,10 +1581,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1789,10 +1728,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -1946,10 +1882,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -2110,10 +2043,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -2281,10 +2211,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -2459,10 +2386,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -2644,10 +2568,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -2836,10 +2757,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -3035,10 +2953,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -3241,10 +3156,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -3454,10 +3366,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -3674,10 +3583,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -3901,10 +3807,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -4135,10 +4038,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -4376,10 +4276,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -4624,10 +4521,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -4879,10 +4773,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -5141,10 +5032,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -5410,10 +5298,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -5686,10 +5571,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -5969,10 +5851,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -6259,10 +6138,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -6556,10 +6432,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -6860,10 +6733,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -7171,10 +7041,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -7489,10 +7356,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -7814,10 +7678,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -8146,10 +8007,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -8485,10 +8343,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -8831,10 +8686,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -9184,10 +9036,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -9544,10 +9393,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -9911,10 +9757,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -10285,10 +10128,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -10666,10 +10506,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -11054,10 +10891,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -11449,10 +11283,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -11851,10 +11682,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -12260,10 +12088,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -12676,10 +12501,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -13099,10 +12921,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -13529,10 +13348,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -13966,10 +13782,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -14410,10 +14223,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -14861,10 +14671,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -15319,10 +15126,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -15784,10 +15588,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -16256,10 +16057,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -16735,10 +16533,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
@@ -17151,7 +16946,7 @@ namespace dataprocessor
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59, T60 p60, T61 p61, T62 p62, T63 p63, T64 p64);
 
-        private const ulong _completionMask = 0ul;
+        private const ulong _completionMask = 18446744073709551615ul;
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -17221,10 +17016,7 @@ namespace dataprocessor
 
         public Node(Action action)
         {
-            if (action == null)
-                throw new ArgumentNullException(nameof(action));
-
-            _action = action;
+            SetAction(action);
         }
 
         public Node()
