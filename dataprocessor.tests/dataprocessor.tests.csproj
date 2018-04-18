@@ -59,6 +59,8 @@
     <Compile Include="NodeTests.cs">
       <DependentUpon>NodeTests.tt</DependentUpon>
     </Compile>
+    <Compile Include="MaybeTests.cs" />
+    <Compile Include="DataProcessorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dataprocessor\dataprocessor.csproj">

@@ -50,13 +50,13 @@ namespace dataprocessor
         public void AddListener(LambdaExpression listener, params NameType[] nameIn)
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
             if (listener == null)
-                throw new ArgumentException();
+                throw new ArgumentNullException();
             if (nameIn == null)
-                throw new ArgumentException();
+                throw new ArgumentNullException();
             if (nameIn.Length != listener.Parameters.Count())
-                throw new Exception();
+                throw new ArgumentException();
             if (nameIn.Length == 0)
                 throw new ArgumentException();
 
@@ -71,17 +71,17 @@ namespace dataprocessor
         public void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn)
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
             if (nameIn == null)
-                throw new ArgumentException();
+                throw new ArgumentNullException();
             if (!nameOut.IsValid)
                 throw new ArgumentException();
             if (processor == null)
-                throw new ArgumentException();
+                throw new ArgumentNullException();
             if (processor.ReturnType == typeof(void))
                 throw new ArgumentException();
             if (nameIn.Length != processor.Parameters.Count())
-                throw new Exception();
+                throw new ArgumentException();
             if (nameIn.Length == 0)
                 throw new ArgumentException();
 
@@ -170,12 +170,14 @@ namespace dataprocessor
         public IEnumerable<NameType> GetAllNames()
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
             return _names.Values.Select(l => l.Description);
         }
 
         public NameType GetName(string name)
         {
+            if (_state != 0)
+                throw new InvalidOperationException();
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 

@@ -115,13 +115,13 @@ namespace dataprocessor.Old
         public void AddListener(LambdaExpression onRceiveAction, params NameType[] nameIn)
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
             if (onRceiveAction == null)
-                throw new ArgumentException();
+                throw new ArgumentNullException();
             if (nameIn == null)
+                throw new ArgumentNullException();
+            if (nameIn.Length != onRceiveAction.Parameters.Count() || nameIn.Length == 0)
                 throw new ArgumentException();
-            if (nameIn.Length != onRceiveAction.Parameters.Count())
-                throw new Exception();
 
             var func = onRceiveAction.Compile();
             Action<object[]> resultAction = vs => func.DynamicInvoke(vs);
@@ -140,6 +140,9 @@ namespace dataprocessor.Old
 
         private Listener GetListener(NameType desc)
         {
+            if (!desc.IsValid)
+                throw new ArgumentException();
+
             Listener listener;
 
             if (!_listeners.TryGetValue(desc.Name, out listener))
@@ -158,7 +161,7 @@ namespace dataprocessor.Old
         public IDataProcessor Build()
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
             _state = 1;
             return this;
         }
@@ -166,12 +169,14 @@ namespace dataprocessor.Old
         public IEnumerable<NameType> GetAllNames()
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
             return _listeners.Values.Select(l => l.Description);
         }
 
         public NameType GetName(string name)
         {
+            if (_state != 0)
+                throw new InvalidOperationException();
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
@@ -185,7 +190,19 @@ namespace dataprocessor.Old
         public void AddProcessor(LambdaExpression processor, NameType nameOut, params NameType[] nameIn)
         {
             if (_state != 0)
-                throw new Exception();
+                throw new InvalidOperationException();
+            if (nameIn == null)
+                throw new ArgumentNullException();
+            if (!nameOut.IsValid)
+                throw new ArgumentException();
+            if (processor == null)
+                throw new ArgumentNullException();
+            if (processor.ReturnType == typeof(void))
+                throw new ArgumentException();
+            if (nameIn.Length != processor.Parameters.Count())
+                throw new ArgumentException();
+            if (nameIn.Length == 0)
+                throw new ArgumentException();
 
             var resultListener = GetListener(nameOut);
             var parameters = processor.Parameters;
@@ -195,6 +212,8 @@ namespace dataprocessor.Old
 
             if (processor.ReturnType != maybeType && processor.ReturnType != nameOut.Type)
                 throw new ArgumentException();
+
+            resultListener.AssertFirstWriter();
 
             var isMaybe = processor.ReturnType == maybeType;
             if (isMaybe)
