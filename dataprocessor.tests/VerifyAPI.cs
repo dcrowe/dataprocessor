@@ -54,8 +54,8 @@ namespace dataprocessor.tests
         public void AddListener_ArgChecks()
         {
             var a = new NameType("a", typeof(bool));
-            var e = Expression.Lambda<Action<bool>>(Expression.Block(), Expression.Parameter(typeof(bool)));
-            var e0 = Expression.Lambda<Action>(Expression.Block());
+            var e = Expression.Lambda<Action<bool>>(Expression.Empty(), Expression.Parameter(typeof(bool)));
+            var e0 = Expression.Lambda<Action>(Expression.Empty());
 
             Assert.Throws<ArgumentNullException>(() => _b.AddListener(null, a), "null expr");
             Assert.Throws<ArgumentNullException>(() => _b.AddListener(e, null), "null name");
