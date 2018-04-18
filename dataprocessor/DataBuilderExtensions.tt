@@ -12,7 +12,7 @@ namespace dataprocessor
     public static class DataProcessorBuilderExtensions
     {
 <# 
-    var max_args = 8;
+    var max_args = 17;
     for (var size = 1; size < max_args; size++) {
         var vs = Enumerable.Range(1, size).ToList();
         var types = string.Join(", ", vs.Select(i => "T" + i));
@@ -28,13 +28,13 @@ namespace dataprocessor
             Expression<Action<<#=types#>>> action)
         {
             if (builder == null)
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentNullException(nameof(builder));
             if (action == null)
-                throw new ArgumentException(nameof(action));
+                throw new ArgumentNullException(nameof(action));
 <# foreach(var i in vs) { #>
 
             if (name<#=i#> == null)
-                throw new ArgumentException(nameof(name<#=i#>));
+                throw new ArgumentNullException(nameof(name<#=i#>));
             var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
 <# } #>
 
@@ -49,13 +49,13 @@ namespace dataprocessor
             Action<<#=types#>> action)
         {
             if (builder == null)
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentNullException(nameof(builder));
             if (action == null)
-                throw new ArgumentException(nameof(action));
+                throw new ArgumentNullException(nameof(action));
 <# foreach(var i in vs) { #>
 
             if (name<#=i#> == null)
-                throw new ArgumentException(nameof(name<#=i#>));
+                throw new ArgumentNullException(nameof(name<#=i#>));
             var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), name<#=i#>);
 <# } #>
 
@@ -77,15 +77,15 @@ namespace dataprocessor
             Expression<Func<<#=types#>, TResult>> function)
         {
             if (builder == null)
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentNullException(nameof(builder));
             if (nameResult == null)
-                throw new ArgumentException(nameof(nameResult));
+                throw new ArgumentNullException(nameof(nameResult));
             if (function == null)
-                throw new ArgumentException(nameof(function));
+                throw new ArgumentNullException(nameof(function));
 <# foreach(var i in vs) { #>
 
             if (name<#=i#> == null)
-                throw new ArgumentException(nameof(name<#=i#>));
+                throw new ArgumentNullException(nameof(name<#=i#>));
             var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
 <# } #>
 
@@ -101,15 +101,15 @@ namespace dataprocessor
             Expression<Func<<#=types#>, Maybe<TResult>>> function)
         {
             if (builder == null)
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentNullException(nameof(builder));
             if (nameResult == null)
-                throw new ArgumentException(nameof(nameResult));
+                throw new ArgumentNullException(nameof(nameResult));
             if (function == null)
-                throw new ArgumentException(nameof(function));
+                throw new ArgumentNullException(nameof(function));
 <# foreach(var i in vs) { #>
 
             if (name<#=i#> == null)
-                throw new ArgumentException(nameof(name<#=i#>));
+                throw new ArgumentNullException(nameof(name<#=i#>));
             var n<#=i#> = NameType.From<T<#=i#>>(name<#=i#>);
 <# } #>
 
@@ -125,15 +125,15 @@ namespace dataprocessor
             Func<<#=types#>, TResult> function)
         {
             if (builder == null)
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentNullException(nameof(builder));
             if (nameResult == null)
-                throw new ArgumentException(nameof(nameResult));
+                throw new ArgumentNullException(nameof(nameResult));
             if (function == null)
-                throw new ArgumentException(nameof(function));
+                throw new ArgumentNullException(nameof(function));
 <# foreach(var i in vs) { #>
 
             if (name<#=i#> == null)
-                throw new ArgumentException(nameof(name<#=i#>));
+                throw new ArgumentNullException(nameof(name<#=i#>));
             var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), name<#=i#>);
 <# } #>
 
@@ -155,15 +155,15 @@ namespace dataprocessor
             Func<<#=types#>, Maybe<TResult>> function)
         {
             if (builder == null)
-                throw new ArgumentException(nameof(builder));
+                throw new ArgumentNullException(nameof(builder));
             if (nameResult == null)
-                throw new ArgumentException(nameof(nameResult));
+                throw new ArgumentNullException(nameof(nameResult));
             if (function == null)
-                throw new ArgumentException(nameof(function));
+                throw new ArgumentNullException(nameof(function));
 <# foreach(var i in vs) { #>
 
             if (name<#=i#> == null)
-                throw new ArgumentException(nameof(name<#=i#>));
+                throw new ArgumentNullException(nameof(name<#=i#>));
             var p<#=i#> = Expression.Parameter(typeof(T<#=i#>), name<#=i#>);
 <# } #>
 

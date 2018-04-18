@@ -6,6 +6,7 @@
 
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using NUnit.Framework;
 using dataprocessor;
 
@@ -27,17 +28,47 @@ namespace dataprocessor.tests
             _b.AddListener<int>("o", o => _actual = o);
         }
 <# 
-for (var size = 1; size < 8; size++) {
+for (var size = 1; size < 17; size++) {
     var ps = string.Join(", ", Enumerable.Range(1, size).Select(s => "p" + s));
     var ts = string.Join(", ", Enumerable.Repeat("int", size + 1));
+    var ts2 = string.Join(", ", Enumerable.Repeat("int", size)) + ", Maybe<int>";
     var iis = string.Join(", ", Enumerable.Repeat("I", size));
 #>
 
         [Test]
+        public void AddProcessor<#=size#>_ArgChecks()
+        {
+            Func<<#=ts#>> func = (<#=ps#>) => Sum(<#=ps#>);
+<# for(int i = 1; i <= size; i++) { 
+    var a = string.Join("", Enumerable.Repeat("I, ", i - 1));
+    var b = string.Join("", Enumerable.Repeat(", I", size - i));
+#>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
+<# } #>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, null, func));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", null));
+        }
+
+        [Test]
         public void AddProcessor<#=size#>()
         {
-            _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Sum(<#=ps#>));
+            Func<<#=ts#>> func = (<#=ps#>) => Sum(<#=ps#>);
+            _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", func);
             RunAndAssert(<#=size#>);
+        }
+
+        [Test]
+        public void AddProcessorMaybe<#=size#>_ArgChecks()
+        {
+            Func<<#=ts2#>> func = (<#=ps#>) => Maybe<int>.Just(Sum(<#=ps#>));
+<# for(int i = 1; i <= size; i++) { 
+    var a = string.Join("", Enumerable.Repeat("I, ", i - 1));
+    var b = string.Join("", Enumerable.Repeat(", I", size - i));
+#>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
+<# } #>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, null, func));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", null));
         }
 
         [Test]
@@ -48,10 +79,38 @@ for (var size = 1; size < 8; size++) {
         }
 
         [Test]
+        public void AddProcessorExpression<#=size#>_ArgChecks()
+        {
+            Expression<Func<<#=ts#>>> func = (<#=ps#>) => Sum(<#=ps#>);
+<# for(int i = 1; i <= size; i++) { 
+    var a = string.Join("", Enumerable.Repeat("I, ", i - 1));
+    var b = string.Join("", Enumerable.Repeat(", I", size - i));
+#>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
+<# } #>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, null, func));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", null));
+        }
+
+        [Test]
         public void AddProcessorExpression<#=size#>()
         {
             _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", (<#=ps#>) => Sum(<#=ps#>));
             RunAndAssert(<#=size#>);
+        }
+
+        [Test]
+        public void AddProcessorExpressionMaybe<#=size#>_ArgChecks()
+        {
+            Expression<Func<<#=ts2#>>> func = (<#=ps#>) => Sum(<#=ps#>);
+<# for(int i = 1; i <= size; i++) { 
+    var a = string.Join("", Enumerable.Repeat("I, ", i - 1));
+    var b = string.Join("", Enumerable.Repeat(", I", size - i));
+#>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
+<# } #>
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, null, func));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", null));
         }
 
         [Test]

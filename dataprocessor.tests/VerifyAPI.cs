@@ -48,8 +48,8 @@ namespace dataprocessor.tests
         [Test]
         public void AddListener_ArgChecks()
         {
-            Assert.Throws<ArgumentException>(() => _b.AddListener<int>(null, _ => { }), "null name");
-            Assert.Throws<ArgumentException>(() => _b.AddListener<int>("bob", null), "null action");
+            Assert.Throws<ArgumentNullException>(() => _b.AddListener<int>(null, _ => { }), "null name");
+            Assert.Throws<ArgumentNullException>(() => _b.AddListener<int>("bob", null), "null action");
 
             Assert.DoesNotThrow(() => _b.AddListener<int>("bob", _ => { }), "success once");
             Assert.DoesNotThrow(() => _b.AddListener<int>("bob", _ => { }), "success twice");

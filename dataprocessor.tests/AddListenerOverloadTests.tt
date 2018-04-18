@@ -6,6 +6,7 @@
 
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using NUnit.Framework;
 using dataprocessor;
 
@@ -26,17 +27,43 @@ namespace dataprocessor.tests
             _i = _b.AddInput<int>(I);
         }
 <# 
-for (var size = 1; size < 8; size++) {
+for (var size = 1; size < 17; size++) {
     var ps = string.Join(", ", Enumerable.Range(1, size).Select(s => "p" + s));
     var ts = string.Join(", ", Enumerable.Repeat("int", size));
     var iis = string.Join(", ", Enumerable.Repeat("I", size));
 #>
 
         [Test]
+        public void AddListener<#=size#>_ArgChecks()
+        {
+            Action<<#=ts#>> func = (<#=ps#>) => Sum(<#=ps#>);
+<# for(int i = 1; i <= size; i++) { 
+    var a = string.Join("", Enumerable.Repeat("I, ", i - 1));
+    var b = string.Join("", Enumerable.Repeat(", I", size - i));
+#>
+            Assert.Throws<ArgumentNullException>(() => _b.AddListener<<#=ts#>>(<#=a#>null<#=b#>, func));
+<# } #>
+            Assert.Throws<ArgumentNullException>(() => _b.AddListener<<#=ts#>>(<#=iis#>, null));
+        }
+
+        [Test]
         public void AddListener<#=size#>()
         {
             _b.AddListener<<#=ts#>>(<#=iis#>, (<#=ps#>) => Sum(<#=ps#>));
             RunAndAssert(<#=size#>);
+        }
+
+        [Test]
+        public void AddListenerExpression<#=size#>_ArgChecks()
+        {
+            Expression<Action<<#=ts#>>> func = (<#=ps#>) => Sum(<#=ps#>);
+<# for(int i = 1; i <= size; i++) { 
+    var a = string.Join("", Enumerable.Repeat("I, ", i - 1));
+    var b = string.Join("", Enumerable.Repeat(", I", size - i));
+#>
+            Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<<#=ts#>>(<#=a#>null<#=b#>, func));
+<# } #>
+            Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<<#=ts#>>(<#=iis#>, null));
         }
 
         [Test]
