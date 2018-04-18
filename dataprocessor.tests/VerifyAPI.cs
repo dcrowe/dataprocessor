@@ -2,6 +2,7 @@
 using System;
 using dataprocessor.Compilers;
 using dataprocessor.Old;
+using System.Linq.Expressions;
 
 namespace dataprocessor.tests
 {
@@ -43,17 +44,64 @@ namespace dataprocessor.tests
 
             Assert.Throws<InvalidOperationException>(() => _b.AddInput<bool>("c"), "reject twice");
             Assert.Throws<InvalidOperationException>(() => _b.AddInput<int>("c"), "reject thrice");
+
+            _dp = _b.Build();
+
+            Assert.Throws<InvalidOperationException>(() => _b.AddInput<bool>("d"), "after build");
         }
 
         [Test]
         public void AddListener_ArgChecks()
         {
-            Assert.Throws<ArgumentNullException>(() => _b.AddListener<int>(null, _ => { }), "null name");
-            Assert.Throws<ArgumentNullException>(() => _b.AddListener<int>("bob", null), "null action");
+            var a = new NameType("a", typeof(bool));
+            var e = Expression.Lambda<Action<bool>>(Expression.Block(), Expression.Parameter(typeof(bool)));
+            var e0 = Expression.Lambda<Action>(Expression.Block());
+
+            Assert.Throws<ArgumentNullException>(() => _b.AddListener(null, a), "null expr");
+            Assert.Throws<ArgumentNullException>(() => _b.AddListener(e, null), "null name");
+            Assert.Throws<ArgumentException>(() => _b.AddListener(e0), "empty name");
+            Assert.Throws<ArgumentException>(() => _b.AddListener(e, a, a), "wrong name count");
 
             Assert.DoesNotThrow(() => _b.AddListener<int>("bob", _ => { }), "success once");
             Assert.DoesNotThrow(() => _b.AddListener<int>("bob", _ => { }), "success twice");
             Assert.DoesNotThrow(() => _b.AddListener<int>("bob", _ => { }), "success thrice");
+
+            _dp = _b.Build();
+            Assert.Throws<InvalidOperationException>(() => _b.AddListener<bool>("bob", _ => { }), "after build");
+        }
+
+        [Test]
+        public void AddProcessor_ArgChecks()
+        {
+            var a = new NameType("a", typeof(bool));
+            var b = new NameType("b", typeof(bool));
+            var c = new NameType("c", typeof(bool));
+            var d = new NameType("d", typeof(bool));
+            var e1 = (Expression<Func<bool, bool>>)(v => v);
+            var e2 = (Expression<Func<bool, bool, bool>>)((v1, v2) => v1);
+
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor(null, a, b), "null expr");
+            Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, NameType.Empty, a), "invalid out");
+            Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, b, NameType.Empty), "invalid in");
+            Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, a), "empty in");
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor(e1, a, null), "null in");
+            Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, a, a, b), "wrong name count");
+
+            _b.AddProcessor(e1, a, b);
+            Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, a, b), "output defined");
+
+            _b.AddInput<bool>("d");
+            Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, d, c), "output defined 2");
+
+            _dp = _b.Build();
+            Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, c, d), "after build");
+        }
+
+        [Test]
+        public void Build_ArgChecks() 
+        {
+            _b.Build();
+            Assert.Throws<InvalidOperationException>(() => _b.Build());
         }
 
         [Test]
@@ -297,6 +345,9 @@ namespace dataprocessor.tests
 
             Assert.AreEqual(NameType.Empty, _b.GetName("nope"));
             Assert.AreEqual(NameType.From<int>("yep"), _b.GetName("yep"));
+
+            _dp = _b.Build();
+            Assert.Throws<InvalidOperationException>(() => _b.GetName("a"));
         }
 
         [Test]
@@ -315,6 +366,9 @@ namespace dataprocessor.tests
                 NameType.From<char>("c"),
             };
             CollectionAssert.AreEquivalent(expected, _b.GetAllNames());
+
+            _dp = _b.Build();
+            Assert.Throws<InvalidOperationException>(() => _b.GetAllNames());
         }
     }
 
@@ -330,6 +384,12 @@ namespace dataprocessor.tests
     {
         protected override IDataProcessorBuilder GetBuilder() =>
             new DataProcessorBuilder();
+
+        [Test]
+        public void Constructor_ArgChecks() 
+        {
+            Assert.Throws<ArgumentNullException>(() => new DataProcessorBuilder(null));
+        }
     }
 
     [TestFixture]

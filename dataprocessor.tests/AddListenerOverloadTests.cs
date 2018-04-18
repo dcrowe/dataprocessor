@@ -28,6 +28,7 @@ namespace dataprocessor.tests
             Action<int> func = (p1) => Sum(p1);
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int>(null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int>(I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, func));
         }
 
         [Test]
@@ -43,6 +44,7 @@ namespace dataprocessor.tests
             Expression<Action<int>> func = (p1) => Sum(p1);
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int>(null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int>(I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, func));
         }
 
         [Test]
@@ -59,6 +61,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int>(null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int>(I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int>(I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, func));
         }
 
         [Test]
@@ -75,6 +78,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int>(null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int>(I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int>(I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, func));
         }
 
         [Test]
@@ -92,6 +96,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int>(I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int>(I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int>(I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, func));
         }
 
         [Test]
@@ -109,6 +114,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int>(I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int>(I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int>(I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, func));
         }
 
         [Test]
@@ -127,6 +133,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int>(I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int>(I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int>(I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, func));
         }
 
         [Test]
@@ -145,6 +152,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int>(I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int>(I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int>(I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, func));
         }
 
         [Test]
@@ -164,6 +172,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int>(I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int>(I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int>(I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, func));
         }
 
         [Test]
@@ -183,6 +192,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int>(I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int>(I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int>(I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, func));
         }
 
         [Test]
@@ -203,6 +213,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int>(I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int>(I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int>(I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -223,6 +234,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int>(I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int>(I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int>(I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -244,6 +256,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int>(I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int>(I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -265,6 +278,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int>(I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -287,6 +301,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -309,6 +324,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -332,6 +348,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -355,6 +372,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -379,6 +397,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -403,6 +422,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -428,6 +448,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -453,6 +474,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -479,6 +501,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -505,6 +528,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -532,6 +556,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -559,6 +584,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -587,6 +613,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -615,6 +642,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -644,6 +672,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -673,6 +702,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -703,6 +733,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]
@@ -733,6 +764,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, func));
         }
 
         [Test]

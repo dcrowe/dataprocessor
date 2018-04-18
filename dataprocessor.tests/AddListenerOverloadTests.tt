@@ -44,6 +44,7 @@ for (var size = 1; size < 17; size++) {
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<<#=ts#>>(<#=a#>null<#=b#>, func));
 <# } #>
             Assert.Throws<ArgumentNullException>(() => _b.AddListener<<#=ts#>>(<#=iis#>, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListener(null, <#=iis#>, func));
         }
 
         [Test]
@@ -64,6 +65,7 @@ for (var size = 1; size < 17; size++) {
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<<#=ts#>>(<#=a#>null<#=b#>, func));
 <# } #>
             Assert.Throws<ArgumentNullException>(() => _b.AddListenerExpression<<#=ts#>>(<#=iis#>, null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddListenerExpression(null, <#=iis#>, func));
         }
 
         [Test]

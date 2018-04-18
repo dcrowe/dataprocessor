@@ -46,7 +46,8 @@ for (var size = 1; size < 17; size++) {
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
 <# } #>
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", (Func<<#=ts#>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, <#=iis#>, "o", func));
         }
 
         [Test]
@@ -68,7 +69,8 @@ for (var size = 1; size < 17; size++) {
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
 <# } #>
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<<#=ts#>>(<#=iis#>, "o", (Func<<#=ts2#>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, <#=iis#>, "o", func));
         }
 
         [Test]
@@ -89,7 +91,8 @@ for (var size = 1; size < 17; size++) {
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
 <# } #>
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", (Expression<Func<<#=ts#>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, <#=iis#>, "o", func));
         }
 
         [Test]
@@ -110,7 +113,8 @@ for (var size = 1; size < 17; size++) {
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=a#>null<#=b#>, "o", func));
 <# } #>
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<<#=ts#>>(<#=iis#>, "o", (Expression<Func<<#=ts2#>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, <#=iis#>, "o", func));
         }
 
         [Test]

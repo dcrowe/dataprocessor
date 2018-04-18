@@ -29,7 +29,8 @@ namespace dataprocessor.tests
             Func<int, int> func = (p1) => Sum(p1);
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(I, "o", (Func<int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, "o", func));
         }
 
         [Test]
@@ -46,7 +47,8 @@ namespace dataprocessor.tests
             Func<int, Maybe<int>> func = (p1) => Maybe<int>.Just(Sum(p1));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int>(I, "o", (Func<int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, "o", func));
         }
 
         [Test]
@@ -62,7 +64,8 @@ namespace dataprocessor.tests
             Expression<Func<int, int>> func = (p1) => Sum(p1);
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(I, "o", (Expression<Func<int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, "o", func));
         }
 
         [Test]
@@ -78,7 +81,8 @@ namespace dataprocessor.tests
             Expression<Func<int, Maybe<int>>> func = (p1) => Sum(p1);
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int>(I, "o", (Expression<Func<int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, "o", func));
         }
 
         [Test]
@@ -95,7 +99,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, I, "o", (Func<int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, "o", func));
         }
 
         [Test]
@@ -113,7 +118,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int>(I, I, "o", (Func<int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, "o", func));
         }
 
         [Test]
@@ -130,7 +136,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, I, "o", (Expression<Func<int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, "o", func));
         }
 
         [Test]
@@ -147,7 +154,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int>(I, I, "o", (Expression<Func<int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, "o", func));
         }
 
         [Test]
@@ -165,7 +173,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, I, "o", (Func<int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, "o", func));
         }
 
         [Test]
@@ -184,7 +193,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int>(I, I, I, "o", (Func<int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, "o", func));
         }
 
         [Test]
@@ -202,7 +212,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, I, "o", (Expression<Func<int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, "o", func));
         }
 
         [Test]
@@ -220,7 +231,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int>(I, I, I, "o", (Expression<Func<int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, "o", func));
         }
 
         [Test]
@@ -239,7 +251,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, I, "o", (Func<int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -259,7 +272,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int>(I, I, I, I, "o", (Func<int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -278,7 +292,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, I, "o", (Expression<Func<int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -297,7 +312,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int>(I, I, I, I, "o", (Expression<Func<int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -317,7 +333,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, I, "o", (Func<int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -338,7 +355,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int>(I, I, I, I, I, "o", (Func<int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -358,7 +376,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -378,7 +397,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int>(I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -399,7 +419,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -421,7 +442,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -442,7 +464,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -463,7 +486,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int>(I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -485,7 +509,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -508,7 +533,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -530,7 +556,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -552,7 +579,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -575,7 +603,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -599,7 +628,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -622,7 +652,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -645,7 +676,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -669,7 +701,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -694,7 +727,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -718,7 +752,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -742,7 +777,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -767,7 +803,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -793,7 +830,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -818,7 +856,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -843,7 +882,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -869,7 +909,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -896,7 +937,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -922,7 +964,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -948,7 +991,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -975,7 +1019,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1003,7 +1048,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1030,7 +1076,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1057,7 +1104,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1085,7 +1133,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1114,7 +1163,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1142,7 +1192,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1170,7 +1221,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1199,7 +1251,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1229,7 +1282,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1258,7 +1312,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1287,7 +1342,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1317,7 +1373,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1348,7 +1405,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1378,7 +1436,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1408,7 +1467,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1439,7 +1499,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1471,7 +1532,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessor<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessor(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1502,7 +1564,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
@@ -1533,7 +1596,8 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, I, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, "o", func));
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, null, func));
-            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", null));
+            Assert.Throws<ArgumentNullException>(() => _b.AddProcessorExpression<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int>(I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", (Expression<Func<int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, Maybe<int>>>)null));
+            Assert.Throws<ArgumentNullException>(() => DataProcessorBuilderExtensions.AddProcessorExpression(null, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, "o", func));
         }
 
         [Test]
