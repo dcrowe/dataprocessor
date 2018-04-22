@@ -17,7 +17,12 @@ namespace dataprocessor
         public Type Type { get; }
         public bool IsValid => !string.IsNullOrEmpty(Name) && Type != null;
 
-        public static NameType Empty => new NameType();
+		public override string ToString()
+		{
+            return $"({Name} : {Type})";
+		}
+
+		public static NameType Empty => new NameType();
         public static NameType From<T>(string name) => new NameType(name, typeof(T));
     }
 }

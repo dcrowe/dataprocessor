@@ -7,11 +7,10 @@ namespace dataprocessor
     {
         public static Timer Step(string name)
         {
-#if DEBUG
-            return new Timer(name);
-#else   
-            return null;
-#endif
+            if (Log.IsVerbose)
+                return new Timer(name);
+            else
+                return null;
         }
 
         private readonly string _name;
@@ -24,15 +23,10 @@ namespace dataprocessor
             _sw.Start();
         }
 
-        public void Stop()
-        {
-            _sw.Stop();
-            Logger.WriteLine($"{_name}: {_sw.Elapsed.TotalMilliseconds:0.##}ms");
-        }
-
         void IDisposable.Dispose()
         {
-            Stop();  
+            _sw.Stop();
+            Log.Verbose($"{_name}: {_sw.Elapsed.TotalMilliseconds:0.##}ms");
         }
     }
 }

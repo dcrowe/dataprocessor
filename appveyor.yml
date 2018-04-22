@@ -15,12 +15,12 @@ test_script:
         -targetargs:"-domain=single -result=TestResult.xml;format=AppVeyor dataprocessor.tests\bin\Release\dataprocessor.tests.dll" `
         -output:".\coverage.xml" `
         -filter:"+[dataprocessor*]* -[dataprocessor.tests*]*"
-
+- ps: >-
     nunit3-console.exe `
         -domain=single `
         "-result=TestResult2.xml;format=AppVeyor" `
         dataprocessor.benchmarks\bin\Release\dataprocessor.benchmarks.exe
-
+- ps: >-
     .\packages\Codecov.1.0.3\tools\codecov.exe -f coverage.xml
 artifacts:
 - path: dataprocessor.benchmarks/bin/Release/BenchmarkDotNet.Artifacts/

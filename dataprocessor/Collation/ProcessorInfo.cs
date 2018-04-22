@@ -64,7 +64,8 @@ namespace dataprocessor.Collation
                 throw new ArgumentNullException(nameof(nodes));
             
             var todo = nodes.ToList();
-            var trunks = new Queue<ProcessorInfo>(todo.Where(n => n.Output == null));
+            var trunks = new Queue<ProcessorInfo>(todo.Where(n =>
+                 n.Output == null || !n.Output.Consumers.Any()));
             var reverseResult = new List<ProcessorInfo>(todo.Count);
             var seen = new HashSet<ProcessorInfo>(todo);
 
@@ -82,19 +83,21 @@ namespace dataprocessor.Collation
                         trunks.Enqueue(dep.SourceProcessor);
             }
 
-            var missed = todo.Except(seen).FirstOrDefault();
+            var missed = todo.Except(reverseResult).FirstOrDefault();
             if (missed != null)
-                throw new InvalidOperationException($"Processor '{missed}' cannot be satisfied.");
+                throw new InvalidOperationException($"Processor '{missed.Name}' cannot be satisfied.");
 
             reverseResult.Reverse();
 
-            Logger.WriteLine($"SortDependenciesFirst: {string.Join(", ", reverseResult)}");
+            if (Log.IsVerbose)
+                Log.Verbose($"In Dependency Order: {string.Join(", ", reverseResult)}");
+            
             return reverseResult;
         }
 
         public IEnumerable<ProcessorInfo> Split(out WriterInfo info)
         {
-            Logger.WriteLine($"Splitting: {Name}");
+            Log.Verbose($"Splitting: {Name}");
 
             // create node to hold state
             var types = Inputs.Select(i => i.Description.Type).ToArray();
