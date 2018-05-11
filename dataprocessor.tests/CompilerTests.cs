@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace dataprocessor.tests
 {
-    public abstract class VerifyCompiler
+    public abstract class CompilerTests
     {
         private ICompiler _c;
 
@@ -69,7 +69,7 @@ namespace dataprocessor.tests
                 var e = Expression.Lambda(
                     typeof(Func<int, int>),
                     Expression.Call(
-                        typeof(VerifyCompiler),
+                        typeof(CompilerTests),
                         "PrivateMethod",
                         null,
                         p),
@@ -91,7 +91,7 @@ namespace dataprocessor.tests
 
     }
 
-    public class VerifyDynamicMethodCompiler : VerifyCompiler
+    public class DynamicMethodCompilerTests : CompilerTests
     {
         protected override ICompiler GetCompiler()
         {
@@ -99,7 +99,7 @@ namespace dataprocessor.tests
         }
     }
 
-    public class VerifyMethodBuilderCompiler : VerifyCompiler
+    public class MethodBuilderCompilerTests : CompilerTests
     {
         protected override ICompiler GetCompiler()
         {

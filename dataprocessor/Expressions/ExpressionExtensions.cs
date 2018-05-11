@@ -13,6 +13,7 @@ namespace dataprocessor.Expressions
 
         public static string GetDebugString(this Expression expr)
         {
+            if (expr == null) return "";
             var dv = (string)_debugViewProperty.GetValue(expr);
             return dv;
         }

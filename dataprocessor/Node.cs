@@ -327,10 +327,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2);
@@ -383,10 +382,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3);
@@ -446,10 +444,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4);
@@ -516,10 +513,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5);
@@ -593,10 +589,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6);
@@ -677,10 +672,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7);
@@ -768,10 +762,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8);
@@ -866,10 +859,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9);
@@ -971,10 +963,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10);
@@ -1083,10 +1074,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11);
@@ -1202,10 +1192,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12);
@@ -1328,10 +1317,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13);
@@ -1461,10 +1449,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14);
@@ -1601,10 +1588,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15);
@@ -1748,10 +1734,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16);
@@ -1902,10 +1887,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17);
@@ -2063,10 +2047,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18);
@@ -2231,10 +2214,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19);
@@ -2406,10 +2388,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20);
@@ -2588,10 +2569,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21);
@@ -2777,10 +2757,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22);
@@ -2973,10 +2952,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23);
@@ -3176,10 +3154,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24);
@@ -3386,10 +3363,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25);
@@ -3603,10 +3579,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26);
@@ -3827,10 +3802,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27);
@@ -4058,10 +4032,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28);
@@ -4296,10 +4269,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29);
@@ -4541,10 +4513,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30);
@@ -4793,10 +4764,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31);
@@ -5052,10 +5022,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32);
@@ -5318,10 +5287,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33);
@@ -5591,10 +5559,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34);
@@ -5871,10 +5838,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35);
@@ -6158,10 +6124,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36);
@@ -6452,10 +6417,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37);
@@ -6753,10 +6717,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38);
@@ -7061,10 +7024,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39);
@@ -7376,10 +7338,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40);
@@ -7698,10 +7659,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41);
@@ -8027,10 +7987,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42);
@@ -8363,10 +8322,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43);
@@ -8706,10 +8664,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44);
@@ -9056,10 +9013,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45);
@@ -9413,10 +9369,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46);
@@ -9777,10 +9732,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47);
@@ -10148,10 +10102,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48);
@@ -10526,10 +10479,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49);
@@ -10911,10 +10863,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50);
@@ -11303,10 +11254,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51);
@@ -11702,10 +11652,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52);
@@ -12108,10 +12057,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53);
@@ -12521,10 +12469,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54);
@@ -12941,10 +12888,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55);
@@ -13368,10 +13314,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56);
@@ -13802,10 +13747,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57);
@@ -14243,10 +14187,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58);
@@ -14691,10 +14634,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59);
@@ -15146,10 +15088,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60);
@@ -15608,10 +15549,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61);
@@ -16077,10 +16017,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62);
@@ -16553,10 +16492,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63);
@@ -17036,10 +16974,9 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64);

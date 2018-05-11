@@ -6,12 +6,12 @@ using System.Linq.Expressions;
 
 namespace dataprocessor.tests
 {
-    public abstract class VerifyAPI
+    public abstract class DataProcessorBuilderTests
     {
-        private IDataProcessorBuilder _b;
-        private IDataProcessor _dp;
-        private int _actual;
-        private int _actual2;
+        protected IDataProcessorBuilder _b;
+        protected IDataProcessor _dp;
+        protected int _actual;
+        protected int _actual2;
 
         protected abstract IDataProcessorBuilder GetBuilder();
 
@@ -77,6 +77,9 @@ namespace dataprocessor.tests
             var b = new NameType("b", typeof(bool));
             var c = new NameType("c", typeof(bool));
             var d = new NameType("d", typeof(bool));
+            var e = new NameType("e", typeof(bool));
+            var f = new NameType("f", typeof(bool));
+            var e0 = Expression.Lambda(Expression.Empty(), Expression.Parameter(typeof(bool)));
             var e1 = (Expression<Func<bool, bool>>)(v => v);
             var e2 = (Expression<Func<bool, bool, bool>>)((v1, v2) => v1);
 
@@ -86,15 +89,18 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, a), "empty in");
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor(e1, a, null), "null in");
             Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, a, a, b), "wrong name count");
+            Assert.Throws<ArgumentException>(() => _b.AddProcessor(e0, a, b), "void return type");
 
             _b.AddProcessor(e1, a, b);
+            _b.AddListener(e1, a);
             Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, a, b), "output defined");
 
             _b.AddInput<bool>("d");
             Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, d, c), "output defined 2");
 
             _dp = _b.Build();
-            Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, c, d), "after build");
+
+            Assert.Throws<InvalidOperationException>(() => _b.AddProcessor(e1, e, f), "after build");
         }
 
         [Test]
@@ -174,6 +180,17 @@ namespace dataprocessor.tests
             _dp = _b.Build();
             w.Send(1);
             w.Send(2);
+        }
+
+        [Test]
+        public void Processor_Without_Listener()
+        {
+            var w = _b.AddInput<int>("in");
+            _b.AddProcessor<int, int>("in", "out", SetActualAndReturn);
+            _dp = _b.Build();
+
+            w.Send(32);
+            Assert.AreEqual(32, _actual);
         }
 
         [Test]
@@ -335,6 +352,7 @@ namespace dataprocessor.tests
         public int Plus2(int i) => i + 2;
         public void SetActual(int i) => _actual = i;
         public void SetActual2(int i) => _actual2 = i;
+        public int SetActualAndReturn(int i) => _actual = i;
 
         [Test]
         public void GetName()
@@ -373,14 +391,14 @@ namespace dataprocessor.tests
     }
 
     [TestFixture]
-    public class Naive : VerifyAPI
+    public class NaiveDataProcessorTests : DataProcessorBuilderTests
     {
         protected override IDataProcessorBuilder GetBuilder() =>
             new NaiveDataProcessor();
     }
 
     [TestFixture]
-    public class Actual_DynamicMethod : VerifyAPI
+    public class DataProcessorBuilder_With_DynamicMethodCompiler : DataProcessorBuilderTests
     {
         protected override IDataProcessorBuilder GetBuilder() =>
             new DataProcessorBuilder();
@@ -390,10 +408,20 @@ namespace dataprocessor.tests
         {
             Assert.Throws<ArgumentNullException>(() => new DataProcessorBuilder(null));
         }
+
+        [Test]
+        public void Should_Throw_On_Circular_Dependencies()
+        {
+            _b.AddProcessor("a", "b", (int a) => a + 1);
+            _b.AddProcessor("b", "c", (int a) => a + 1);
+            _b.AddProcessor("c", "a", (int a) => a + 1);
+
+            Assert.Throws<InvalidOperationException>(() => _dp = _b.Build());
+        }
     }
 
     [TestFixture]
-    public class Actual_MethodBuilder : VerifyAPI
+    public class DataProcessorBuilder_With_MethodBuilderCompiler : DataProcessorBuilderTests
     {
         protected override IDataProcessorBuilder GetBuilder() =>
             new DataProcessorBuilder(new MethodBuilderCompiler());

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace dataprocessor.tests
 {
-    public class Expressions
+    public class ExpressionTests
     {
         [Test]
         public void InlineLambdas_Single()
@@ -20,10 +20,8 @@ namespace dataprocessor.tests
                     p),
                 p);
             var actual = InlineLambdaInvocations.Visit(input);
-
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
-            Console.Out.WriteLine("In: " + input.GetDebugString());
             AreEqual(expected, actual);
         }
 
@@ -44,10 +42,8 @@ namespace dataprocessor.tests
                     p),
                 p);
             var actual = InlineLambdaInvocations.Visit(input);
-
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
-            Console.Out.WriteLine("In: " + input.GetDebugString());
             AreEqual(expected, actual);
         }
 
@@ -86,13 +82,11 @@ namespace dataprocessor.tests
             var actual = InlineLambdaInvocations.Visit(input);
             var expected = Expression.Lambda(Expression.Add(p, p), p);
 
-            Console.Out.WriteLine("In: " + input.GetDebugString());
             AreEqual(expected, actual);
         }
 
         private static void AreEqual(Expression expected, Expression actual)
         {
-            Console.Out.WriteLine("Actual: " + actual.GetDebugString());
             Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
         }
 
@@ -100,7 +94,7 @@ namespace dataprocessor.tests
         public void ImproveDelegateInvocation_Static_Single()
         {
             var expected = Expression.Lambda<Func<int>>(Expression.Call(
-                typeof(Expressions),
+                typeof(ExpressionTests),
                 "StaticDelegate",
                 null,
                 Expression.Constant(1)));
@@ -119,7 +113,7 @@ namespace dataprocessor.tests
                 Expression.Block(
                     new[] { v },
                     Expression.Assign(v, Expression.Constant(1)),
-                    Expression.Call(typeof(Expressions), "StaticDelegate", null, v),
+                    Expression.Call(typeof(ExpressionTests), "StaticDelegate", null, v),
                     Expression.Call(Expression.Constant(this), "InstanceDelegate", null, v)));
 
             AssertAreEqual(MultiDelegate, expected);
@@ -133,7 +127,6 @@ namespace dataprocessor.tests
                     Expression.Constant(1)));
 
             var actual = ImproveDelegateInvocations.Apply(orig);
-            Console.Out.WriteLine(actual.GetDebugString());
             Assert.AreEqual(expected.GetDebugString(), actual.GetDebugString());
         }
 

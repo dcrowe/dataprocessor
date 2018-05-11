@@ -39,6 +39,9 @@ namespace dataprocessor
             if (n.SourceWriter != null)
                 throw new InvalidOperationException();
 
+            if (Log.IsInfo)
+                Log.Info($"AddInput: {name}, {typeof(T)}");
+
             var w = new WriterSetAction<T>();
             var wi = new WriterInfo(name, w, n);
             _writers.Add(wi);
@@ -59,6 +62,11 @@ namespace dataprocessor
                 throw new ArgumentException();
             if (nameIn.Length == 0)
                 throw new ArgumentException();
+
+            if (Log.IsInfo)
+                Log.Info($"AddListener: {string.Join(", ", nameIn)}");
+            if (Log.IsVerbose)
+                Log.Verbose("Expression", listener);
 
             var ns = nameIn.Select(Get).ToArray();
             var ni = new ProcessorInfo(listener, ns, null);
@@ -96,6 +104,11 @@ namespace dataprocessor
                 throw new InvalidOperationException();
             if (nout.SourceProcessor != null)
                 throw new InvalidOperationException();
+            
+            if (Log.IsInfo)
+                Log.Info($"AddProcessor: {nameOut} - {string.Join(", ", nameIn)}");
+            if (Log.IsVerbose)
+                Log.Verbose("Expression", processor);
 
             var ns = nameIn.Select(Get).ToArray();
             var ni = new ProcessorInfo(processor, ns, nout);
@@ -143,7 +156,10 @@ namespace dataprocessor
 
                     // no source writer, then nothing to do
                     if (w == null)
+                    {
+                        Log.Warn($"No source writer for: {o.Name}");
                         continue;
+                    }
 
                     // add it to the writer
                     w.Append(o);
@@ -153,7 +169,9 @@ namespace dataprocessor
                 foreach (var w in _writers)
                 {
                     var expr = w.GetFinalLambda();
-                    Logger.WriteLine(w.Name, expr);
+
+                    if (Log.IsVerbose)
+                        Log.Verbose($"Compiling writer: {w.Name}", expr);
 
                     var action = _compiler.Compile(w.Name, expr);
                     w.Writer.SetAction(action);
