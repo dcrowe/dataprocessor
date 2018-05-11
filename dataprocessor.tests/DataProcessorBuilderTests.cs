@@ -79,6 +79,7 @@ namespace dataprocessor.tests
             var d = new NameType("d", typeof(bool));
             var e = new NameType("e", typeof(bool));
             var f = new NameType("f", typeof(bool));
+            var e0 = Expression.Lambda(Expression.Empty(), Expression.Parameter(typeof(bool)));
             var e1 = (Expression<Func<bool, bool>>)(v => v);
             var e2 = (Expression<Func<bool, bool, bool>>)((v1, v2) => v1);
 
@@ -88,6 +89,7 @@ namespace dataprocessor.tests
             Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, a), "empty in");
             Assert.Throws<ArgumentNullException>(() => _b.AddProcessor(e1, a, null), "null in");
             Assert.Throws<ArgumentException>(() => _b.AddProcessor(e1, a, a, b), "wrong name count");
+            Assert.Throws<ArgumentException>(() => _b.AddProcessor(e0, a, b), "void return type");
 
             _b.AddProcessor(e1, a, b);
             _b.AddListener(e1, a);

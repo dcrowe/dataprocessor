@@ -6,7 +6,7 @@ namespace dataprocessor
 {
     internal static class Log
     {
-        private static readonly TraceSource Src = new TraceSource("dataprocessor");
+        internal static readonly TraceSource Src = new TraceSource("dataprocessor");
 
         public static bool IsVerbose => Src.Switch.ShouldTrace(TraceEventType.Verbose);
         public static bool IsInfo => Src.Switch.ShouldTrace(TraceEventType.Information);
@@ -33,7 +33,7 @@ namespace dataprocessor
             Src.TraceEvent(TraceEventType.Error, 0, message);
         }
 
-        public static void Verbose(string message, LambdaExpression expr)
+        public static void Verbose(string message, Expression expr)
         {
             if (!IsVerbose)
                 return;

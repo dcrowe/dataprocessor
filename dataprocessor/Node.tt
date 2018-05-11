@@ -106,10 +106,9 @@ for (var size = 2; size <= max_size; size++)
             if (_action == null)
                 throw new InvalidOperationException();
 
-            var old = _filled;
             _filled |= value;
 
-            if (old != _completionMask && _filled == _completionMask)
+            if (_filled == _completionMask)
             {
                 _filled = 0;
                 _action(<#= fieldNames #>);

@@ -62,6 +62,9 @@ namespace dataprocessor.tests
             n.Set2(2);
 
             Assert.AreEqual(3, result);
+
+            n.Set1(100);
+            Assert.AreEqual(3, result);
         }
 
         [Test]
@@ -76,6 +79,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(3, result);
+
+            n.Set2(100);
             Assert.AreEqual(3, result);
         }
 
@@ -116,6 +122,9 @@ namespace dataprocessor.tests
             n.Set3(3);
 
             Assert.AreEqual(6, result);
+
+            n.Set1(100);
+            Assert.AreEqual(6, result);
         }
 
         [Test]
@@ -132,6 +141,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(6, result);
+
+            n.Set3(100);
             Assert.AreEqual(6, result);
         }
 
@@ -174,6 +186,9 @@ namespace dataprocessor.tests
             n.Set4(4);
 
             Assert.AreEqual(10, result);
+
+            n.Set1(100);
+            Assert.AreEqual(10, result);
         }
 
         [Test]
@@ -192,6 +207,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(10, result);
+
+            n.Set4(100);
             Assert.AreEqual(10, result);
         }
 
@@ -236,6 +254,9 @@ namespace dataprocessor.tests
             n.Set5(5);
 
             Assert.AreEqual(15, result);
+
+            n.Set1(100);
+            Assert.AreEqual(15, result);
         }
 
         [Test]
@@ -256,6 +277,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(15, result);
+
+            n.Set5(100);
             Assert.AreEqual(15, result);
         }
 
@@ -302,6 +326,9 @@ namespace dataprocessor.tests
             n.Set6(6);
 
             Assert.AreEqual(21, result);
+
+            n.Set1(100);
+            Assert.AreEqual(21, result);
         }
 
         [Test]
@@ -324,6 +351,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(21, result);
+
+            n.Set6(100);
             Assert.AreEqual(21, result);
         }
 
@@ -372,6 +402,9 @@ namespace dataprocessor.tests
             n.Set7(7);
 
             Assert.AreEqual(28, result);
+
+            n.Set1(100);
+            Assert.AreEqual(28, result);
         }
 
         [Test]
@@ -396,6 +429,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(28, result);
+
+            n.Set7(100);
             Assert.AreEqual(28, result);
         }
 
@@ -446,6 +482,9 @@ namespace dataprocessor.tests
             n.Set8(8);
 
             Assert.AreEqual(36, result);
+
+            n.Set1(100);
+            Assert.AreEqual(36, result);
         }
 
         [Test]
@@ -472,6 +511,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(36, result);
+
+            n.Set8(100);
             Assert.AreEqual(36, result);
         }
 
@@ -524,6 +566,9 @@ namespace dataprocessor.tests
             n.Set9(9);
 
             Assert.AreEqual(45, result);
+
+            n.Set1(100);
+            Assert.AreEqual(45, result);
         }
 
         [Test]
@@ -552,6 +597,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(45, result);
+
+            n.Set9(100);
             Assert.AreEqual(45, result);
         }
 
@@ -606,6 +654,9 @@ namespace dataprocessor.tests
             n.Set10(10);
 
             Assert.AreEqual(55, result);
+
+            n.Set1(100);
+            Assert.AreEqual(55, result);
         }
 
         [Test]
@@ -636,6 +687,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(55, result);
+
+            n.Set10(100);
             Assert.AreEqual(55, result);
         }
 
@@ -692,6 +746,9 @@ namespace dataprocessor.tests
             n.Set11(11);
 
             Assert.AreEqual(66, result);
+
+            n.Set1(100);
+            Assert.AreEqual(66, result);
         }
 
         [Test]
@@ -724,6 +781,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(66, result);
+
+            n.Set11(100);
             Assert.AreEqual(66, result);
         }
 
@@ -782,6 +842,9 @@ namespace dataprocessor.tests
             n.Set12(12);
 
             Assert.AreEqual(78, result);
+
+            n.Set1(100);
+            Assert.AreEqual(78, result);
         }
 
         [Test]
@@ -816,6 +879,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(78, result);
+
+            n.Set12(100);
             Assert.AreEqual(78, result);
         }
 
@@ -876,6 +942,9 @@ namespace dataprocessor.tests
             n.Set13(13);
 
             Assert.AreEqual(91, result);
+
+            n.Set1(100);
+            Assert.AreEqual(91, result);
         }
 
         [Test]
@@ -912,6 +981,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(91, result);
+
+            n.Set13(100);
             Assert.AreEqual(91, result);
         }
 
@@ -974,6 +1046,9 @@ namespace dataprocessor.tests
             n.Set14(14);
 
             Assert.AreEqual(105, result);
+
+            n.Set1(100);
+            Assert.AreEqual(105, result);
         }
 
         [Test]
@@ -1012,6 +1087,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(105, result);
+
+            n.Set14(100);
             Assert.AreEqual(105, result);
         }
 
@@ -1076,6 +1154,9 @@ namespace dataprocessor.tests
             n.Set15(15);
 
             Assert.AreEqual(120, result);
+
+            n.Set1(100);
+            Assert.AreEqual(120, result);
         }
 
         [Test]
@@ -1116,6 +1197,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(120, result);
+
+            n.Set15(100);
             Assert.AreEqual(120, result);
         }
 
@@ -1182,6 +1266,9 @@ namespace dataprocessor.tests
             n.Set16(16);
 
             Assert.AreEqual(136, result);
+
+            n.Set1(100);
+            Assert.AreEqual(136, result);
         }
 
         [Test]
@@ -1224,6 +1311,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(136, result);
+
+            n.Set16(100);
             Assert.AreEqual(136, result);
         }
 
@@ -1292,6 +1382,9 @@ namespace dataprocessor.tests
             n.Set17(17);
 
             Assert.AreEqual(153, result);
+
+            n.Set1(100);
+            Assert.AreEqual(153, result);
         }
 
         [Test]
@@ -1336,6 +1429,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(153, result);
+
+            n.Set17(100);
             Assert.AreEqual(153, result);
         }
 
@@ -1406,6 +1502,9 @@ namespace dataprocessor.tests
             n.Set18(18);
 
             Assert.AreEqual(171, result);
+
+            n.Set1(100);
+            Assert.AreEqual(171, result);
         }
 
         [Test]
@@ -1452,6 +1551,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(171, result);
+
+            n.Set18(100);
             Assert.AreEqual(171, result);
         }
 
@@ -1524,6 +1626,9 @@ namespace dataprocessor.tests
             n.Set19(19);
 
             Assert.AreEqual(190, result);
+
+            n.Set1(100);
+            Assert.AreEqual(190, result);
         }
 
         [Test]
@@ -1572,6 +1677,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(190, result);
+
+            n.Set19(100);
             Assert.AreEqual(190, result);
         }
 
@@ -1646,6 +1754,9 @@ namespace dataprocessor.tests
             n.Set20(20);
 
             Assert.AreEqual(210, result);
+
+            n.Set1(100);
+            Assert.AreEqual(210, result);
         }
 
         [Test]
@@ -1696,6 +1807,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(210, result);
+
+            n.Set20(100);
             Assert.AreEqual(210, result);
         }
 
@@ -1772,6 +1886,9 @@ namespace dataprocessor.tests
             n.Set21(21);
 
             Assert.AreEqual(231, result);
+
+            n.Set1(100);
+            Assert.AreEqual(231, result);
         }
 
         [Test]
@@ -1824,6 +1941,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(231, result);
+
+            n.Set21(100);
             Assert.AreEqual(231, result);
         }
 
@@ -1902,6 +2022,9 @@ namespace dataprocessor.tests
             n.Set22(22);
 
             Assert.AreEqual(253, result);
+
+            n.Set1(100);
+            Assert.AreEqual(253, result);
         }
 
         [Test]
@@ -1956,6 +2079,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(253, result);
+
+            n.Set22(100);
             Assert.AreEqual(253, result);
         }
 
@@ -2036,6 +2162,9 @@ namespace dataprocessor.tests
             n.Set23(23);
 
             Assert.AreEqual(276, result);
+
+            n.Set1(100);
+            Assert.AreEqual(276, result);
         }
 
         [Test]
@@ -2092,6 +2221,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(276, result);
+
+            n.Set23(100);
             Assert.AreEqual(276, result);
         }
 
@@ -2174,6 +2306,9 @@ namespace dataprocessor.tests
             n.Set24(24);
 
             Assert.AreEqual(300, result);
+
+            n.Set1(100);
+            Assert.AreEqual(300, result);
         }
 
         [Test]
@@ -2232,6 +2367,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(300, result);
+
+            n.Set24(100);
             Assert.AreEqual(300, result);
         }
 
@@ -2316,6 +2454,9 @@ namespace dataprocessor.tests
             n.Set25(25);
 
             Assert.AreEqual(325, result);
+
+            n.Set1(100);
+            Assert.AreEqual(325, result);
         }
 
         [Test]
@@ -2376,6 +2517,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(325, result);
+
+            n.Set25(100);
             Assert.AreEqual(325, result);
         }
 
@@ -2462,6 +2606,9 @@ namespace dataprocessor.tests
             n.Set26(26);
 
             Assert.AreEqual(351, result);
+
+            n.Set1(100);
+            Assert.AreEqual(351, result);
         }
 
         [Test]
@@ -2524,6 +2671,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(351, result);
+
+            n.Set26(100);
             Assert.AreEqual(351, result);
         }
 
@@ -2612,6 +2762,9 @@ namespace dataprocessor.tests
             n.Set27(27);
 
             Assert.AreEqual(378, result);
+
+            n.Set1(100);
+            Assert.AreEqual(378, result);
         }
 
         [Test]
@@ -2676,6 +2829,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(378, result);
+
+            n.Set27(100);
             Assert.AreEqual(378, result);
         }
 
@@ -2766,6 +2922,9 @@ namespace dataprocessor.tests
             n.Set28(28);
 
             Assert.AreEqual(406, result);
+
+            n.Set1(100);
+            Assert.AreEqual(406, result);
         }
 
         [Test]
@@ -2832,6 +2991,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(406, result);
+
+            n.Set28(100);
             Assert.AreEqual(406, result);
         }
 
@@ -2924,6 +3086,9 @@ namespace dataprocessor.tests
             n.Set29(29);
 
             Assert.AreEqual(435, result);
+
+            n.Set1(100);
+            Assert.AreEqual(435, result);
         }
 
         [Test]
@@ -2992,6 +3157,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(435, result);
+
+            n.Set29(100);
             Assert.AreEqual(435, result);
         }
 
@@ -3086,6 +3254,9 @@ namespace dataprocessor.tests
             n.Set30(30);
 
             Assert.AreEqual(465, result);
+
+            n.Set1(100);
+            Assert.AreEqual(465, result);
         }
 
         [Test]
@@ -3156,6 +3327,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(465, result);
+
+            n.Set30(100);
             Assert.AreEqual(465, result);
         }
 
@@ -3252,6 +3426,9 @@ namespace dataprocessor.tests
             n.Set31(31);
 
             Assert.AreEqual(496, result);
+
+            n.Set1(100);
+            Assert.AreEqual(496, result);
         }
 
         [Test]
@@ -3324,6 +3501,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(496, result);
+
+            n.Set31(100);
             Assert.AreEqual(496, result);
         }
 
@@ -3422,6 +3602,9 @@ namespace dataprocessor.tests
             n.Set32(32);
 
             Assert.AreEqual(528, result);
+
+            n.Set1(100);
+            Assert.AreEqual(528, result);
         }
 
         [Test]
@@ -3496,6 +3679,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(528, result);
+
+            n.Set32(100);
             Assert.AreEqual(528, result);
         }
 
@@ -3596,6 +3782,9 @@ namespace dataprocessor.tests
             n.Set33(33);
 
             Assert.AreEqual(561, result);
+
+            n.Set1(100);
+            Assert.AreEqual(561, result);
         }
 
         [Test]
@@ -3672,6 +3861,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(561, result);
+
+            n.Set33(100);
             Assert.AreEqual(561, result);
         }
 
@@ -3774,6 +3966,9 @@ namespace dataprocessor.tests
             n.Set34(34);
 
             Assert.AreEqual(595, result);
+
+            n.Set1(100);
+            Assert.AreEqual(595, result);
         }
 
         [Test]
@@ -3852,6 +4047,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(595, result);
+
+            n.Set34(100);
             Assert.AreEqual(595, result);
         }
 
@@ -3956,6 +4154,9 @@ namespace dataprocessor.tests
             n.Set35(35);
 
             Assert.AreEqual(630, result);
+
+            n.Set1(100);
+            Assert.AreEqual(630, result);
         }
 
         [Test]
@@ -4036,6 +4237,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(630, result);
+
+            n.Set35(100);
             Assert.AreEqual(630, result);
         }
 
@@ -4142,6 +4346,9 @@ namespace dataprocessor.tests
             n.Set36(36);
 
             Assert.AreEqual(666, result);
+
+            n.Set1(100);
+            Assert.AreEqual(666, result);
         }
 
         [Test]
@@ -4224,6 +4431,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(666, result);
+
+            n.Set36(100);
             Assert.AreEqual(666, result);
         }
 
@@ -4332,6 +4542,9 @@ namespace dataprocessor.tests
             n.Set37(37);
 
             Assert.AreEqual(703, result);
+
+            n.Set1(100);
+            Assert.AreEqual(703, result);
         }
 
         [Test]
@@ -4416,6 +4629,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(703, result);
+
+            n.Set37(100);
             Assert.AreEqual(703, result);
         }
 
@@ -4526,6 +4742,9 @@ namespace dataprocessor.tests
             n.Set38(38);
 
             Assert.AreEqual(741, result);
+
+            n.Set1(100);
+            Assert.AreEqual(741, result);
         }
 
         [Test]
@@ -4612,6 +4831,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(741, result);
+
+            n.Set38(100);
             Assert.AreEqual(741, result);
         }
 
@@ -4724,6 +4946,9 @@ namespace dataprocessor.tests
             n.Set39(39);
 
             Assert.AreEqual(780, result);
+
+            n.Set1(100);
+            Assert.AreEqual(780, result);
         }
 
         [Test]
@@ -4812,6 +5037,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(780, result);
+
+            n.Set39(100);
             Assert.AreEqual(780, result);
         }
 
@@ -4926,6 +5154,9 @@ namespace dataprocessor.tests
             n.Set40(40);
 
             Assert.AreEqual(820, result);
+
+            n.Set1(100);
+            Assert.AreEqual(820, result);
         }
 
         [Test]
@@ -5016,6 +5247,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(820, result);
+
+            n.Set40(100);
             Assert.AreEqual(820, result);
         }
 
@@ -5132,6 +5366,9 @@ namespace dataprocessor.tests
             n.Set41(41);
 
             Assert.AreEqual(861, result);
+
+            n.Set1(100);
+            Assert.AreEqual(861, result);
         }
 
         [Test]
@@ -5224,6 +5461,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(861, result);
+
+            n.Set41(100);
             Assert.AreEqual(861, result);
         }
 
@@ -5342,6 +5582,9 @@ namespace dataprocessor.tests
             n.Set42(42);
 
             Assert.AreEqual(903, result);
+
+            n.Set1(100);
+            Assert.AreEqual(903, result);
         }
 
         [Test]
@@ -5436,6 +5679,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(903, result);
+
+            n.Set42(100);
             Assert.AreEqual(903, result);
         }
 
@@ -5556,6 +5802,9 @@ namespace dataprocessor.tests
             n.Set43(43);
 
             Assert.AreEqual(946, result);
+
+            n.Set1(100);
+            Assert.AreEqual(946, result);
         }
 
         [Test]
@@ -5652,6 +5901,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(946, result);
+
+            n.Set43(100);
             Assert.AreEqual(946, result);
         }
 
@@ -5774,6 +6026,9 @@ namespace dataprocessor.tests
             n.Set44(44);
 
             Assert.AreEqual(990, result);
+
+            n.Set1(100);
+            Assert.AreEqual(990, result);
         }
 
         [Test]
@@ -5872,6 +6127,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(990, result);
+
+            n.Set44(100);
             Assert.AreEqual(990, result);
         }
 
@@ -5996,6 +6254,9 @@ namespace dataprocessor.tests
             n.Set45(45);
 
             Assert.AreEqual(1035, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1035, result);
         }
 
         [Test]
@@ -6096,6 +6357,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1035, result);
+
+            n.Set45(100);
             Assert.AreEqual(1035, result);
         }
 
@@ -6222,6 +6486,9 @@ namespace dataprocessor.tests
             n.Set46(46);
 
             Assert.AreEqual(1081, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1081, result);
         }
 
         [Test]
@@ -6324,6 +6591,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1081, result);
+
+            n.Set46(100);
             Assert.AreEqual(1081, result);
         }
 
@@ -6452,6 +6722,9 @@ namespace dataprocessor.tests
             n.Set47(47);
 
             Assert.AreEqual(1128, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1128, result);
         }
 
         [Test]
@@ -6556,6 +6829,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1128, result);
+
+            n.Set47(100);
             Assert.AreEqual(1128, result);
         }
 
@@ -6686,6 +6962,9 @@ namespace dataprocessor.tests
             n.Set48(48);
 
             Assert.AreEqual(1176, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1176, result);
         }
 
         [Test]
@@ -6792,6 +7071,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1176, result);
+
+            n.Set48(100);
             Assert.AreEqual(1176, result);
         }
 
@@ -6924,6 +7206,9 @@ namespace dataprocessor.tests
             n.Set49(49);
 
             Assert.AreEqual(1225, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1225, result);
         }
 
         [Test]
@@ -7032,6 +7317,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1225, result);
+
+            n.Set49(100);
             Assert.AreEqual(1225, result);
         }
 
@@ -7166,6 +7454,9 @@ namespace dataprocessor.tests
             n.Set50(50);
 
             Assert.AreEqual(1275, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1275, result);
         }
 
         [Test]
@@ -7276,6 +7567,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1275, result);
+
+            n.Set50(100);
             Assert.AreEqual(1275, result);
         }
 
@@ -7412,6 +7706,9 @@ namespace dataprocessor.tests
             n.Set51(51);
 
             Assert.AreEqual(1326, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1326, result);
         }
 
         [Test]
@@ -7524,6 +7821,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1326, result);
+
+            n.Set51(100);
             Assert.AreEqual(1326, result);
         }
 
@@ -7662,6 +7962,9 @@ namespace dataprocessor.tests
             n.Set52(52);
 
             Assert.AreEqual(1378, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1378, result);
         }
 
         [Test]
@@ -7776,6 +8079,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1378, result);
+
+            n.Set52(100);
             Assert.AreEqual(1378, result);
         }
 
@@ -7916,6 +8222,9 @@ namespace dataprocessor.tests
             n.Set53(53);
 
             Assert.AreEqual(1431, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1431, result);
         }
 
         [Test]
@@ -8032,6 +8341,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1431, result);
+
+            n.Set53(100);
             Assert.AreEqual(1431, result);
         }
 
@@ -8174,6 +8486,9 @@ namespace dataprocessor.tests
             n.Set54(54);
 
             Assert.AreEqual(1485, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1485, result);
         }
 
         [Test]
@@ -8292,6 +8607,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1485, result);
+
+            n.Set54(100);
             Assert.AreEqual(1485, result);
         }
 
@@ -8436,6 +8754,9 @@ namespace dataprocessor.tests
             n.Set55(55);
 
             Assert.AreEqual(1540, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1540, result);
         }
 
         [Test]
@@ -8556,6 +8877,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1540, result);
+
+            n.Set55(100);
             Assert.AreEqual(1540, result);
         }
 
@@ -8702,6 +9026,9 @@ namespace dataprocessor.tests
             n.Set56(56);
 
             Assert.AreEqual(1596, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1596, result);
         }
 
         [Test]
@@ -8824,6 +9151,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1596, result);
+
+            n.Set56(100);
             Assert.AreEqual(1596, result);
         }
 
@@ -8972,6 +9302,9 @@ namespace dataprocessor.tests
             n.Set57(57);
 
             Assert.AreEqual(1653, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1653, result);
         }
 
         [Test]
@@ -9096,6 +9429,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1653, result);
+
+            n.Set57(100);
             Assert.AreEqual(1653, result);
         }
 
@@ -9246,6 +9582,9 @@ namespace dataprocessor.tests
             n.Set58(58);
 
             Assert.AreEqual(1711, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1711, result);
         }
 
         [Test]
@@ -9372,6 +9711,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1711, result);
+
+            n.Set58(100);
             Assert.AreEqual(1711, result);
         }
 
@@ -9524,6 +9866,9 @@ namespace dataprocessor.tests
             n.Set59(59);
 
             Assert.AreEqual(1770, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1770, result);
         }
 
         [Test]
@@ -9652,6 +9997,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1770, result);
+
+            n.Set59(100);
             Assert.AreEqual(1770, result);
         }
 
@@ -9806,6 +10154,9 @@ namespace dataprocessor.tests
             n.Set60(60);
 
             Assert.AreEqual(1830, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1830, result);
         }
 
         [Test]
@@ -9936,6 +10287,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1830, result);
+
+            n.Set60(100);
             Assert.AreEqual(1830, result);
         }
 
@@ -10092,6 +10446,9 @@ namespace dataprocessor.tests
             n.Set61(61);
 
             Assert.AreEqual(1891, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1891, result);
         }
 
         [Test]
@@ -10224,6 +10581,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1891, result);
+
+            n.Set61(100);
             Assert.AreEqual(1891, result);
         }
 
@@ -10382,6 +10742,9 @@ namespace dataprocessor.tests
             n.Set62(62);
 
             Assert.AreEqual(1953, result);
+
+            n.Set1(100);
+            Assert.AreEqual(1953, result);
         }
 
         [Test]
@@ -10516,6 +10879,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(1953, result);
+
+            n.Set62(100);
             Assert.AreEqual(1953, result);
         }
 
@@ -10676,6 +11042,9 @@ namespace dataprocessor.tests
             n.Set63(63);
 
             Assert.AreEqual(2016, result);
+
+            n.Set1(100);
+            Assert.AreEqual(2016, result);
         }
 
         [Test]
@@ -10812,6 +11181,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(2016, result);
+
+            n.Set63(100);
             Assert.AreEqual(2016, result);
         }
 
@@ -10974,6 +11346,9 @@ namespace dataprocessor.tests
             n.Set64(64);
 
             Assert.AreEqual(2080, result);
+
+            n.Set1(100);
+            Assert.AreEqual(2080, result);
         }
 
         [Test]
@@ -11112,6 +11487,9 @@ namespace dataprocessor.tests
             Assert.AreEqual(0, result);
             n.Set1(1);
 
+            Assert.AreEqual(2080, result);
+
+            n.Set64(100);
             Assert.AreEqual(2080, result);
         }
 

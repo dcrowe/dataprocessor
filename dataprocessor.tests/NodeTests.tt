@@ -74,6 +74,9 @@ for (var size = 2; size <= 64; size++) {
 <# } #>
 
             Assert.AreEqual(<#= size * (size + 1) / 2 #>, result);
+
+            n.Set1(100);
+            Assert.AreEqual(<#= size * (size + 1) / 2 #>, result);
         }
 
         [Test]
@@ -88,6 +91,9 @@ for (var size = 2; size <= 64; size++) {
             n.Set<#=i#>(<#=i#>);
 <# } #>
 
+            Assert.AreEqual(<#= size * (size + 1) / 2 #>, result);
+
+            n.Set<#=size#>(100);
             Assert.AreEqual(<#= size * (size + 1) / 2 #>, result);
         }
 
