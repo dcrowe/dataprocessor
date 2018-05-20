@@ -20,7 +20,7 @@ namespace dataprocessor.benchmarks
         {
             _actual = Setup(new DataProcessorBuilder(new MethodBuilderCompiler()));
 
-            var n = new Node<int, int>((a, b) => DoNothing(a + b));
+			var n = new NodeSynchronisationPrimitives.Node<int, int>((a, b) => DoNothing(a + b));
             _optimal = Tuple.Create<Writer<int>, Writer<int>>(
                 new ActionWriter<int>(a => n.Set1(a + 1)),
                 new ActionWriter<int>(b => n.Set2(b + 2)));
