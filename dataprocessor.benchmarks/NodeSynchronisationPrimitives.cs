@@ -6,137 +6,158 @@ using BenchmarkDotNet.Attributes.Jobs;
 
 namespace dataprocessor.benchmarks
 {
-    [MemoryDiagnoser, ShortRunJob]
-    public class NodeSynchronisationPrimitives
-    {
-        [Params(100)]
-        public int RunLength = 10000;
+	[MemoryDiagnoser, ShortRunJob]
+	public class NodeSynchronisationPrimitives
+	{
+		[Params(1000)]
+		public int RunLength = 10000;
 
-        readonly object _obj = new object();
-        volatile int _count;
+		[Params(true, false)]
+		public bool IsSynchronous;
 
-        void PostTriggerAction(int a, object b)
+		readonly object _obj = new object();
+		volatile int _count;
+		int _bob = 0;
+
+		readonly List<Thread> _threads = new List<Thread>();
+		INode2<int, int> _unlocked;
+		INode2<int, int> _lock;
+		INode2<int, int> _monitor;
+		INode2<int, int> _semaphoreSlim;
+		INode2<int, int> _spinLock;
+
+		[GlobalSetup]
+		[NUnit.Framework.SetUp]
+		public void GlobalSetup()
+		{
+			_count = 0;
+			_unlocked = new Node<int, int>(PostTriggerAction);
+			_lock = new LockNode<int, int>(PostTriggerAction);
+			_monitor = new MonitorNode<int, int>(PostTriggerAction);
+			_semaphoreSlim = new SemaphoreSlimNode<int, int>(PostTriggerAction);
+			_spinLock = new SpinLockNode<int, int>(PostTriggerAction);
+		}
+
+		[IterationCleanup]
+		public void TearDown()
+		{
+			foreach (var t in _threads)
+				t.Abort();
+			_threads.Clear();
+		}
+
+		void PostTriggerAction(int a, int b)
+		{
+			if (IsSynchronous)
+				_count++;
+			else
+			    Interlocked.Increment(ref _count);
+
+            // need to do "something" to prevent the results being optimised away
+			_bob = a + b;
+		}
+
+		void Run(INode2<int, int> node)
+		{
+			_count = 0;
+
+			if (IsSynchronous)
+			{
+				var i = 0;
+				while (_count < RunLength)
+				{
+					node.Set1(i++);
+					node.Set2(i++);
+				}
+			}
+			else
+			{
+				var t = new Thread(() =>
+				{
+					try
+					{
+						var i = 0;
+						while (true)
+						{
+							node.Set1(i++);
+                            Thread.Yield();
+						}
+					}
+					catch (ThreadAbortException)
+					{
+					}
+					catch (Exception ex)
+					{
+						Console.Out.WriteLine("Exception in Run() : " + ex);
+					}
+				});
+				t.Start();
+				_threads.Add(t);
+
+				var j = 0;
+				while (_count < RunLength)
+				{
+					node.Set2(j++);
+					Thread.Yield();
+				}
+			}
+		}
+
+		[Benchmark]
+		public void Unlocked() => Run(_unlocked);
+
+		[Benchmark(Baseline = true)]
+		public void Lock() => Run(_lock);
+
+		[Benchmark]
+		public void Monitor() => Run(_monitor);
+
+		[Benchmark]
+		public void SemaphoreSlim() => Run(_semaphoreSlim);
+
+		[Benchmark]
+		public void SpinLock() => Run(_spinLock);
+
+		interface INode2<T1, T2> 
+		{
+			void Set1(T1 v);
+			void Set2(T2 v);
+		}
+
+        class Node<T1, T2> : INode2<T1, T2>
         {
-            _count++;
-        }
+            readonly Action<T1, T2> _a;
+            T1 _1;
+            T2 _2;
+            ulong _f;
 
-        readonly List<Thread> _threads = new List<Thread>();
-        Node<int, object> _unlocked;
-        Locked1Node<int, object> _locked1;
-        Locked2Node<int, object> _locked2;
-        SemaphoreSlimNode<int, object> _semaphoreSlim;
-        SpinLockNode<int, object> _spinLock;
+            public Node(Action<T1, T2> a) { _a = a; }
+            public void Set1(T1 v1) { _1 = v1; MaybeCallAndReset(1); }
+            public void Set2(T2 v2) { _2 = v2; MaybeCallAndReset(2); }
 
-        [GlobalSetup]
-        [NUnit.Framework.SetUp]
-        public void GlobalSetup()
-        {
-            _count = 0;
-            _unlocked = new Node<int, object>(PostTriggerAction);
-            _locked1 = new Locked1Node<int, object>(PostTriggerAction);
-            _locked2 = new Locked2Node<int, object>(PostTriggerAction);
-            _semaphoreSlim = new SemaphoreSlimNode<int, object>(PostTriggerAction);
-            _spinLock = new SpinLockNode<int, object>(PostTriggerAction);
-        }
-
-        [IterationCleanup]
-        [NUnit.Framework.TearDown]
-        public void TearDown()
-        {
-            foreach (var t in _threads)
-                t.Abort();
-            _threads.Clear();
-        }
-
-        void Run(Action a)
-        {
-            var t = new Thread(() =>
+            void MaybeCallAndReset(ulong value)
             {
-                while (true)
-                    a();
-            });
+                T1 tmp1 = default(T1);
+                T2 tmp2 = default(T2);
+                bool call = false;
 
-            t.IsBackground = true;
-            t.Start();
-            _threads.Add(t);
-        }
+                _f |= value;
 
-        [Benchmark]
-        [NUnit.Framework.Test]
-        public void Unlocked() 
-        {
-            _count = 0;
-            while (_count < RunLength)
-            {
-                _unlocked.Set1(1);
-                _unlocked.Set2(_obj);
+                if (_f == 3)
+                {
+                    _f = 0;
+
+                    tmp1 = _1;
+                    tmp2 = _2;
+                    call = true;
+                }
+
+                if (call)
+                    _a(tmp1, tmp2);
             }
-            _count = 0;
-            using (Timer.Step("Run"))
-            while (_count < RunLength) 
-            {
-                _unlocked.Set1(1);
-                _unlocked.Set2(_obj);
-            }
         }
 
-        [Benchmark(Baseline = true)]
-        [NUnit.Framework.Test]
-        public void Locked1()
-        {
-            Run(() => _locked1.Set1(1));
-            Run(() => _locked1.Set2(_obj));
-
-            _count = 0;
-            while (_count < RunLength) { }
-            _count = 0;
-            using (Timer.Step("Run"))
-                while (_count < RunLength) { }
-        }
-
-        [Benchmark]
-        [NUnit.Framework.Test]
-        public void Locked2()
-        {
-            Run(() => _locked2.Set1(1));
-            Run(() => _locked2.Set2(_obj));
-
-            _count = 0;
-            while (_count < RunLength) { }
-            _count = 0;
-            using (Timer.Step("Run"))
-                while (_count < RunLength) { }
-        }
-
-        //[Benchmark]
-        [NUnit.Framework.Test]
-        public void SemaphoreSlim()
-        {
-            Run(() => _semaphoreSlim.Set1(1));
-            Run(() => _semaphoreSlim.Set2(_obj));
-
-            _count = 0;
-            while (_count < RunLength) { }
-            _count = 0;
-            using (Timer.Step("Run"))
-                while (_count < RunLength) { }
-        }
-
-        [Benchmark]
-        [NUnit.Framework.Test]
-        public void SpinLock()
-        {
-            Run(() => _spinLock.Set1(1));
-            Run(() => _spinLock.Set2(_obj));
-
-            _count = 0;
-            while (_count < RunLength) { }
-            _count = 0;
-            using (Timer.Step("Run"))
-                while (_count < RunLength) { }
-        }
-
-        class Locked1Node<T1, T2>
+		class LockNode<T1, T2> : INode2<T1, T2>
         {
             readonly object _l = new object();
             readonly Action<T1, T2> _a;
@@ -144,30 +165,36 @@ namespace dataprocessor.benchmarks
             T2 _2;
             ulong _f;
 
-            public Locked1Node(Action<T1, T2> a) { _a = a; }
+            public LockNode(Action<T1, T2> a) { _a = a; }
             public void Set1(T1 v1) { _1 = v1; MaybeCallAndReset(1); }
             public void Set2(T2 v2) { _2 = v2; MaybeCallAndReset(2); }
 
             void MaybeCallAndReset(ulong value)
             {
-                lock(_l)
-                {
-                    var old = _f;
-                    _f |= value;
+				T1 tmp1 = default(T1);
+				T2 tmp2 = default(T2);
+				bool call = false;
 
-                    if (old != 3 && _f == 3)
+                lock(_l)
+				{
+					_f |= value;
+
+					if (_f == 3)
                     {
                         _f = 0;
 
-                        var tmp1 = _1;
-                        var tmp2 = _2;
-                        _a(_1, _2);
+                        tmp1 = _1;
+                        tmp2 = _2;
+						call = true;
                     }
                 }
+
+				if (call)
+                    _a(tmp1, tmp2);
             }
         }
 
-        class Locked2Node<T1, T2>
+		class MonitorNode<T1, T2> : INode2<T1, T2>
         {
             readonly object _l = new object();
             readonly Action<T1, T2> _a;
@@ -175,42 +202,45 @@ namespace dataprocessor.benchmarks
             T2 _2;
             ulong _f;
 
-            public Locked2Node(Action<T1, T2> a) { _a = a; }
+            public MonitorNode(Action<T1, T2> a) { _a = a; }
             public void Set1(T1 v1) { _1 = v1; MaybeCallAndReset(1); }
             public void Set2(T2 v2) { _2 = v2; MaybeCallAndReset(2); }
 
             void MaybeCallAndReset(ulong value)
-            {
+			{
+                T1 tmp1 = default(T1);
+                T2 tmp2 = default(T2);
+                bool call = false;
+
                 bool held = false;
 
                 try
                 {
-                    Monitor.Enter(_l, ref held);
+					System.Threading.Monitor.Enter(_l, ref held);
 
-                    var old = _f;
                     _f |= value;
 
-                    if (old != 3 && _f == 3)
+                    if (_f == 3)
                     {
-                        _f = 0;
-                        var tmp1 = _1;
-                        var tmp2 = _2;
+						_f = 0;
 
-                        Monitor.Exit(_l);
-                        held = false;
-
-                        _a(tmp1, tmp2);
+                        tmp1 = _1;
+                        tmp2 = _2;
+                        call = true;
                     }
                 }
                 finally
                 {
                     if (held)
-                        Monitor.Exit(_l);
+						System.Threading.Monitor.Exit(_l);
                 }
+
+				if (call)
+                    _a(tmp1, tmp2);
             }
         }
 
-        class SemaphoreSlimNode<T1, T2>
+		class SemaphoreSlimNode<T1, T2> : INode2<T1, T2>
         {
             readonly SemaphoreSlim _l = new SemaphoreSlim(1);
             readonly Action<T1, T2> _a;
@@ -223,32 +253,43 @@ namespace dataprocessor.benchmarks
             public void Set2(T2 v2) { _2 = v2; MaybeCallAndReset(2); }
 
             void MaybeCallAndReset(ulong value)
-            {
+			{
+                T1 tmp1 = default(T1);
+                T2 tmp2 = default(T2);
+                bool call = false;
+
                 try
                 {
                     _l.Wait();
 
-                    var old = _f;
                     _f |= value;
 
-                    if (old != 3 && _f == 3)
+                    if (_f == 3)
                     {
-                        _f = 0;
-                        _a(_1, _2);
+						_f = 0;
+
+                        tmp1 = _1;
+                        tmp2 = _2;
+                        call = true;
                     }
                 }
                 finally
                 {
                     _l.Release();
-                }
+				}
+
+                if (call)
+                    _a(tmp1, tmp2);
             }
         }
 
-        class SpinLockNode<T1, T2>
+		class SpinLockNode<T1, T2> : INode2<T1, T2>
         {
             readonly Action<T1, T2> _a;
-            SpinLock _l = new SpinLock(false);
-            T1 _1;
+#pragma warning disable RECS0092 // Convert field to readonly
+			SpinLock _l = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
+			T1 _1;
             T2 _2;
             ulong _f;
 
@@ -257,31 +298,35 @@ namespace dataprocessor.benchmarks
             public void Set2(T2 v2) { _2 = v2; MaybeCallAndReset(2); }
 
             void MaybeCallAndReset(ulong value)
-            {
+			{
+                T1 tmp1 = default(T1);
+                T2 tmp2 = default(T2);
+                bool call = false;
+
                 bool held = false;
                 try
                 {
                     _l.Enter(ref held);
 
-                    var old = _f;
                     _f |= value;
 
-                    if (old != 3 && _f == 3)
+                    if (_f == 3)
                     {
-                        _f = 0;
-                        var tmp1 = _1;
-                        var tmp2 = _2;
+						_f = 0;
 
-                        _l.Exit();
-                        held = false;
-
-                        _a(tmp1, tmp2);
+                        tmp1 = _1;
+                        tmp2 = _2;
+                        call = true;
                     }
                 }
                 finally
                 {
-                    if (held) _l.Exit();
-                }
+					if (held)
+						_l.Exit(false);
+				}
+
+                if (call)
+                    _a(tmp1, tmp2);
             }
         }
     }

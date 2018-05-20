@@ -1,10 +1,10 @@
 ﻿
 using System;
-using System.Linq;
+using System.Threading;
 
 namespace dataprocessor
 {
-    public sealed partial class Node
+    public sealed class Node
     {
         public static Type GetTypeFor(Type[] parameters)
         {
@@ -295,11 +295,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2>
+    public sealed class Node<T1, T2>
     {
         public delegate void Action(T1 p1, T2 p2);
 
         private const ulong _completionMask = 3ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -327,13 +330,34 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2);
         }
 
         public void Set1(T1 p1)
@@ -349,11 +373,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3>
+    public sealed class Node<T1, T2, T3>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3);
 
         private const ulong _completionMask = 7ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -382,13 +409,36 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3);
         }
 
         public void Set1(T1 p1)
@@ -410,11 +460,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4>
+    public sealed class Node<T1, T2, T3, T4>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4);
 
         private const ulong _completionMask = 15ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -444,13 +497,38 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4);
         }
 
         public void Set1(T1 p1)
@@ -478,11 +556,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5>
+    public sealed class Node<T1, T2, T3, T4, T5>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5);
 
         private const ulong _completionMask = 31ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -513,13 +594,40 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5);
         }
 
         public void Set1(T1 p1)
@@ -553,11 +661,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6>
+    public sealed class Node<T1, T2, T3, T4, T5, T6>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6);
 
         private const ulong _completionMask = 63ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -589,13 +700,42 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6);
         }
 
         public void Set1(T1 p1)
@@ -635,11 +775,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7);
 
         private const ulong _completionMask = 127ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -672,13 +815,44 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7);
         }
 
         public void Set1(T1 p1)
@@ -724,11 +898,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8);
 
         private const ulong _completionMask = 255ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -762,13 +939,46 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8);
         }
 
         public void Set1(T1 p1)
@@ -820,11 +1030,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9);
 
         private const ulong _completionMask = 511ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -859,13 +1072,48 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9);
         }
 
         public void Set1(T1 p1)
@@ -923,11 +1171,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10);
 
         private const ulong _completionMask = 1023ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -963,13 +1214,50 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10);
         }
 
         public void Set1(T1 p1)
@@ -1033,11 +1321,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11);
 
         private const ulong _completionMask = 2047ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1074,13 +1365,52 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11);
         }
 
         public void Set1(T1 p1)
@@ -1150,11 +1480,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12);
 
         private const ulong _completionMask = 4095ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1192,13 +1525,54 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12);
         }
 
         public void Set1(T1 p1)
@@ -1274,11 +1648,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13);
 
         private const ulong _completionMask = 8191ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1317,13 +1694,56 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13);
         }
 
         public void Set1(T1 p1)
@@ -1405,11 +1825,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14);
 
         private const ulong _completionMask = 16383ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1449,13 +1872,58 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14);
         }
 
         public void Set1(T1 p1)
@@ -1543,11 +2011,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15);
 
         private const ulong _completionMask = 32767ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1588,13 +2059,60 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15);
         }
 
         public void Set1(T1 p1)
@@ -1688,11 +2206,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16);
 
         private const ulong _completionMask = 65535ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1734,13 +2255,62 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16);
         }
 
         public void Set1(T1 p1)
@@ -1840,11 +2410,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17);
 
         private const ulong _completionMask = 131071ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -1887,13 +2460,64 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17);
         }
 
         public void Set1(T1 p1)
@@ -1999,11 +2623,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18);
 
         private const ulong _completionMask = 262143ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -2047,13 +2674,66 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18);
         }
 
         public void Set1(T1 p1)
@@ -2165,11 +2845,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19);
 
         private const ulong _completionMask = 524287ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -2214,13 +2897,68 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19);
         }
 
         public void Set1(T1 p1)
@@ -2338,11 +3076,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20);
 
         private const ulong _completionMask = 1048575ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -2388,13 +3129,70 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20);
         }
 
         public void Set1(T1 p1)
@@ -2518,11 +3316,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21);
 
         private const ulong _completionMask = 2097151ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -2569,13 +3370,72 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21);
         }
 
         public void Set1(T1 p1)
@@ -2705,11 +3565,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22);
 
         private const ulong _completionMask = 4194303ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -2757,13 +3620,74 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22);
         }
 
         public void Set1(T1 p1)
@@ -2899,11 +3823,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23);
 
         private const ulong _completionMask = 8388607ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -2952,13 +3879,76 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23);
         }
 
         public void Set1(T1 p1)
@@ -3100,11 +4090,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24);
 
         private const ulong _completionMask = 16777215ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -3154,13 +4147,78 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24);
         }
 
         public void Set1(T1 p1)
@@ -3308,11 +4366,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25);
 
         private const ulong _completionMask = 33554431ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -3363,13 +4424,80 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25);
         }
 
         public void Set1(T1 p1)
@@ -3523,11 +4651,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26);
 
         private const ulong _completionMask = 67108863ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -3579,13 +4710,82 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26);
         }
 
         public void Set1(T1 p1)
@@ -3745,11 +4945,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27);
 
         private const ulong _completionMask = 134217727ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -3802,13 +5005,84 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27);
         }
 
         public void Set1(T1 p1)
@@ -3974,11 +5248,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28);
 
         private const ulong _completionMask = 268435455ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -4032,13 +5309,86 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28);
         }
 
         public void Set1(T1 p1)
@@ -4210,11 +5560,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29);
 
         private const ulong _completionMask = 536870911ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -4269,13 +5622,88 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29);
         }
 
         public void Set1(T1 p1)
@@ -4453,11 +5881,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30);
 
         private const ulong _completionMask = 1073741823ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -4513,13 +5944,90 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30);
         }
 
         public void Set1(T1 p1)
@@ -4703,11 +6211,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31);
 
         private const ulong _completionMask = 2147483647ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -4764,13 +6275,92 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31);
         }
 
         public void Set1(T1 p1)
@@ -4960,11 +6550,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32);
 
         private const ulong _completionMask = 4294967295ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -5022,13 +6615,94 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32);
         }
 
         public void Set1(T1 p1)
@@ -5224,11 +6898,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33);
 
         private const ulong _completionMask = 8589934591ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -5287,13 +6964,96 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33);
         }
 
         public void Set1(T1 p1)
@@ -5495,11 +7255,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34);
 
         private const ulong _completionMask = 17179869183ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -5559,13 +7322,98 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34);
         }
 
         public void Set1(T1 p1)
@@ -5773,11 +7621,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35);
 
         private const ulong _completionMask = 34359738367ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -5838,13 +7689,100 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35);
         }
 
         public void Set1(T1 p1)
@@ -6058,11 +7996,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36);
 
         private const ulong _completionMask = 68719476735ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -6124,13 +8065,102 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36);
         }
 
         public void Set1(T1 p1)
@@ -6350,11 +8380,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37);
 
         private const ulong _completionMask = 137438953471ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -6417,13 +8450,104 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37);
         }
 
         public void Set1(T1 p1)
@@ -6649,11 +8773,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38);
 
         private const ulong _completionMask = 274877906943ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -6717,13 +8844,106 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38);
         }
 
         public void Set1(T1 p1)
@@ -6955,11 +9175,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39);
 
         private const ulong _completionMask = 549755813887ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -7024,13 +9247,108 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39);
         }
 
         public void Set1(T1 p1)
@@ -7268,11 +9586,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40);
 
         private const ulong _completionMask = 1099511627775ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -7338,13 +9659,110 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40);
         }
 
         public void Set1(T1 p1)
@@ -7588,11 +10006,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41);
 
         private const ulong _completionMask = 2199023255551ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -7659,13 +10080,112 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41);
         }
 
         public void Set1(T1 p1)
@@ -7915,11 +10435,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42);
 
         private const ulong _completionMask = 4398046511103ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -7987,13 +10510,114 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42);
         }
 
         public void Set1(T1 p1)
@@ -8249,11 +10873,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43);
 
         private const ulong _completionMask = 8796093022207ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -8322,13 +10949,116 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43);
         }
 
         public void Set1(T1 p1)
@@ -8590,11 +11320,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44);
 
         private const ulong _completionMask = 17592186044415ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -8664,13 +11397,118 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44);
         }
 
         public void Set1(T1 p1)
@@ -8938,11 +11776,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45);
 
         private const ulong _completionMask = 35184372088831ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -9013,13 +11854,120 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45);
         }
 
         public void Set1(T1 p1)
@@ -9293,11 +12241,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46);
 
         private const ulong _completionMask = 70368744177663ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -9369,13 +12320,122 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46);
         }
 
         public void Set1(T1 p1)
@@ -9655,11 +12715,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47);
 
         private const ulong _completionMask = 140737488355327ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -9732,13 +12795,124 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47);
         }
 
         public void Set1(T1 p1)
@@ -10024,11 +13198,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48);
 
         private const ulong _completionMask = 281474976710655ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -10102,13 +13279,126 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48);
         }
 
         public void Set1(T1 p1)
@@ -10400,11 +13690,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49);
 
         private const ulong _completionMask = 562949953421311ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -10479,13 +13772,128 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49);
         }
 
         public void Set1(T1 p1)
@@ -10783,11 +14191,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50);
 
         private const ulong _completionMask = 1125899906842623ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -10863,13 +14274,130 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50);
         }
 
         public void Set1(T1 p1)
@@ -11173,11 +14701,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51);
 
         private const ulong _completionMask = 2251799813685247ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -11254,13 +14785,132 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51);
         }
 
         public void Set1(T1 p1)
@@ -11570,11 +15220,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52);
 
         private const ulong _completionMask = 4503599627370495ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -11652,13 +15305,134 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52);
         }
 
         public void Set1(T1 p1)
@@ -11974,11 +15748,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53);
 
         private const ulong _completionMask = 9007199254740991ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -12057,13 +15834,136 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53);
         }
 
         public void Set1(T1 p1)
@@ -12385,11 +16285,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54);
 
         private const ulong _completionMask = 18014398509481983ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -12469,13 +16372,138 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54);
         }
 
         public void Set1(T1 p1)
@@ -12803,11 +16831,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55);
 
         private const ulong _completionMask = 36028797018963967ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -12888,13 +16919,140 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55);
         }
 
         public void Set1(T1 p1)
@@ -13228,11 +17386,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56);
 
         private const ulong _completionMask = 72057594037927935ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -13314,13 +17475,142 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56);
         }
 
         public void Set1(T1 p1)
@@ -13660,11 +17950,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57);
 
         private const ulong _completionMask = 144115188075855871ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -13747,13 +18040,144 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57);
         }
 
         public void Set1(T1 p1)
@@ -14099,11 +18523,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58);
 
         private const ulong _completionMask = 288230376151711743ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -14187,13 +18614,146 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58);
         }
 
         public void Set1(T1 p1)
@@ -14545,11 +19105,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59);
 
         private const ulong _completionMask = 576460752303423487ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -14634,13 +19197,148 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
+            var t59 = default(T59);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                        t59 = _59;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58, t59);
         }
 
         public void Set1(T1 p1)
@@ -14998,11 +19696,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59, T60 p60);
 
         private const ulong _completionMask = 1152921504606846975ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -15088,13 +19789,150 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
+            var t59 = default(T59);     
+            var t60 = default(T60);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                        t59 = _59;
+                        t60 = _60;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58, t59, t60);
         }
 
         public void Set1(T1 p1)
@@ -15458,11 +20296,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59, T60 p60, T61 p61);
 
         private const ulong _completionMask = 2305843009213693951ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -15549,13 +20390,152 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
+            var t59 = default(T59);     
+            var t60 = default(T60);     
+            var t61 = default(T61);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                        t59 = _59;
+                        t60 = _60;
+                        t61 = _61;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58, t59, t60, t61);
         }
 
         public void Set1(T1 p1)
@@ -15925,11 +20905,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61, T62>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61, T62>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59, T60 p60, T61 p61, T62 p62);
 
         private const ulong _completionMask = 4611686018427387903ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -16017,13 +21000,154 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
+            var t59 = default(T59);     
+            var t60 = default(T60);     
+            var t61 = default(T61);     
+            var t62 = default(T62);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                        t59 = _59;
+                        t60 = _60;
+                        t61 = _61;
+                        t62 = _62;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58, t59, t60, t61, t62);
         }
 
         public void Set1(T1 p1)
@@ -16399,11 +21523,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61, T62, T63>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61, T62, T63>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59, T60 p60, T61 p61, T62 p62, T63 p63);
 
         private const ulong _completionMask = 9223372036854775807ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -16492,13 +21619,156 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
+            var t59 = default(T59);     
+            var t60 = default(T60);     
+            var t61 = default(T61);     
+            var t62 = default(T62);     
+            var t63 = default(T63);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                        t59 = _59;
+                        t60 = _60;
+                        t61 = _61;
+                        t62 = _62;
+                        t63 = _63;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58, t59, t60, t61, t62, t63);
         }
 
         public void Set1(T1 p1)
@@ -16880,11 +22150,14 @@ namespace dataprocessor
         }
     }
 
-    public sealed partial class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61, T62, T63, T64>
+    public sealed class Node<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30, T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44, T45, T46, T47, T48, T49, T50, T51, T52, T53, T54, T55, T56, T57, T58, T59, T60, T61, T62, T63, T64>
     {
         public delegate void Action(T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, T10 p10, T11 p11, T12 p12, T13 p13, T14 p14, T15 p15, T16 p16, T17 p17, T18 p18, T19 p19, T20 p20, T21 p21, T22 p22, T23 p23, T24 p24, T25 p25, T26 p26, T27 p27, T28 p28, T29 p29, T30 p30, T31 p31, T32 p32, T33 p33, T34 p34, T35 p35, T36 p36, T37 p37, T38 p38, T39 p39, T40 p40, T41 p41, T42 p42, T43 p43, T44 p44, T45 p45, T46 p46, T47 p47, T48 p48, T49 p49, T50 p50, T51 p51, T52 p52, T53 p53, T54 p54, T55 p55, T56 p56, T57 p57, T58 p58, T59 p59, T60 p60, T61 p61, T62 p62, T63 p63, T64 p64);
 
         private const ulong _completionMask = 18446744073709551615ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
         private T1 _1;
@@ -16974,13 +22247,158 @@ namespace dataprocessor
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+            var t1 = default(T1);     
+            var t2 = default(T2);     
+            var t3 = default(T3);     
+            var t4 = default(T4);     
+            var t5 = default(T5);     
+            var t6 = default(T6);     
+            var t7 = default(T7);     
+            var t8 = default(T8);     
+            var t9 = default(T9);     
+            var t10 = default(T10);     
+            var t11 = default(T11);     
+            var t12 = default(T12);     
+            var t13 = default(T13);     
+            var t14 = default(T14);     
+            var t15 = default(T15);     
+            var t16 = default(T16);     
+            var t17 = default(T17);     
+            var t18 = default(T18);     
+            var t19 = default(T19);     
+            var t20 = default(T20);     
+            var t21 = default(T21);     
+            var t22 = default(T22);     
+            var t23 = default(T23);     
+            var t24 = default(T24);     
+            var t25 = default(T25);     
+            var t26 = default(T26);     
+            var t27 = default(T27);     
+            var t28 = default(T28);     
+            var t29 = default(T29);     
+            var t30 = default(T30);     
+            var t31 = default(T31);     
+            var t32 = default(T32);     
+            var t33 = default(T33);     
+            var t34 = default(T34);     
+            var t35 = default(T35);     
+            var t36 = default(T36);     
+            var t37 = default(T37);     
+            var t38 = default(T38);     
+            var t39 = default(T39);     
+            var t40 = default(T40);     
+            var t41 = default(T41);     
+            var t42 = default(T42);     
+            var t43 = default(T43);     
+            var t44 = default(T44);     
+            var t45 = default(T45);     
+            var t46 = default(T46);     
+            var t47 = default(T47);     
+            var t48 = default(T48);     
+            var t49 = default(T49);     
+            var t50 = default(T50);     
+            var t51 = default(T51);     
+            var t52 = default(T52);     
+            var t53 = default(T53);     
+            var t54 = default(T54);     
+            var t55 = default(T55);     
+            var t56 = default(T56);     
+            var t57 = default(T57);     
+            var t58 = default(T58);     
+            var t59 = default(T59);     
+            var t60 = default(T60);     
+            var t61 = default(T61);     
+            var t62 = default(T62);     
+            var t63 = default(T63);     
+            var t64 = default(T64);     
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+                        t1 = _1;
+                        t2 = _2;
+                        t3 = _3;
+                        t4 = _4;
+                        t5 = _5;
+                        t6 = _6;
+                        t7 = _7;
+                        t8 = _8;
+                        t9 = _9;
+                        t10 = _10;
+                        t11 = _11;
+                        t12 = _12;
+                        t13 = _13;
+                        t14 = _14;
+                        t15 = _15;
+                        t16 = _16;
+                        t17 = _17;
+                        t18 = _18;
+                        t19 = _19;
+                        t20 = _20;
+                        t21 = _21;
+                        t22 = _22;
+                        t23 = _23;
+                        t24 = _24;
+                        t25 = _25;
+                        t26 = _26;
+                        t27 = _27;
+                        t28 = _28;
+                        t29 = _29;
+                        t30 = _30;
+                        t31 = _31;
+                        t32 = _32;
+                        t33 = _33;
+                        t34 = _34;
+                        t35 = _35;
+                        t36 = _36;
+                        t37 = _37;
+                        t38 = _38;
+                        t39 = _39;
+                        t40 = _40;
+                        t41 = _41;
+                        t42 = _42;
+                        t43 = _43;
+                        t44 = _44;
+                        t45 = _45;
+                        t46 = _46;
+                        t47 = _47;
+                        t48 = _48;
+                        t49 = _49;
+                        t50 = _50;
+                        t51 = _51;
+                        t52 = _52;
+                        t53 = _53;
+                        t54 = _54;
+                        t55 = _55;
+                        t56 = _56;
+                        t57 = _57;
+                        t58 = _58;
+                        t59 = _59;
+                        t60 = _60;
+                        t61 = _61;
+                        t62 = _62;
+                        t63 = _63;
+                        t64 = _64;
+                    }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33, t34, t35, t36, t37, t38, t39, t40, t41, t42, t43, t44, t45, t46, t47, t48, t49, t50, t51, t52, t53, t54, t55, t56, t57, t58, t59, t60, t61, t62, t63, t64);
         }
 
         public void Set1(T1 p1)
