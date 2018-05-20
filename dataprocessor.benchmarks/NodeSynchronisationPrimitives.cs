@@ -118,13 +118,13 @@ namespace dataprocessor.benchmarks
 		//[Benchmark]
 		public void SpinLock() => Run(_spinLock);
 
-		interface INode2<T1, T2> 
+		public interface INode2<T1, T2> 
 		{
 			void Set1(T1 v);
 			void Set2(T2 v);
 		}
 
-        class Node<T1, T2> : INode2<T1, T2>
+        public class Node<T1, T2> : INode2<T1, T2>
         {
             readonly Action<T1, T2> _a;
             T1 _1;
