@@ -104,16 +104,16 @@ namespace dataprocessor.benchmarks
 		[Benchmark]
 		public void Unlocked() => Run(_unlocked);
 
-		//[Benchmark(Baseline = true)]
+		[Benchmark(Baseline = true)]
 		public void Lock() => Run(_lock);
 
-		//[Benchmark]
+		[Benchmark]
 		public void Monitor() => Run(_monitor);
 
-		//[Benchmark]
+		[Benchmark]
 		public void SemaphoreSlim() => Run(_semaphoreSlim);
 
-		//[Benchmark]
+		[Benchmark]
 		public void SpinLock() => Run(_spinLock);
 
 		public interface INode2<T1, T2> 
