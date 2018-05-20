@@ -106,7 +106,7 @@ namespace dataprocessor.benchmarks
 		[Benchmark]
 		public void Unlocked() => Run(_unlocked);
 
-		[Benchmark(Baseline = true)]
+		//[Benchmark(Baseline = true)]
 		public void Lock() => Run(_lock);
 
 		//[Benchmark]
