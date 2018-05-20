@@ -1,0 +1,585 @@
+// ***** BenchmarkRunner: Start   *****
+// Found benchmarks:
+//   OneIn_OneOut_NoProcessor.Optimal: DefaultJob [RunLength=100]
+//   OneIn_OneOut_NoProcessor.Naive: DefaultJob [RunLength=100]
+//   OneIn_OneOut_NoProcessor.Actual: DefaultJob [RunLength=100]
+
+// Validating benchmarks:
+// ***** Building 3 benchmark(s) in Parallel: Start   *****
+// ***** Done, took 00:00:02 (2.5 sec)   *****
+// **************************
+// Benchmark: OneIn_OneOut_NoProcessor.Optimal: DefaultJob [RunLength=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: mono --nollvm "/Users/danielcrowe/Projects/dataprocessor_play/dataprocessor.benchmarks/bin/Release/22208012-c49f-4347-b3cd-9b23f9e472cc" diagnoserAttached
+Failed to set up high priority. Make sure you have the right permissions. Message: Success
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit 
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+Pilot  1: 16 op, 99400.00 ns, 6.2125 us/op
+Pilot  2: 32 op, 19700.00 ns, 615.6250 ns/op
+Pilot  3: 64 op, 38400.00 ns, 600.0000 ns/op
+Pilot  4: 128 op, 73700.00 ns, 575.7813 ns/op
+Pilot  5: 256 op, 137600.00 ns, 537.5000 ns/op
+Pilot  6: 512 op, 282100.00 ns, 550.9766 ns/op
+Pilot  7: 1024 op, 521200.00 ns, 508.9844 ns/op
+Pilot  8: 2048 op, 1197900.00 ns, 584.9121 ns/op
+Pilot  9: 4096 op, 2256900.00 ns, 551.0010 ns/op
+Pilot 10: 8192 op, 4429100.00 ns, 540.6616 ns/op
+Pilot 11: 16384 op, 8773400.00 ns, 535.4858 ns/op
+Pilot 12: 32768 op, 17350700.00 ns, 529.5013 ns/op
+Pilot 13: 65536 op, 37114300.00 ns, 566.3193 ns/op
+Pilot 14: 131072 op, 73067800.00 ns, 557.4631 ns/op
+Pilot 15: 262144 op, 137573500.00 ns, 524.8013 ns/op
+Pilot 16: 524288 op, 279708700.00 ns, 533.5020 ns/op
+Pilot 17: 1048576 op, 557147800.00 ns, 531.3375 ns/op
+
+IdleWarmup  1: 1048576 op, 2789800.00 ns, 2.6606 ns/op
+IdleWarmup  2: 1048576 op, 2616300.00 ns, 2.4951 ns/op
+IdleWarmup  3: 1048576 op, 2354500.00 ns, 2.2454 ns/op
+IdleWarmup  4: 1048576 op, 2586700.00 ns, 2.4669 ns/op
+IdleWarmup  5: 1048576 op, 2442000.00 ns, 2.3289 ns/op
+IdleWarmup  6: 1048576 op, 2350900.00 ns, 2.2420 ns/op
+IdleWarmup  7: 1048576 op, 2522300.00 ns, 2.4055 ns/op
+IdleWarmup  8: 1048576 op, 2458600.00 ns, 2.3447 ns/op
+
+IdleTarget  1: 1048576 op, 3014200.00 ns, 2.8746 ns/op
+IdleTarget  2: 1048576 op, 2495700.00 ns, 2.3801 ns/op
+IdleTarget  3: 1048576 op, 2525000.00 ns, 2.4080 ns/op
+IdleTarget  4: 1048576 op, 2616700.00 ns, 2.4955 ns/op
+IdleTarget  5: 1048576 op, 2255100.00 ns, 2.1506 ns/op
+IdleTarget  6: 1048576 op, 2400300.00 ns, 2.2891 ns/op
+IdleTarget  7: 1048576 op, 2426900.00 ns, 2.3145 ns/op
+IdleTarget  8: 1048576 op, 2982900.00 ns, 2.8447 ns/op
+IdleTarget  9: 1048576 op, 2857700.00 ns, 2.7253 ns/op
+IdleTarget 10: 1048576 op, 4132500.00 ns, 3.9411 ns/op
+IdleTarget 11: 1048576 op, 2731400.00 ns, 2.6049 ns/op
+IdleTarget 12: 1048576 op, 2540200.00 ns, 2.4225 ns/op
+IdleTarget 13: 1048576 op, 2398900.00 ns, 2.2878 ns/op
+IdleTarget 14: 1048576 op, 2636300.00 ns, 2.5142 ns/op
+IdleTarget 15: 1048576 op, 2613400.00 ns, 2.4923 ns/op
+IdleTarget 16: 1048576 op, 3080500.00 ns, 2.9378 ns/op
+IdleTarget 17: 1048576 op, 2366900.00 ns, 2.2573 ns/op
+IdleTarget 18: 1048576 op, 2389800.00 ns, 2.2791 ns/op
+IdleTarget 19: 1048576 op, 2958600.00 ns, 2.8215 ns/op
+IdleTarget 20: 1048576 op, 2627500.00 ns, 2.5058 ns/op
+
+MainWarmup  1: 1048576 op, 558298100.00 ns, 532.4346 ns/op
+MainWarmup  2: 1048576 op, 558324000.00 ns, 532.4593 ns/op
+MainWarmup  3: 1048576 op, 558659200.00 ns, 532.7789 ns/op
+MainWarmup  4: 1048576 op, 556265300.00 ns, 530.4959 ns/op
+MainWarmup  5: 1048576 op, 560445200.00 ns, 534.4822 ns/op
+MainWarmup  6: 1048576 op, 553489600.00 ns, 527.8488 ns/op
+
+// BeforeMainRun
+MainTarget  1: 1048576 op, 564359400.00 ns, 538.2151 ns/op
+MainTarget  2: 1048576 op, 560101300.00 ns, 534.1542 ns/op
+MainTarget  3: 1048576 op, 563188300.00 ns, 537.0982 ns/op
+MainTarget  4: 1048576 op, 572183500.00 ns, 545.6767 ns/op
+MainTarget  5: 1048576 op, 670741500.00 ns, 639.6689 ns/op
+MainTarget  6: 1048576 op, 551784500.00 ns, 526.2227 ns/op
+MainTarget  7: 1048576 op, 557260500.00 ns, 531.4450 ns/op
+MainTarget  8: 1048576 op, 627850700.00 ns, 598.7651 ns/op
+MainTarget  9: 1048576 op, 542839300.00 ns, 517.6919 ns/op
+MainTarget 10: 1048576 op, 565410700.00 ns, 539.2177 ns/op
+MainTarget 11: 1048576 op, 561085700.00 ns, 535.0930 ns/op
+MainTarget 12: 1048576 op, 555224000.00 ns, 529.5029 ns/op
+MainTarget 13: 1048576 op, 553669400.00 ns, 528.0203 ns/op
+MainTarget 14: 1048576 op, 552572200.00 ns, 526.9739 ns/op
+MainTarget 15: 1048576 op, 557794200.00 ns, 531.9540 ns/op
+
+// AfterMainRun
+Result  1: 1048576 op, 561656875.00 ns, 535.6377 ns/op
+Result  2: 1048576 op, 557398775.00 ns, 531.5769 ns/op
+Result  3: 1048576 op, 560485775.00 ns, 534.5209 ns/op
+Result  4: 1048576 op, 569480975.00 ns, 543.0994 ns/op
+Result  5: 1048576 op, 549081975.00 ns, 523.6454 ns/op
+Result  6: 1048576 op, 554557975.00 ns, 528.8677 ns/op
+Result  7: 1048576 op, 540136775.00 ns, 515.1146 ns/op
+Result  8: 1048576 op, 562708175.00 ns, 536.6403 ns/op
+Result  9: 1048576 op, 558383175.00 ns, 532.5157 ns/op
+Result 10: 1048576 op, 552521475.00 ns, 526.9255 ns/op
+Result 11: 1048576 op, 550966875.00 ns, 525.4430 ns/op
+Result 12: 1048576 op, 549869675.00 ns, 524.3966 ns/op
+Result 13: 1048576 op, 555091675.00 ns, 529.3767 ns/op
+GC:  0 0 0 0 1048576
+
+// AfterAll
+
+Mean = 529.8277 ns, StdErr = 1.9637 ns (0.37%); N = 13, StdDev = 7.0804 ns
+Min = 515.1146 ns, Q1 = 524.9198 ns, Median = 529.3767 ns, Q3 = 535.0793 ns, Max = 543.0994 ns
+IQR = 10.1595 ns, LowerFence = 509.6805 ns, UpperFence = 550.3186 ns
+ConfidenceInterval = [521.3487 ns; 538.3068 ns] (CI 99.9%), Margin = 8.4791 ns (1.60% of Mean)
+Skewness = -0.15, Kurtosis = 2.59
+
+
+// **************************
+// Benchmark: OneIn_OneOut_NoProcessor.Naive: DefaultJob [RunLength=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: mono --nollvm "/Users/danielcrowe/Projects/dataprocessor_play/dataprocessor.benchmarks/bin/Release/06b4f7d8-c766-48d0-87dd-65dfa3213ab5" diagnoserAttached
+Failed to set up high priority. Make sure you have the right permissions. Message: Success
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit 
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+Pilot  1: 16 op, 4422700.00 ns, 276.4188 us/op
+Pilot  2: 32 op, 7956100.00 ns, 248.6281 us/op
+Pilot  3: 64 op, 16382600.00 ns, 255.9781 us/op
+Pilot  4: 128 op, 38480600.00 ns, 300.6297 us/op
+Pilot  5: 256 op, 64253700.00 ns, 250.9910 us/op
+Pilot  6: 512 op, 114852600.00 ns, 224.3215 us/op
+Pilot  7: 1024 op, 229550500.00 ns, 224.1704 us/op
+Pilot  8: 2048 op, 489141300.00 ns, 238.8385 us/op
+Pilot  9: 4096 op, 944067000.00 ns, 230.4851 us/op
+
+IdleWarmup  1: 4096 op, 9200.00 ns, 2.2461 ns/op
+IdleWarmup  2: 4096 op, 9900.00 ns, 2.4170 ns/op
+IdleWarmup  3: 4096 op, 12200.00 ns, 2.9785 ns/op
+IdleWarmup  4: 4096 op, 9300.00 ns, 2.2705 ns/op
+IdleWarmup  5: 4096 op, 10300.00 ns, 2.5146 ns/op
+IdleWarmup  6: 4096 op, 9400.00 ns, 2.2949 ns/op
+
+IdleTarget  1: 4096 op, 9400.00 ns, 2.2949 ns/op
+IdleTarget  2: 4096 op, 9400.00 ns, 2.2949 ns/op
+IdleTarget  3: 4096 op, 10400.00 ns, 2.5391 ns/op
+IdleTarget  4: 4096 op, 13900.00 ns, 3.3936 ns/op
+IdleTarget  5: 4096 op, 11800.00 ns, 2.8809 ns/op
+IdleTarget  6: 4096 op, 12500.00 ns, 3.0518 ns/op
+IdleTarget  7: 4096 op, 12000.00 ns, 2.9297 ns/op
+IdleTarget  8: 4096 op, 11400.00 ns, 2.7832 ns/op
+IdleTarget  9: 4096 op, 10000.00 ns, 2.4414 ns/op
+IdleTarget 10: 4096 op, 10100.00 ns, 2.4658 ns/op
+IdleTarget 11: 4096 op, 9900.00 ns, 2.4170 ns/op
+IdleTarget 12: 4096 op, 10000.00 ns, 2.4414 ns/op
+IdleTarget 13: 4096 op, 10000.00 ns, 2.4414 ns/op
+IdleTarget 14: 4096 op, 9300.00 ns, 2.2705 ns/op
+IdleTarget 15: 4096 op, 12400.00 ns, 3.0273 ns/op
+IdleTarget 16: 4096 op, 10600.00 ns, 2.5879 ns/op
+IdleTarget 17: 4096 op, 10000.00 ns, 2.4414 ns/op
+IdleTarget 18: 4096 op, 10700.00 ns, 2.6123 ns/op
+IdleTarget 19: 4096 op, 10000.00 ns, 2.4414 ns/op
+IdleTarget 20: 4096 op, 10700.00 ns, 2.6123 ns/op
+
+MainWarmup  1: 4096 op, 987698400.00 ns, 241.1373 us/op
+MainWarmup  2: 4096 op, 977051000.00 ns, 238.5378 us/op
+MainWarmup  3: 4096 op, 935215800.00 ns, 228.3242 us/op
+MainWarmup  4: 4096 op, 1019314300.00 ns, 248.8560 us/op
+MainWarmup  5: 4096 op, 1080770500.00 ns, 263.8600 us/op
+MainWarmup  6: 4096 op, 1029472600.00 ns, 251.3361 us/op
+MainWarmup  7: 4096 op, 1034832300.00 ns, 252.6446 us/op
+MainWarmup  8: 4096 op, 984879300.00 ns, 240.4490 us/op
+
+// BeforeMainRun
+MainTarget  1: 4096 op, 998181700.00 ns, 243.6967 us/op
+MainTarget  2: 4096 op, 1016174000.00 ns, 248.0894 us/op
+MainTarget  3: 4096 op, 1058902800.00 ns, 258.5212 us/op
+MainTarget  4: 4096 op, 1006923700.00 ns, 245.8310 us/op
+MainTarget  5: 4096 op, 981321200.00 ns, 239.5804 us/op
+MainTarget  6: 4096 op, 995022900.00 ns, 242.9255 us/op
+MainTarget  7: 4096 op, 986861200.00 ns, 240.9329 us/op
+MainTarget  8: 4096 op, 1019801400.00 ns, 248.9750 us/op
+MainTarget  9: 4096 op, 999588000.00 ns, 244.0400 us/op
+MainTarget 10: 4096 op, 1004160200.00 ns, 245.1563 us/op
+MainTarget 11: 4096 op, 978026900.00 ns, 238.7761 us/op
+MainTarget 12: 4096 op, 1001782200.00 ns, 244.5757 us/op
+MainTarget 13: 4096 op, 979402200.00 ns, 239.1119 us/op
+MainTarget 14: 4096 op, 1038625500.00 ns, 253.5707 us/op
+MainTarget 15: 4096 op, 1017366000.00 ns, 248.3804 us/op
+MainTarget 16: 4096 op, 957218000.00 ns, 233.6958 us/op
+MainTarget 17: 4096 op, 950058300.00 ns, 231.9478 us/op
+MainTarget 18: 4096 op, 966855500.00 ns, 236.0487 us/op
+MainTarget 19: 4096 op, 1027930900.00 ns, 250.9597 us/op
+MainTarget 20: 4096 op, 1010330200.00 ns, 246.6626 us/op
+MainTarget 21: 4096 op, 1021753500.00 ns, 249.4515 us/op
+MainTarget 22: 4096 op, 1045755500.00 ns, 255.3114 us/op
+MainTarget 23: 4096 op, 1017040100.00 ns, 248.3008 us/op
+MainTarget 24: 4096 op, 1016939500.00 ns, 248.2762 us/op
+MainTarget 25: 4096 op, 1012404500.00 ns, 247.1691 us/op
+
+// AfterMainRun
+Result  1: 4096 op, 998170975.00 ns, 243.6941 us/op
+Result  2: 4096 op, 1016163275.00 ns, 248.0867 us/op
+Result  3: 4096 op, 1058892075.00 ns, 258.5186 us/op
+Result  4: 4096 op, 1006912975.00 ns, 245.8284 us/op
+Result  5: 4096 op, 981310475.00 ns, 239.5778 us/op
+Result  6: 4096 op, 995012175.00 ns, 242.9229 us/op
+Result  7: 4096 op, 986850475.00 ns, 240.9303 us/op
+Result  8: 4096 op, 1019790675.00 ns, 248.9723 us/op
+Result  9: 4096 op, 999577275.00 ns, 244.0374 us/op
+Result 10: 4096 op, 1004149475.00 ns, 245.1537 us/op
+Result 11: 4096 op, 978016175.00 ns, 238.7735 us/op
+Result 12: 4096 op, 1001771475.00 ns, 244.5731 us/op
+Result 13: 4096 op, 979391475.00 ns, 239.1092 us/op
+Result 14: 4096 op, 1038614775.00 ns, 253.5681 us/op
+Result 15: 4096 op, 1017355275.00 ns, 248.3778 us/op
+Result 16: 4096 op, 957207275.00 ns, 233.6932 us/op
+Result 17: 4096 op, 950047575.00 ns, 231.9452 us/op
+Result 18: 4096 op, 966844775.00 ns, 236.0461 us/op
+Result 19: 4096 op, 1027920175.00 ns, 250.9571 us/op
+Result 20: 4096 op, 1010319475.00 ns, 246.6600 us/op
+Result 21: 4096 op, 1021742775.00 ns, 249.4489 us/op
+Result 22: 4096 op, 1045744775.00 ns, 255.3088 us/op
+Result 23: 4096 op, 1017029375.00 ns, 248.2982 us/op
+Result 24: 4096 op, 1016928775.00 ns, 248.2736 us/op
+Result 25: 4096 op, 1012393775.00 ns, 247.1664 us/op
+GC:  14 0 0 0 4096
+
+// AfterAll
+
+Mean = 245.1969 us, StdErr = 1.2834 us (0.52%); N = 25, StdDev = 6.4168 us
+Min = 231.9452 us, Q1 = 240.2540 us, Median = 245.8284 us, Q3 = 248.6750 us, Max = 258.5186 us
+IQR = 8.4210 us, LowerFence = 227.6225 us, UpperFence = 261.3066 us
+ConfidenceInterval = [240.3901 us; 250.0036 us] (CI 99.9%), Margin = 4.8067 us (1.96% of Mean)
+Skewness = -0.14, Kurtosis = 2.56
+
+
+// **************************
+// Benchmark: OneIn_OneOut_NoProcessor.Actual: DefaultJob [RunLength=100]
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: mono --nollvm "/Users/danielcrowe/Projects/dataprocessor_play/dataprocessor.benchmarks/bin/Release/be6baafe-992d-47a0-a6f6-dd2a62813df2" diagnoserAttached
+Failed to set up high priority. Make sure you have the right permissions. Message: Success
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit 
+// GC=Concurrent Workstation
+// Job: DefaultJob
+
+Pilot  1: 16 op, 96700.00 ns, 6.0438 us/op
+Pilot  2: 32 op, 21400.00 ns, 668.7500 ns/op
+Pilot  3: 64 op, 35700.00 ns, 557.8125 ns/op
+Pilot  4: 128 op, 76200.00 ns, 595.3125 ns/op
+Pilot  5: 256 op, 144300.00 ns, 563.6719 ns/op
+Pilot  6: 512 op, 275800.00 ns, 538.6719 ns/op
+Pilot  7: 1024 op, 697300.00 ns, 680.9570 ns/op
+Pilot  8: 2048 op, 1229000.00 ns, 600.0977 ns/op
+Pilot  9: 4096 op, 2311600.00 ns, 564.3555 ns/op
+Pilot 10: 8192 op, 4622200.00 ns, 564.2334 ns/op
+Pilot 11: 16384 op, 9414800.00 ns, 574.6338 ns/op
+Pilot 12: 32768 op, 19044900.00 ns, 581.2042 ns/op
+Pilot 13: 65536 op, 36482000.00 ns, 556.6711 ns/op
+Pilot 14: 131072 op, 72297200.00 ns, 551.5839 ns/op
+Pilot 15: 262144 op, 145537900.00 ns, 555.1830 ns/op
+Pilot 16: 524288 op, 297452500.00 ns, 567.3456 ns/op
+Pilot 17: 1048576 op, 571432200.00 ns, 544.9602 ns/op
+
+IdleWarmup  1: 1048576 op, 2608400.00 ns, 2.4876 ns/op
+IdleWarmup  2: 1048576 op, 2229300.00 ns, 2.1260 ns/op
+IdleWarmup  3: 1048576 op, 2408700.00 ns, 2.2971 ns/op
+IdleWarmup  4: 1048576 op, 2348200.00 ns, 2.2394 ns/op
+IdleWarmup  5: 1048576 op, 2398900.00 ns, 2.2878 ns/op
+IdleWarmup  6: 1048576 op, 2298200.00 ns, 2.1917 ns/op
+
+IdleTarget  1: 1048576 op, 2307600.00 ns, 2.2007 ns/op
+IdleTarget  2: 1048576 op, 2406300.00 ns, 2.2948 ns/op
+IdleTarget  3: 1048576 op, 2335300.00 ns, 2.2271 ns/op
+IdleTarget  4: 1048576 op, 2567700.00 ns, 2.4487 ns/op
+IdleTarget  5: 1048576 op, 2539700.00 ns, 2.4220 ns/op
+IdleTarget  6: 1048576 op, 2548000.00 ns, 2.4300 ns/op
+IdleTarget  7: 1048576 op, 2567400.00 ns, 2.4485 ns/op
+IdleTarget  8: 1048576 op, 2475300.00 ns, 2.3606 ns/op
+IdleTarget  9: 1048576 op, 2528900.00 ns, 2.4117 ns/op
+IdleTarget 10: 1048576 op, 2552400.00 ns, 2.4342 ns/op
+IdleTarget 11: 1048576 op, 2425400.00 ns, 2.3130 ns/op
+IdleTarget 12: 1048576 op, 2534500.00 ns, 2.4171 ns/op
+IdleTarget 13: 1048576 op, 2717700.00 ns, 2.5918 ns/op
+IdleTarget 14: 1048576 op, 2545800.00 ns, 2.4279 ns/op
+IdleTarget 15: 1048576 op, 2354300.00 ns, 2.2452 ns/op
+
+MainWarmup  1: 1048576 op, 574819400.00 ns, 548.1905 ns/op
+MainWarmup  2: 1048576 op, 575590300.00 ns, 548.9257 ns/op
+MainWarmup  3: 1048576 op, 577859500.00 ns, 551.0898 ns/op
+MainWarmup  4: 1048576 op, 573187300.00 ns, 546.6340 ns/op
+MainWarmup  5: 1048576 op, 588746100.00 ns, 561.4720 ns/op
+MainWarmup  6: 1048576 op, 570063000.00 ns, 543.6544 ns/op
+
+// BeforeMainRun
+MainTarget  1: 1048576 op, 583001600.00 ns, 555.9937 ns/op
+MainTarget  2: 1048576 op, 579443900.00 ns, 552.6008 ns/op
+MainTarget  3: 1048576 op, 581579700.00 ns, 554.6376 ns/op
+MainTarget  4: 1048576 op, 583800800.00 ns, 556.7558 ns/op
+MainTarget  5: 1048576 op, 825471900.00 ns, 787.2313 ns/op
+MainTarget  6: 1048576 op, 591087700.00 ns, 563.7052 ns/op
+MainTarget  7: 1048576 op, 583539500.00 ns, 556.5066 ns/op
+MainTarget  8: 1048576 op, 587762300.00 ns, 560.5338 ns/op
+MainTarget  9: 1048576 op, 578676100.00 ns, 551.8685 ns/op
+MainTarget 10: 1048576 op, 707329100.00 ns, 674.5616 ns/op
+MainTarget 11: 1048576 op, 615950300.00 ns, 587.4160 ns/op
+MainTarget 12: 1048576 op, 659804000.00 ns, 629.2381 ns/op
+MainTarget 13: 1048576 op, 651181300.00 ns, 621.0149 ns/op
+MainTarget 14: 1048576 op, 588333600.00 ns, 561.0786 ns/op
+MainTarget 15: 1048576 op, 590311200.00 ns, 562.9646 ns/op
+MainTarget 16: 1048576 op, 581297400.00 ns, 554.3684 ns/op
+MainTarget 17: 1048576 op, 590087900.00 ns, 562.7517 ns/op
+MainTarget 18: 1048576 op, 648553600.00 ns, 618.5089 ns/op
+MainTarget 19: 1048576 op, 663496400.00 ns, 632.7595 ns/op
+MainTarget 20: 1048576 op, 619851900.00 ns, 591.1368 ns/op
+MainTarget 21: 1048576 op, 648013900.00 ns, 617.9942 ns/op
+MainTarget 22: 1048576 op, 568667300.00 ns, 542.3234 ns/op
+MainTarget 23: 1048576 op, 579679600.00 ns, 552.8255 ns/op
+MainTarget 24: 1048576 op, 585915600.00 ns, 558.7727 ns/op
+MainTarget 25: 1048576 op, 595261400.00 ns, 567.6855 ns/op
+MainTarget 26: 1048576 op, 623397500.00 ns, 594.5182 ns/op
+MainTarget 27: 1048576 op, 739094300.00 ns, 704.8553 ns/op
+MainTarget 28: 1048576 op, 652146700.00 ns, 621.9356 ns/op
+MainTarget 29: 1048576 op, 704259700.00 ns, 671.6344 ns/op
+MainTarget 30: 1048576 op, 607603700.00 ns, 579.4560 ns/op
+MainTarget 31: 1048576 op, 592566000.00 ns, 565.1150 ns/op
+MainTarget 32: 1048576 op, 597179800.00 ns, 569.5150 ns/op
+MainTarget 33: 1048576 op, 659915500.00 ns, 629.3445 ns/op
+MainTarget 34: 1048576 op, 652914300.00 ns, 622.6676 ns/op
+MainTarget 35: 1048576 op, 614374400.00 ns, 585.9131 ns/op
+MainTarget 36: 1048576 op, 655615000.00 ns, 625.2432 ns/op
+MainTarget 37: 1048576 op, 802140600.00 ns, 764.9809 ns/op
+MainTarget 38: 1048576 op, 619062000.00 ns, 590.3835 ns/op
+MainTarget 39: 1048576 op, 808279800.00 ns, 770.8357 ns/op
+MainTarget 40: 1048576 op, 722157800.00 ns, 688.7033 ns/op
+MainTarget 41: 1048576 op, 1082822000.00 ns, 1.0327 us/op
+MainTarget 42: 1048576 op, 633820900.00 ns, 604.4587 ns/op
+MainTarget 43: 1048576 op, 621776700.00 ns, 592.9725 ns/op
+MainTarget 44: 1048576 op, 605053700.00 ns, 577.0242 ns/op
+MainTarget 45: 1048576 op, 593901900.00 ns, 566.3890 ns/op
+MainTarget 46: 1048576 op, 601120100.00 ns, 573.2728 ns/op
+MainTarget 47: 1048576 op, 597561500.00 ns, 569.8791 ns/op
+MainTarget 48: 1048576 op, 596678400.00 ns, 569.0369 ns/op
+MainTarget 49: 1048576 op, 596123600.00 ns, 568.5078 ns/op
+MainTarget 50: 1048576 op, 592480600.00 ns, 565.0335 ns/op
+MainTarget 51: 1048576 op, 609187300.00 ns, 580.9663 ns/op
+MainTarget 52: 1048576 op, 862556900.00 ns, 822.5984 ns/op
+MainTarget 53: 1048576 op, 642202400.00 ns, 612.4519 ns/op
+MainTarget 54: 1048576 op, 678603200.00 ns, 647.1664 ns/op
+MainTarget 55: 1048576 op, 664366900.00 ns, 633.5896 ns/op
+MainTarget 56: 1048576 op, 694183900.00 ns, 662.0254 ns/op
+MainTarget 57: 1048576 op, 651781600.00 ns, 621.5874 ns/op
+MainTarget 58: 1048576 op, 633627700.00 ns, 604.2745 ns/op
+MainTarget 59: 1048576 op, 641920400.00 ns, 612.1830 ns/op
+MainTarget 60: 1048576 op, 645160900.00 ns, 615.2734 ns/op
+MainTarget 61: 1048576 op, 655371900.00 ns, 625.0113 ns/op
+MainTarget 62: 1048576 op, 597387700.00 ns, 569.7133 ns/op
+MainTarget 63: 1048576 op, 610628900.00 ns, 582.3411 ns/op
+MainTarget 64: 1048576 op, 603749000.00 ns, 575.7799 ns/op
+MainTarget 65: 1048576 op, 621634000.00 ns, 592.8364 ns/op
+MainTarget 66: 1048576 op, 608117200.00 ns, 579.9458 ns/op
+MainTarget 67: 1048576 op, 724868000.00 ns, 691.2880 ns/op
+MainTarget 68: 1048576 op, 653146200.00 ns, 622.8888 ns/op
+MainTarget 69: 1048576 op, 775039000.00 ns, 739.1348 ns/op
+MainTarget 70: 1048576 op, 595255700.00 ns, 567.6801 ns/op
+MainTarget 71: 1048576 op, 593943900.00 ns, 566.4290 ns/op
+MainTarget 72: 1048576 op, 615640500.00 ns, 587.1205 ns/op
+MainTarget 73: 1048576 op, 607278500.00 ns, 579.1459 ns/op
+MainTarget 74: 1048576 op, 641521500.00 ns, 611.8026 ns/op
+MainTarget 75: 1048576 op, 612870900.00 ns, 584.4792 ns/op
+MainTarget 76: 1048576 op, 596748400.00 ns, 569.1036 ns/op
+MainTarget 77: 1048576 op, 589119700.00 ns, 561.8283 ns/op
+MainTarget 78: 1048576 op, 598527000.00 ns, 570.7998 ns/op
+MainTarget 79: 1048576 op, 593501500.00 ns, 566.0071 ns/op
+MainTarget 80: 1048576 op, 597493700.00 ns, 569.8144 ns/op
+MainTarget 81: 1048576 op, 602309100.00 ns, 574.4067 ns/op
+MainTarget 82: 1048576 op, 587251900.00 ns, 560.0471 ns/op
+MainTarget 83: 1048576 op, 590151400.00 ns, 562.8122 ns/op
+MainTarget 84: 1048576 op, 586043500.00 ns, 558.8946 ns/op
+MainTarget 85: 1048576 op, 593932400.00 ns, 566.4181 ns/op
+MainTarget 86: 1048576 op, 583831400.00 ns, 556.7850 ns/op
+MainTarget 87: 1048576 op, 586728500.00 ns, 559.5479 ns/op
+MainTarget 88: 1048576 op, 575753500.00 ns, 549.0813 ns/op
+MainTarget 89: 1048576 op, 573840400.00 ns, 547.2569 ns/op
+MainTarget 90: 1048576 op, 575243500.00 ns, 548.5950 ns/op
+MainTarget 91: 1048576 op, 572949500.00 ns, 546.4072 ns/op
+MainTarget 92: 1048576 op, 583048400.00 ns, 556.0383 ns/op
+MainTarget 93: 1048576 op, 586608600.00 ns, 559.4336 ns/op
+MainTarget 94: 1048576 op, 584933200.00 ns, 557.8358 ns/op
+MainTarget 95: 1048576 op, 580535100.00 ns, 553.6414 ns/op
+MainTarget 96: 1048576 op, 591503400.00 ns, 564.1016 ns/op
+MainTarget 97: 1048576 op, 588053600.00 ns, 560.8116 ns/op
+MainTarget 98: 1048576 op, 578380200.00 ns, 551.5863 ns/op
+MainTarget 99: 1048576 op, 575889600.00 ns, 549.2111 ns/op
+MainTarget 100: 1048576 op, 576074800.00 ns, 549.3877 ns/op
+
+// AfterMainRun
+Result  1: 1048576 op, 580507846.67 ns, 553.6154 ns/op
+Result  2: 1048576 op, 576950146.67 ns, 550.2225 ns/op
+Result  3: 1048576 op, 579085946.67 ns, 552.2594 ns/op
+Result  4: 1048576 op, 581307046.67 ns, 554.3776 ns/op
+Result  5: 1048576 op, 588593946.67 ns, 561.3269 ns/op
+Result  6: 1048576 op, 581045746.67 ns, 554.1284 ns/op
+Result  7: 1048576 op, 585268546.67 ns, 558.1556 ns/op
+Result  8: 1048576 op, 576182346.67 ns, 549.4903 ns/op
+Result  9: 1048576 op, 704835346.67 ns, 672.1834 ns/op
+Result 10: 1048576 op, 613456546.67 ns, 585.0378 ns/op
+Result 11: 1048576 op, 657310246.67 ns, 626.8599 ns/op
+Result 12: 1048576 op, 648687546.67 ns, 618.6367 ns/op
+Result 13: 1048576 op, 585839846.67 ns, 558.7004 ns/op
+Result 14: 1048576 op, 587817446.67 ns, 560.5864 ns/op
+Result 15: 1048576 op, 578803646.67 ns, 551.9902 ns/op
+Result 16: 1048576 op, 587594146.67 ns, 560.3734 ns/op
+Result 17: 1048576 op, 646059846.67 ns, 616.1307 ns/op
+Result 18: 1048576 op, 661002646.67 ns, 630.3812 ns/op
+Result 19: 1048576 op, 617358146.67 ns, 588.7586 ns/op
+Result 20: 1048576 op, 645520146.67 ns, 615.6160 ns/op
+Result 21: 1048576 op, 566173546.67 ns, 539.9452 ns/op
+Result 22: 1048576 op, 577185846.67 ns, 550.4473 ns/op
+Result 23: 1048576 op, 583421846.67 ns, 556.3944 ns/op
+Result 24: 1048576 op, 592767646.67 ns, 565.3073 ns/op
+Result 25: 1048576 op, 620903746.67 ns, 592.1400 ns/op
+Result 26: 1048576 op, 736600546.67 ns, 702.4770 ns/op
+Result 27: 1048576 op, 649652946.67 ns, 619.5573 ns/op
+Result 28: 1048576 op, 701765946.67 ns, 669.2562 ns/op
+Result 29: 1048576 op, 605109946.67 ns, 577.0778 ns/op
+Result 30: 1048576 op, 590072246.67 ns, 562.7367 ns/op
+Result 31: 1048576 op, 594686046.67 ns, 567.1368 ns/op
+Result 32: 1048576 op, 657421746.67 ns, 626.9662 ns/op
+Result 33: 1048576 op, 650420546.67 ns, 620.2894 ns/op
+Result 34: 1048576 op, 611880646.67 ns, 583.5349 ns/op
+Result 35: 1048576 op, 653121246.67 ns, 622.8650 ns/op
+Result 36: 1048576 op, 616568246.67 ns, 588.0053 ns/op
+Result 37: 1048576 op, 719664046.67 ns, 686.3251 ns/op
+Result 38: 1048576 op, 631327146.67 ns, 602.0805 ns/op
+Result 39: 1048576 op, 619282946.67 ns, 590.5942 ns/op
+Result 40: 1048576 op, 602559946.67 ns, 574.6459 ns/op
+Result 41: 1048576 op, 591408146.67 ns, 564.0108 ns/op
+Result 42: 1048576 op, 598626346.67 ns, 570.8946 ns/op
+Result 43: 1048576 op, 595067746.67 ns, 567.5008 ns/op
+Result 44: 1048576 op, 594184646.67 ns, 566.6586 ns/op
+Result 45: 1048576 op, 593629846.67 ns, 566.1295 ns/op
+Result 46: 1048576 op, 589986846.67 ns, 562.6553 ns/op
+Result 47: 1048576 op, 606693546.67 ns, 578.5881 ns/op
+Result 48: 1048576 op, 639708646.67 ns, 610.0737 ns/op
+Result 49: 1048576 op, 676109446.67 ns, 644.7882 ns/op
+Result 50: 1048576 op, 661873146.67 ns, 631.2114 ns/op
+Result 51: 1048576 op, 691690146.67 ns, 659.6471 ns/op
+Result 52: 1048576 op, 649287846.67 ns, 619.2091 ns/op
+Result 53: 1048576 op, 631133946.67 ns, 601.8962 ns/op
+Result 54: 1048576 op, 639426646.67 ns, 609.8048 ns/op
+Result 55: 1048576 op, 642667146.67 ns, 612.8952 ns/op
+Result 56: 1048576 op, 652878146.67 ns, 622.6331 ns/op
+Result 57: 1048576 op, 594893946.67 ns, 567.3351 ns/op
+Result 58: 1048576 op, 608135146.67 ns, 579.9629 ns/op
+Result 59: 1048576 op, 601255246.67 ns, 573.4017 ns/op
+Result 60: 1048576 op, 619140246.67 ns, 590.4582 ns/op
+Result 61: 1048576 op, 605623446.67 ns, 577.5675 ns/op
+Result 62: 1048576 op, 722374246.67 ns, 688.9098 ns/op
+Result 63: 1048576 op, 650652446.67 ns, 620.5105 ns/op
+Result 64: 1048576 op, 592761946.67 ns, 565.3018 ns/op
+Result 65: 1048576 op, 591450146.67 ns, 564.0508 ns/op
+Result 66: 1048576 op, 613146746.67 ns, 584.7423 ns/op
+Result 67: 1048576 op, 604784746.67 ns, 576.7677 ns/op
+Result 68: 1048576 op, 639027746.67 ns, 609.4243 ns/op
+Result 69: 1048576 op, 610377146.67 ns, 582.1010 ns/op
+Result 70: 1048576 op, 594254646.67 ns, 566.7254 ns/op
+Result 71: 1048576 op, 586625946.67 ns, 559.4501 ns/op
+Result 72: 1048576 op, 596033246.67 ns, 568.4216 ns/op
+Result 73: 1048576 op, 591007746.67 ns, 563.6289 ns/op
+Result 74: 1048576 op, 594999946.67 ns, 567.4362 ns/op
+Result 75: 1048576 op, 599815346.67 ns, 572.0285 ns/op
+Result 76: 1048576 op, 584758146.67 ns, 557.6688 ns/op
+Result 77: 1048576 op, 587657646.67 ns, 560.4340 ns/op
+Result 78: 1048576 op, 583549746.67 ns, 556.5164 ns/op
+Result 79: 1048576 op, 591438646.67 ns, 564.0398 ns/op
+Result 80: 1048576 op, 581337646.67 ns, 554.4068 ns/op
+Result 81: 1048576 op, 584234746.67 ns, 557.1697 ns/op
+Result 82: 1048576 op, 573259746.67 ns, 546.7031 ns/op
+Result 83: 1048576 op, 571346646.67 ns, 544.8786 ns/op
+Result 84: 1048576 op, 572749746.67 ns, 546.2167 ns/op
+Result 85: 1048576 op, 570455746.67 ns, 544.0290 ns/op
+Result 86: 1048576 op, 580554646.67 ns, 553.6601 ns/op
+Result 87: 1048576 op, 584114846.67 ns, 557.0553 ns/op
+Result 88: 1048576 op, 582439446.67 ns, 555.4575 ns/op
+Result 89: 1048576 op, 578041346.67 ns, 551.2632 ns/op
+Result 90: 1048576 op, 589009646.67 ns, 561.7234 ns/op
+Result 91: 1048576 op, 585559846.67 ns, 558.4334 ns/op
+Result 92: 1048576 op, 575886446.67 ns, 549.2081 ns/op
+Result 93: 1048576 op, 573395846.67 ns, 546.8329 ns/op
+Result 94: 1048576 op, 573581046.67 ns, 547.0095 ns/op
+GC:  0 0 0 0 1048576
+
+// AfterAll
+
+Mean = 582.9377 ns, StdErr = 3.7325 ns (0.64%); N = 94, StdDev = 36.1876 ns
+Min = 539.9452 ns, Q1 = 557.1697 ns, Median = 567.3856 ns, Q3 = 609.4243 ns, Max = 702.4770 ns
+IQR = 52.2547 ns, LowerFence = 478.7877 ns, UpperFence = 687.8064 ns
+ConfidenceInterval = [570.2539 ns; 595.6215 ns] (CI 99.9%), Margin = 12.6838 ns (2.18% of Mean)
+Skewness = 1.33, Kurtosis = 4.24
+
+
+// ***** BenchmarkRunner: Finish  *****
+
+// * Export *
+  BenchmarkDotNet.Artifacts/results/OneIn_OneOut_NoProcessor-report.csv
+  BenchmarkDotNet.Artifacts/results/OneIn_OneOut_NoProcessor-report-github.md
+  BenchmarkDotNet.Artifacts/results/OneIn_OneOut_NoProcessor-report.html
+
+// * Detailed results *
+OneIn_OneOut_NoProcessor.Optimal: DefaultJob [RunLength=100]
+Runtime = Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit ; GC = Concurrent Workstation
+Mean = 529.8277 ns, StdErr = 1.9637 ns (0.37%); N = 13, StdDev = 7.0804 ns
+Min = 515.1146 ns, Q1 = 524.9198 ns, Median = 529.3767 ns, Q3 = 535.0793 ns, Max = 543.0994 ns
+IQR = 10.1595 ns, LowerFence = 509.6805 ns, UpperFence = 550.3186 ns
+ConfidenceInterval = [521.3487 ns; 538.3068 ns] (CI 99.9%), Margin = 8.4791 ns (1.60% of Mean)
+Skewness = -0.15, Kurtosis = 2.59
+
+
+OneIn_OneOut_NoProcessor.Naive: DefaultJob [RunLength=100]
+Runtime = Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit ; GC = Concurrent Workstation
+Mean = 245.1969 us, StdErr = 1.2834 us (0.52%); N = 25, StdDev = 6.4168 us
+Min = 231.9452 us, Q1 = 240.2540 us, Median = 245.8284 us, Q3 = 248.6750 us, Max = 258.5186 us
+IQR = 8.4210 us, LowerFence = 227.6225 us, UpperFence = 261.3066 us
+ConfidenceInterval = [240.3901 us; 250.0036 us] (CI 99.9%), Margin = 4.8067 us (1.96% of Mean)
+Skewness = -0.14, Kurtosis = 2.56
+
+
+OneIn_OneOut_NoProcessor.Actual: DefaultJob [RunLength=100]
+Runtime = Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit ; GC = Concurrent Workstation
+Mean = 582.9377 ns, StdErr = 3.7325 ns (0.64%); N = 94, StdDev = 36.1876 ns
+Min = 539.9452 ns, Q1 = 557.1697 ns, Median = 567.3856 ns, Q3 = 609.4243 ns, Max = 702.4770 ns
+IQR = 52.2547 ns, LowerFence = 478.7877 ns, UpperFence = 687.8064 ns
+ConfidenceInterval = [570.2539 ns; 595.6215 ns] (CI 99.9%), Margin = 12.6838 ns (2.18% of Mean)
+Skewness = 1.33, Kurtosis = 4.24
+
+
+Total time: 00:02:02 (122.45 sec)
+
+// * Summary *
+
+BenchmarkDotNet=v0.10.13, OS=macOS 10.13.4 (17E202) [Darwin 17.5.0]
+Intel Core i7-4558U CPU 2.80GHz (Haswell), 1 CPU, 4 logical cores and 2 physical cores
+  [Host]     : Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit 
+  DefaultJob : Mono 5.10.1.47 (2017-12/8eb8f7d5e74 Fri), 64bit 
+
+
+  Method | RunLength |         Mean |        Error |       StdDev |       Median | Scaled | ScaledSD |  Gen 0 | Allocated |
+-------- |---------- |-------------:|-------------:|-------------:|-------------:|-------:|---------:|-------:|----------:|
+ Optimal |       100 |     529.8 ns |     8.479 ns |     7.080 ns |     529.4 ns |   1.00 |     0.00 |      - |       0 B |
+   Naive |       100 | 245,196.9 ns | 4,806.730 ns | 6,416.847 ns | 245,828.4 ns | 462.86 |    13.28 | 3.4180 |       0 B |
+  Actual |       100 |     582.9 ns |    12.684 ns |    36.188 ns |     567.4 ns |   1.10 |     0.07 |      - |       0 B |
+
+// * Hints *
+Outliers
+  OneIn_OneOut_NoProcessor.Optimal: Default -> 2 outliers were removed
+  OneIn_OneOut_NoProcessor.Actual: Default  -> 6 outliers were removed
+
+// * Legends *
+  RunLength : Value of the 'RunLength' parameter
+  Mean      : Arithmetic mean of all measurements
+  Error     : Half of 99.9% confidence interval
+  StdDev    : Standard deviation of all measurements
+  Median    : Value separating the higher half of all measurements (50th percentile)
+  Scaled    : Mean(CurrentBenchmark) / Mean(BaselineBenchmark)
+  ScaledSD  : Standard deviation of ratio of distibution of [CurrentBenchmark] and [BaselineBenchmark]
+  Gen 0     : GC Generation 0 collects per 1k Operations
+  Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  1 ns      : 1 Nanosecond (0.000000001 sec)
+
+// * Diagnostic Output - MemoryDiagnoser *
+
+
+// ***** BenchmarkRunner: End *****
+// * Artifacts cleanup *

@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using dataprocessor.Compilers;
-using dataprocessor.Old;
 using System.Linq.Expressions;
 
 namespace dataprocessor.tests
@@ -388,13 +387,6 @@ namespace dataprocessor.tests
             _dp = _b.Build();
             Assert.Throws<InvalidOperationException>(() => _b.GetAllNames());
         }
-    }
-
-    [TestFixture]
-    public class NaiveDataProcessorTests : DataProcessorBuilderTests
-    {
-        protected override IDataProcessorBuilder GetBuilder() =>
-            new NaiveDataProcessor();
     }
 
     [TestFixture]

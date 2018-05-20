@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Attributes;
 using dataprocessor.Compilers;
-using dataprocessor.Old;
 using dataprocessor.benchmarks.Utilities;
 
 namespace dataprocessor.benchmarks
@@ -13,14 +12,12 @@ namespace dataprocessor.benchmarks
         public int RunLength;
 
         Writer<int> _optimal;
-        Writer<int> _naive;
         Writer<int> _actualDynamicMethod;
         Writer<int> _actual;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _naive = Setup(new NaiveDataProcessor());
             _actualDynamicMethod = Setup(new DataProcessorBuilder());
             _actual = Setup(new DataProcessorBuilder(new MethodBuilderCompiler()));
             
