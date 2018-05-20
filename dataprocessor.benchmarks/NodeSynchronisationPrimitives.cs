@@ -12,12 +12,11 @@ namespace dataprocessor.benchmarks
 		[Params(1000)]
 		public int RunLength = 10000;
 
-		[Params(true, false)]
+		[Params(true)]
 		public bool IsSynchronous;
 
-		readonly object _obj = new object();
 		volatile int _count;
-		int _bob = 0;
+		int _result = 0;
 
 		readonly List<Thread> _threads = new List<Thread>();
 		INode2<int, int> _unlocked;
@@ -27,7 +26,6 @@ namespace dataprocessor.benchmarks
 		INode2<int, int> _spinLock;
 
 		[GlobalSetup]
-		[NUnit.Framework.SetUp]
 		public void GlobalSetup()
 		{
 			_count = 0;
@@ -54,7 +52,7 @@ namespace dataprocessor.benchmarks
 			    Interlocked.Increment(ref _count);
 
             // need to do "something" to prevent the results being optimised away
-			_bob = a + b;
+			_result = a + b;
 		}
 
 		void Run(INode2<int, int> node)
@@ -103,7 +101,7 @@ namespace dataprocessor.benchmarks
 			}
 		}
 
-		//[Benchmark]
+		[Benchmark]
 		public void Unlocked() => Run(_unlocked);
 
 		//[Benchmark(Baseline = true)]
