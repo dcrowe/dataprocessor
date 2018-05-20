@@ -12,7 +12,7 @@ namespace dataprocessor.benchmarks
 		[Params(1000)]
 		public int RunLength = 10000;
 
-		[Params(true)]
+		[Params(true, false)]
 		public bool IsSynchronous;
 
 		volatile int _count;
@@ -78,7 +78,7 @@ namespace dataprocessor.benchmarks
 						while (true)
 						{
 							node.Set1(i++);
-                            Thread.Yield();
+                           // Thread.Yield();
 						}
 					}
 					catch (ThreadAbortException)
@@ -96,7 +96,7 @@ namespace dataprocessor.benchmarks
 				while (_count < RunLength)
 				{
 					node.Set2(j++);
-					Thread.Yield();
+					//Thread.Yield();
 				}
 			}
 		}
@@ -107,10 +107,10 @@ namespace dataprocessor.benchmarks
 		[Benchmark(Baseline = true)]
 		public void Lock() => Run(_lock);
 
-		[Benchmark]
+		//[Benchmark]
 		public void Monitor() => Run(_monitor);
 
-		[Benchmark]
+		//[Benchmark]
 		public void SemaphoreSlim() => Run(_semaphoreSlim);
 
 		[Benchmark]
