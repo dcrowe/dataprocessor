@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Threading;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Jobs;
+using NUnit.Framework;
 
 namespace dataprocessor.benchmarks
 {
-	[MemoryDiagnoser, ShortRunJob]
+	[MemoryDiagnoser]
+	[Ignore("Unreliable, so don't run as a unit test.")]
 	public class NodeSynchronisationPrimitives
 	{
 		[Params(1000)]
 		public int RunLength = 10000;
 
-		[Params(true)]
+		[Params(false)]
 		public bool IsSynchronous;
 
 		volatile int _count;
@@ -104,16 +105,16 @@ namespace dataprocessor.benchmarks
 		[Benchmark]
 		public void Unlocked() => Run(_unlocked);
 
-		[Benchmark(Baseline = true)]
+		//[Benchmark(Baseline = true)]
 		public void Lock() => Run(_lock);
 
-		[Benchmark]
+		//[Benchmark]
 		public void Monitor() => Run(_monitor);
 
-		[Benchmark]
+		//[Benchmark]
 		public void SemaphoreSlim() => Run(_semaphoreSlim);
 
-		[Benchmark]
+		//[Benchmark]
 		public void SpinLock() => Run(_spinLock);
 
 		public interface INode2<T1, T2> 
