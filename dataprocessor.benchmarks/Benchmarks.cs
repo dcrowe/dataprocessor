@@ -41,10 +41,11 @@ namespace dataprocessor.benchmarks
 
         public static Type[] FindBenchmarks()
         {
-            var bms = from t in Assembly.GetExecutingAssembly().ExportedTypes
-                      where t.GetMethods().Any(m => m.IsDefined(typeof(BenchmarkAttribute)))
-                      orderby t.FullName
-                      select t;
+			var bms = from t in Assembly.GetExecutingAssembly().ExportedTypes
+					  where t.GetMethods().Any(m => m.IsDefined(typeof(BenchmarkAttribute)))
+					  where !t.IsDefined(typeof(IgnoreAttribute))
+					  orderby t.FullName
+					  select t;
 
             return bms.ToArray();
         }

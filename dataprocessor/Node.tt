@@ -5,7 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 using System;
-using System.Linq;
+using System.Threading;
 
 namespace dataprocessor
 {
@@ -13,7 +13,7 @@ namespace dataprocessor
 int min_size = 2;
 int max_size = 64;
 #>
-    public sealed partial class Node
+    public sealed class Node
     {
         public static Type GetTypeFor(Type[] parameters)
         {
@@ -68,16 +68,19 @@ for (var size = 2; size <= max_size; size++)
     var parmNames = string.Join(", ", Enumerable
         .Range(1, size)
         .Select(i => "T" + i + " p" + i));
-    var fieldNames = string.Join(", ", Enumerable
+    var tempNames = string.Join(", ", Enumerable
         .Range(1, size)
-        .Select(i => "_" + i));
+        .Select(i => "t" + i));
 #>
 
-    public sealed partial class Node<<#= typeNames #>>
+    public sealed class Node<<#= typeNames #>>
     {
         public delegate void Action(<#= parmNames #>);
 
         private const ulong _completionMask = <#= size != 64 ? (1ul << size) - 1 : ~0ul #>ul;
+#pragma warning disable RECS0092 // Convert field to readonly
+        private SpinLock _lock = new SpinLock(false);
+#pragma warning restore RECS0092 // Convert field to readonly
         private ulong _filled;
         private Action _action;
 <# for (var ix = 1; ix <= size; ix++) { #>
@@ -106,13 +109,36 @@ for (var size = 2; size <= max_size; size++)
             if (_action == null)
                 throw new InvalidOperationException();
 
-            _filled |= value;
+            var held = false;
+            var shouldCall = false;
+<# for (var ix = 1; ix <= size; ix++) { #>
+            var t<#=ix#> = default(T<#=ix#>);     
+<# } #>
 
-            if (_filled == _completionMask)
+            try
             {
-                _filled = 0;
-                _action(<#= fieldNames #>);
+                _lock.Enter(ref held);
+
+                _filled |= value;
+
+                if (_filled == _completionMask)
+                {
+                    _filled = 0;
+
+                    shouldCall = true;
+    <# for (var ix = 1; ix <= size; ix++) { #>
+                    t<#=ix#> = _<#=ix#>;
+    <# } #>
+                }
             }
+            finally
+            {
+                if (held)
+                    _lock.Exit(false);
+            }
+
+            if (shouldCall)
+                _action(<#= tempNames #>);
         }
 <# for (var ix = 1; ix <= size; ix++) { #>
 

@@ -55,7 +55,6 @@
     <Compile Include="Expressions\ThrowOnPrivateMethods.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Maybe.cs" />
-    <Compile Include="Old\NaiveDataProcessor.cs" />
     <Compile Include="Collation\ICanSetAction.cs" />
     <Compile Include="Collation\NameInfo.cs" />
     <Compile Include="Collation\ProcessorInfo.cs" />
@@ -67,7 +66,6 @@
   <ItemGroup>
     <Folder Include="Expressions\" />
     <Folder Include="Compilers\" />
-    <Folder Include="Old\" />
     <Folder Include="Collation\" />
   </ItemGroup>
   <ItemGroup>
