@@ -2,10 +2,13 @@ version: 1.0.{build}
 image: Visual Studio 2017
 configuration: Release
 cache: packages -> **\packages.config
-build:
-  project: dataprocessor_play.sln
-  verbosity: minimal
+before_build:
+  - cmd: dotnet --version
+build_script:
+  - cmd: dotnet build --configuration Release
 test_script:
+- ps: >-
+    dotnet restore --packages .\packages --verbosity m .\dataprocessor.tests\
 - ps: >-
     .\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe `
         -register:user `
