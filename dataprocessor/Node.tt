@@ -22,7 +22,7 @@ int max_size = 64;
 
             switch (parameters.Length)
             {
-<# for (var size = 2; size <= max_size; size++) { #>
+<# for (var size = min_size; size <= max_size; size++) { #>
                 case <#= size #>:
                     return typeof(Node<<#= new string(',', size-1) #>>).MakeGenericType(parameters);
 <# } #>
@@ -38,7 +38,7 @@ int max_size = 64;
 
             switch (parameters.Length)
             {
-<# for (var size = 2; size <= max_size; size++) { #>
+<# for (var size = min_size; size <= max_size; size++) { #>
                 case <#= size #>:
                     return typeof(Node<<#= new string(',', size-1) #>>.Action).MakeGenericType(parameters);
 <# } #>
@@ -60,7 +60,7 @@ int max_size = 64;
         }
     }
 <#
-for (var size = 2; size <= max_size; size++)
+for (var size = min_size; size <= max_size; size++)
 {
     var typeNames = string.Join(", ", Enumerable
         .Range(1, size)
