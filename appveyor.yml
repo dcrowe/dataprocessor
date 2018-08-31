@@ -1,14 +1,12 @@
 version: 1.0.{build}
 image: Visual Studio 2017
 configuration: Release
-cache: packages -> **\packages.config
+cache: packages -> **\*.csproj
 before_build:
   - cmd: dotnet --version
 build_script:
-  - cmd: dotnet build --configuration Release
+  - cmd: dotnet build --configuration Release --packages .\packages
 test_script:
-- ps: >-
-    dotnet restore --packages .\packages --verbosity m .\dataprocessor.tests\
 - ps: >-
     .\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe `
         -register:user `
@@ -26,5 +24,3 @@ test_script:
 artifacts:
 - path: dataprocessor.benchmarks/bin/Release/net461/BenchmarkDotNet.Artifacts/
   name: Benchmarks
-- path: coverage/
-  name: Coverage
